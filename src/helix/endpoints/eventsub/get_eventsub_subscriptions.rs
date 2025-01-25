@@ -134,61 +134,48 @@ impl helix::Paginated for GetEventSubSubscriptionsRequest<'_> {
 #[cfg(test)]
 #[test]
 fn test_request() {
-    use helix::*;
-    let req: GetEventSubSubscriptionsRequest = GetEventSubSubscriptionsRequest::default();
-
     // From twitch docs.
     // FIXME: Twitch says in example that status is kebab-case, it's actually snake_case. also, users vs user and stream vs streams
-    let data = br#"{
-        "total": 2,
-        "data": [
-            {
-                "id": "26b1c993-bfcf-44d9-b876-379dacafe75a",
-                "status": "enabled",
-                "type": "stream.online",
-                "version": "1",
-                "condition": {
-                    "broadcaster_user_id": "1234"
+    helix::assert_helix_snapshot!(
+      GetEventSubSubscriptionsRequest:
+      req = GetEventSubSubscriptionsRequest::default(),
+      res = br#"{
+            "total": 2,
+            "data": [
+                {
+                    "id": "26b1c993-bfcf-44d9-b876-379dacafe75a",
+                    "status": "enabled",
+                    "type": "stream.online",
+                    "version": "1",
+                    "condition": {
+                        "broadcaster_user_id": "1234"
+                    },
+                    "created_at": "2020-11-10T20:08:33.12345678Z",
+                    "transport": {
+                        "method": "webhook",
+                        "callback": "https://this-is-a-callback.com"
+                    },
+                    "cost": 1
                 },
-                "created_at": "2020-11-10T20:08:33.12345678Z",
-                "transport": {
-                    "method": "webhook",
-                    "callback": "https://this-is-a-callback.com"
-                },
-                "cost": 1
-            },
-            {
-                "id": "35016908-41ff-33ce-7879-61b8dfc2ee16",
-                "status": "webhook_callback_verification_pending",
-                "type": "user.update",
-                "version": "1",
-                "condition": {
-                    "user_id": "1234"
-                },
-                "created_at": "2020-11-10T14:32:18.730260295Z",
-                "transport": {
-                    "method": "webhook",
-                    "callback": "https://this-is-a-callback.com"
-                },
-                "cost": 0
-            }
-        ],
-        "total_cost": 1,
-        "max_total_cost": 10000,
-        "pagination": {}
-    }
-    "#
-    .to_vec();
-    let http_response = http::Response::builder().status(200).body(data).unwrap();
-
-    let uri = req.get_uri().unwrap();
-    assert_eq!(
-        uri.to_string(),
-        "https://api.twitch.tv/helix/eventsub/subscriptions?"
-    );
-
-    dbg!(
-        "{:#?}",
-        GetEventSubSubscriptionsRequest::parse_response(Some(req), &uri, http_response).unwrap()
+                {
+                    "id": "35016908-41ff-33ce-7879-61b8dfc2ee16",
+                    "status": "webhook_callback_verification_pending",
+                    "type": "user.update",
+                    "version": "1",
+                    "condition": {
+                        "user_id": "1234"
+                    },
+                    "created_at": "2020-11-10T14:32:18.730260295Z",
+                    "transport": {
+                        "method": "webhook",
+                        "callback": "https://this-is-a-callback.com"
+                    },
+                    "cost": 0
+                }
+            ],
+            "total_cost": 1,
+            "max_total_cost": 10000,
+            "pagination": {}
+        }"#,
     );
 }

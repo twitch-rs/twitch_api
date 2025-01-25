@@ -1,0 +1,5 @@
+---
+source: src/helix/endpoints/eventsub/delete_eventsub_subscription.rs
+expression: uri
+---
+https://api.twitch.tv/helix/eventsub/subscriptions?id=deadbeef
