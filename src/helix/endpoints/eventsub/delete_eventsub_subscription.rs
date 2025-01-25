@@ -70,20 +70,8 @@ impl RequestDelete for DeleteEventSubSubscriptionRequest<'_> {
 #[cfg(test)]
 #[test]
 fn test_request() {
-    use helix::*;
-    let req: DeleteEventSubSubscriptionRequest = DeleteEventSubSubscriptionRequest::id("deadbeef");
-
-    let data = vec![];
-    let http_response = http::Response::builder().status(204).body(data).unwrap();
-
-    let uri = req.get_uri().unwrap();
-    assert_eq!(
-        uri.to_string(),
-        "https://api.twitch.tv/helix/eventsub/subscriptions?id=deadbeef"
-    );
-
-    dbg!(
-        "{:#?}",
-        DeleteEventSubSubscriptionRequest::parse_response(Some(req), &uri, http_response).unwrap()
+    helix::assert_helix_snapshot!(
+        DeleteEventSubSubscriptionRequest:
+        req = DeleteEventSubSubscriptionRequest::id("deadbeef"),
     );
 }

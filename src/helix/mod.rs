@@ -590,3 +590,45 @@ where T: serde::Serialize + private::SealedSerialize
 pub(crate) mod private {
     pub trait SealedSerialize {}
 }
+
+#[cfg(test)]
+macro_rules! assert_helix_snapshot {
+    ($req_ty:ty: req = $req:expr $(,)?) => {
+        $crate::helix::assert_helix_snapshot!($req_ty: req = $req, res = b"", status = 204);
+    };
+    ($req_ty:ty: req = $req:expr, res = $res:literal $(,)?) => {
+        $crate::helix::assert_helix_snapshot!($req_ty: req = $req, res = $res, status = 200);
+    };
+    ($req_ty:ty: req = $req:expr, body = $body:expr $(,)?) => {
+        $crate::helix::assert_helix_snapshot!($req_ty: req = $req, body = $body, res = b"", status = 200);
+    };
+    ($req_ty:ty: req = $req:expr, body = $body:expr, res = $res:literal $(,)?) => {
+        $crate::helix::assert_helix_snapshot!($req_ty: req = $req, body = $body, res = $res, status = 200);
+    };
+    ($req_ty:ty: req = $req:expr, body = $body:expr, res = $res:literal, status = $status:literal $(,)?) => {
+        {
+            use $crate::helix::*;
+            let body = $body;
+            let body = body.try_to_body().unwrap();
+            let body_str = std::str::from_utf8(&body).unwrap();
+            ::insta::assert_display_snapshot!(body_str);
+        };
+        $crate::helix::assert_helix_snapshot!($req_ty: req = $req, res = $res, status = $status);
+    };
+    ($req_ty:ty: req = $req:expr, res = $res:literal, status = $status:literal $(,)?) => {{
+        use $crate::helix::*;
+
+        let req = $req;
+        let res = $res.to_vec();
+        let http_response = http::Response::builder().status($status).body(res).unwrap();
+
+        let uri = req.get_uri().unwrap();
+        let response = <$req_ty>::parse_response(Some(req), &uri, http_response).unwrap();
+
+        ::insta::assert_display_snapshot!(uri);
+        ::insta::assert_debug_snapshot!(response.data);
+    }};
+}
+
+#[cfg(test)]
+pub(crate) use assert_helix_snapshot;

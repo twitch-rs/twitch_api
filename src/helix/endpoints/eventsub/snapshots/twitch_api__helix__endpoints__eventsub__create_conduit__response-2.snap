@@ -1,0 +1,8 @@
+---
+source: src/helix/endpoints/eventsub/create_conduit.rs
+expression: response.data
+---
+Conduit {
+    id: "bfcfc993-26b1-b876-44d9-afe75a379dac",
+    shard_count: 5,
+}

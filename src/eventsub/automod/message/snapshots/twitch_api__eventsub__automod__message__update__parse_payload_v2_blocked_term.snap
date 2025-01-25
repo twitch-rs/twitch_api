@@ -1,0 +1,67 @@
+---
+source: src/eventsub/automod/message/update.rs
+expression: parsed
+---
+AutomodMessageUpdateV2(
+    Payload {
+        subscription: EventSubscriptionInformation {
+            id: "5d64b907-001e-4cf1-9227-37871c7ce1b0",
+            status: Enabled,
+            cost: 0,
+            condition: AutomodMessageUpdateV2 {
+                broadcaster_user_id: "129546453",
+                moderator_user_id: "129546453",
+            },
+            created_at: "2024-11-18T19:25:05.666970955Z",
+            transport: Websocket(
+                WebsocketTransportResponse {
+                    session_id: "AgoQSrkrRHHrQsS-i4xbndeC0hIGY2VsbC1j",
+                    connected_at: None,
+                    disconnected_at: None,
+                },
+            ),
+            type_: AutomodMessageUpdate,
+            version: "2",
+        },
+        message: Notification(
+            AutomodMessageUpdateV2Payload {
+                broadcaster_user_id: "129546453",
+                broadcaster_user_login: "nerixyz",
+                broadcaster_user_name: "nerixyz",
+                user_id: "489584266",
+                user_login: "uint128",
+                user_name: "uint128",
+                moderator_user_id: "129546453",
+                moderator_user_login: "nerixyz",
+                moderator_user_name: "nerixyz",
+                message_id: "8c2b43ed-88a0-4b3e-8c02-266c323e1d95",
+                message: AutomodMessage {
+                    text: "foo",
+                    fragments: [
+                        Text {
+                            text: "foo",
+                        },
+                    ],
+                },
+                status: Approved,
+                held_at: "2024-11-18T19:25:52.991756968Z",
+                reason: BlockedTerm(
+                    AutomodBlockedTermInfo {
+                        terms_found: [
+                            AutomodBlockedTerm {
+                                term_id: "e4d4f1ba-99bf-4b19-9875-cd4eda98ead9",
+                                boundary: AutomodMessageBoundary {
+                                    start_pos: 0,
+                                    end_pos: 2,
+                                },
+                                owner_broadcaster_user_id: "129546453",
+                                owner_broadcaster_user_login: "nerixyz",
+                                owner_broadcaster_user_name: "nerixyz",
+                            },
+                        ],
+                    },
+                ),
+            },
+        ),
+    },
+)

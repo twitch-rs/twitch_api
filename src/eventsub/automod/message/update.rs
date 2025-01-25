@@ -82,9 +82,8 @@ pub struct AutomodMessageUpdateV1Payload {
 #[cfg(test)]
 #[test]
 fn parse_payload_v1() {
-    use crate::eventsub::{Event, Message};
-
-    let payload = r##"
+    crate::eventsub::assert_eventsub_snapshot!(
+        r##"
     {
         "subscription": {
             "id": "79cc58a2-1c34-48e0-97fe-126d5d77bf10",
@@ -130,23 +129,8 @@ fn parse_payload_v1() {
             "held_at": "2024-11-03T11:53:45.331308397Z"
         }
     }
-    "##;
-
-    let val = Event::parse(payload).unwrap();
-    crate::tests::roundtrip(&val);
-
-    let Event::AutomodMessageUpdateV1(val) = val else {
-        panic!("invalid event type");
-    };
-    let Message::Notification(notif) = val.message else {
-        panic!("invalid message type");
-    };
-
-    assert_eq!(notif.broadcaster_user_id.as_str(), "129546453");
-    assert_eq!(notif.category, AutomodCategory::Sexwords);
-    assert_eq!(notif.level, 4);
-    assert_eq!(notif.status, AutomodMessageStatus::Approved);
-    assert_eq!(notif.message.fragments.len(), 1);
+    "##
+    );
 }
 
 /// [`automod.message.update`](dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#automodmessageupdate-v2): a message in the automod queue had its status changed.
@@ -227,9 +211,8 @@ pub struct AutomodMessageUpdateV2Payload {
 
 #[test]
 fn parse_payload_v2_automod() {
-    use crate::eventsub::{Event, Message};
-
-    let payload = r##"
+    crate::eventsub::assert_eventsub_snapshot!(
+        r##"
     {
         "subscription": {
             "id": "5d64b907-001e-4cf1-9227-37871c7ce1b0",
@@ -300,41 +283,14 @@ fn parse_payload_v2_automod() {
             "held_at": "2024-11-18T19:26:37.707305502Z"
         }
     }
-    "##;
-
-    let val = Event::parse(payload).unwrap();
-    crate::tests::roundtrip(&val);
-
-    let Event::AutomodMessageUpdateV2(val) = val else {
-        panic!("invalid event type");
-    };
-    let Message::Notification(notif) = val.message else {
-        panic!("invalid message type");
-    };
-
-    assert_eq!(notif.broadcaster_user_id.as_str(), "129546453");
-    assert_eq!(notif.message.fragments.len(), 3);
-    assert_eq!(notif.status, AutomodMessageStatus::Denied);
-
-    let AutomodHeldReason::Automod(automod) = &notif.reason else {
-        panic!("invalid held reason");
-    };
-    assert_eq!(automod.category, AutomodCategory::Swearing);
-    assert_eq!(automod.level, 4);
-    assert_eq!(
-        automod.boundaries,
-        &[AutomodMessageBoundary {
-            start_pos: 6,
-            end_pos: 8
-        }]
+    "##
     );
 }
 
 #[test]
 fn parse_payload_v2_blocked_term() {
-    use crate::eventsub::{Event, Message};
-
-    let payload = r##"
+    crate::eventsub::assert_eventsub_snapshot!(
+        r##"
     {
         "subscription": {
             "id": "5d64b907-001e-4cf1-9227-37871c7ce1b0",
@@ -394,35 +350,6 @@ fn parse_payload_v2_blocked_term() {
             "held_at": "2024-11-18T19:25:52.991756968Z"
         }
     }
-    "##;
-
-    let val = Event::parse(payload).unwrap();
-    crate::tests::roundtrip(&val);
-
-    let Event::AutomodMessageUpdateV2(val) = val else {
-        panic!("invalid event type");
-    };
-    let Message::Notification(notif) = val.message else {
-        panic!("invalid message type");
-    };
-
-    assert_eq!(notif.broadcaster_user_id.as_str(), "129546453");
-    assert_eq!(notif.message.fragments.len(), 1);
-    assert_eq!(notif.status, AutomodMessageStatus::Approved);
-
-    let AutomodHeldReason::BlockedTerm(blocked_term) = &notif.reason else {
-        panic!("invalid held reason");
-    };
-    assert_eq!(blocked_term.terms_found.len(), 1);
-    assert_eq!(
-        blocked_term.terms_found[0].term_id.as_str(),
-        "e4d4f1ba-99bf-4b19-9875-cd4eda98ead9"
-    );
-    assert_eq!(
-        blocked_term.terms_found[0].boundary,
-        AutomodMessageBoundary {
-            start_pos: 0,
-            end_pos: 2
-        }
+    "##
     );
 }
