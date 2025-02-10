@@ -139,7 +139,7 @@ impl ChatWebsocketClient {
         if let Some(url) = data.reconnect_url {
             self.connect_url = url.parse()?;
         }
-        let mut token = self.token.lock().await;
+        let token = self.token.lock().await;
         let transport = eventsub::Transport::websocket(data.id.clone());
         for id in &self.chats {
             let user_id = token.user_id().unwrap().to_owned();

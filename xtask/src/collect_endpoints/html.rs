@@ -48,7 +48,7 @@ pub fn tbody_below_id<'p, 'v>(dom: &'p tl::VDom<'v>, id: &str) -> Result<&'p tl:
             continue;
         };
 
-        if first.name() != "h1" || !first.attributes().id().is_some_and(|a| a == id) {
+        if first.name() != "h1" || first.attributes().id().is_none_or(|a| a != id) {
             continue;
         }
         if second.name() != "table" {
