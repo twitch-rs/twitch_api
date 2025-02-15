@@ -1,311 +1,155 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/channel_bits.rs`."><title>channel_bits.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5d1d17d0.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (1e9b0177d 2025-01-24)" data-channel="nightly" data-search-js="search-ccb196c1.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">twitch_api/pubsub/</div>channel_bits.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
-<a href="#1" id="1">1</a>
-<a href="#2" id="2">2</a>
-<a href="#3" id="3">3</a>
-<a href="#4" id="4">4</a>
-<a href="#5" id="5">5</a>
-<a href="#6" id="6">6</a>
-<a href="#7" id="7">7</a>
-<a href="#8" id="8">8</a>
-<a href="#9" id="9">9</a>
-<a href="#10" id="10">10</a>
-<a href="#11" id="11">11</a>
-<a href="#12" id="12">12</a>
-<a href="#13" id="13">13</a>
-<a href="#14" id="14">14</a>
-<a href="#15" id="15">15</a>
-<a href="#16" id="16">16</a>
-<a href="#17" id="17">17</a>
-<a href="#18" id="18">18</a>
-<a href="#19" id="19">19</a>
-<a href="#20" id="20">20</a>
-<a href="#21" id="21">21</a>
-<a href="#22" id="22">22</a>
-<a href="#23" id="23">23</a>
-<a href="#24" id="24">24</a>
-<a href="#25" id="25">25</a>
-<a href="#26" id="26">26</a>
-<a href="#27" id="27">27</a>
-<a href="#28" id="28">28</a>
-<a href="#29" id="29">29</a>
-<a href="#30" id="30">30</a>
-<a href="#31" id="31">31</a>
-<a href="#32" id="32">32</a>
-<a href="#33" id="33">33</a>
-<a href="#34" id="34">34</a>
-<a href="#35" id="35">35</a>
-<a href="#36" id="36">36</a>
-<a href="#37" id="37">37</a>
-<a href="#38" id="38">38</a>
-<a href="#39" id="39">39</a>
-<a href="#40" id="40">40</a>
-<a href="#41" id="41">41</a>
-<a href="#42" id="42">42</a>
-<a href="#43" id="43">43</a>
-<a href="#44" id="44">44</a>
-<a href="#45" id="45">45</a>
-<a href="#46" id="46">46</a>
-<a href="#47" id="47">47</a>
-<a href="#48" id="48">48</a>
-<a href="#49" id="49">49</a>
-<a href="#50" id="50">50</a>
-<a href="#51" id="51">51</a>
-<a href="#52" id="52">52</a>
-<a href="#53" id="53">53</a>
-<a href="#54" id="54">54</a>
-<a href="#55" id="55">55</a>
-<a href="#56" id="56">56</a>
-<a href="#57" id="57">57</a>
-<a href="#58" id="58">58</a>
-<a href="#59" id="59">59</a>
-<a href="#60" id="60">60</a>
-<a href="#61" id="61">61</a>
-<a href="#62" id="62">62</a>
-<a href="#63" id="63">63</a>
-<a href="#64" id="64">64</a>
-<a href="#65" id="65">65</a>
-<a href="#66" id="66">66</a>
-<a href="#67" id="67">67</a>
-<a href="#68" id="68">68</a>
-<a href="#69" id="69">69</a>
-<a href="#70" id="70">70</a>
-<a href="#71" id="71">71</a>
-<a href="#72" id="72">72</a>
-<a href="#73" id="73">73</a>
-<a href="#74" id="74">74</a>
-<a href="#75" id="75">75</a>
-<a href="#76" id="76">76</a>
-<a href="#77" id="77">77</a>
-<a href="#78" id="78">78</a>
-<a href="#79" id="79">79</a>
-<a href="#80" id="80">80</a>
-<a href="#81" id="81">81</a>
-<a href="#82" id="82">82</a>
-<a href="#83" id="83">83</a>
-<a href="#84" id="84">84</a>
-<a href="#85" id="85">85</a>
-<a href="#86" id="86">86</a>
-<a href="#87" id="87">87</a>
-<a href="#88" id="88">88</a>
-<a href="#89" id="89">89</a>
-<a href="#90" id="90">90</a>
-<a href="#91" id="91">91</a>
-<a href="#92" id="92">92</a>
-<a href="#93" id="93">93</a>
-<a href="#94" id="94">94</a>
-<a href="#95" id="95">95</a>
-<a href="#96" id="96">96</a>
-<a href="#97" id="97">97</a>
-<a href="#98" id="98">98</a>
-<a href="#99" id="99">99</a>
-<a href="#100" id="100">100</a>
-<a href="#101" id="101">101</a>
-<a href="#102" id="102">102</a>
-<a href="#103" id="103">103</a>
-<a href="#104" id="104">104</a>
-<a href="#105" id="105">105</a>
-<a href="#106" id="106">106</a>
-<a href="#107" id="107">107</a>
-<a href="#108" id="108">108</a>
-<a href="#109" id="109">109</a>
-<a href="#110" id="110">110</a>
-<a href="#111" id="111">111</a>
-<a href="#112" id="112">112</a>
-<a href="#113" id="113">113</a>
-<a href="#114" id="114">114</a>
-<a href="#115" id="115">115</a>
-<a href="#116" id="116">116</a>
-<a href="#117" id="117">117</a>
-<a href="#118" id="118">118</a>
-<a href="#119" id="119">119</a>
-<a href="#120" id="120">120</a>
-<a href="#121" id="121">121</a>
-<a href="#122" id="122">122</a>
-<a href="#123" id="123">123</a>
-<a href="#124" id="124">124</a>
-<a href="#125" id="125">125</a>
-<a href="#126" id="126">126</a>
-<a href="#127" id="127">127</a>
-<a href="#128" id="128">128</a>
-<a href="#129" id="129">129</a>
-<a href="#130" id="130">130</a>
-<a href="#131" id="131">131</a>
-<a href="#132" id="132">132</a>
-<a href="#133" id="133">133</a>
-<a href="#134" id="134">134</a>
-<a href="#135" id="135">135</a>
-<a href="#136" id="136">136</a>
-<a href="#137" id="137">137</a>
-<a href="#138" id="138">138</a>
-<a href="#139" id="139">139</a>
-<a href="#140" id="140">140</a>
-<a href="#141" id="141">141</a>
-<a href="#142" id="142">142</a>
-<a href="#143" id="143">143</a>
-<a href="#144" id="144">144</a>
-<a href="#145" id="145">145</a>
-<a href="#146" id="146">146</a>
-<a href="#147" id="147">147</a>
-<a href="#148" id="148">148</a>
-<a href="#149" id="149">149</a>
-<a href="#150" id="150">150</a>
-<a href="#151" id="151">151</a>
-<a href="#152" id="152">152</a>
-<a href="#153" id="153">153</a>
-<a href="#154" id="154">154</a>
-<a href="#155" id="155">155</a></pre></div><pre class="rust"><code><span class="attr">#![doc(alias = <span class="string">"bits"</span>)]
-#![doc(alias = <span class="string">"channel-bits-events-v2"</span>)]
-</span><span class="doccomment">//! PubSub messages for bits
-</span><span class="kw">use crate</span>::{pubsub, types};
-<span class="kw">use </span>serde_derive::{Deserialize, Serialize};
-
-<span class="doccomment">/// Anyone cheers in a specified channel.
-</span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Hash)]
-#[serde(into = <span class="string">"String"</span>, try_from = <span class="string">"String"</span>)]
-</span><span class="kw">pub struct </span>ChannelBitsEventsV2 {
-    <span class="doccomment">/// The channel_id to watch. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint
-    </span><span class="kw">pub </span>channel_id: u32,
-}
-
-<span class="macro">impl_de_ser!</span>(ChannelBitsEventsV2, <span class="string">"channel-bits-events-v2"</span>, channel_id);
-
-<span class="kw">impl </span>pubsub::Topic <span class="kw">for </span>ChannelBitsEventsV2 {
-    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
-    </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator =
-        <span class="macro">twitch_oauth2::validator!</span>[twitch_oauth2::Scope::BitsRead];
-
-    <span class="kw">fn </span>into_topic(<span class="self">self</span>) -&gt; pubsub::Topics { <span class="kw">super</span>::Topics::ChannelBitsEventsV2(<span class="self">self</span>) }
-}
-
-<span class="doccomment">/// Reply from [ChannelBitsEventsV2]
-</span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
-#[serde(tag = <span class="string">"message_type"</span>)]
-#[non_exhaustive]
-</span><span class="kw">pub enum </span>ChannelBitsEventsV2Reply {
-    <span class="doccomment">/// Bits event
-    </span><span class="attr">#[serde(rename = <span class="string">"bits_event"</span>)]
-    </span>BitsEvent {
-        <span class="doccomment">/// Data associated with reply
-        </span>data: BitsEventData,
-        <span class="doccomment">/// Message ID of message associated with this `bits_event`
-        </span>message_id: String,
-        <span class="doccomment">/// Version of `channel-bits-events-v2` reply
-        </span>version: String,
-        <span class="attr">#[doc(hidden)]
-        #[serde(default)] </span><span class="comment">// FIXME: docs seems to be wrong here.
-        </span>is_anonymous: bool,
-    },
-}
-
-<span class="doccomment">/// Data for bits event
-</span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
-#[non_exhaustive]
-</span><span class="kw">pub struct </span>BitsEventData {
-    <span class="doccomment">/// If set, describes new unlocked badge for user
-    </span><span class="kw">pub </span>badge_entitlement: <span class="prelude-ty">Option</span>&lt;BadgeEntitlement&gt;,
-    <span class="doccomment">/// The number of bits that were sent.
-    </span><span class="kw">pub </span>bits_used: i64,
-    <span class="doccomment">/// ID of channel where message was sent
-    </span><span class="kw">pub </span>channel_id: types::UserId,
-    <span class="doccomment">/// Username of channel where message was sent
-    </span><span class="kw">pub </span>channel_name: types::UserName,
-    <span class="doccomment">/// The full message that was sent with the bits.
-    </span><span class="kw">pub </span>chat_message: String,
-    <span class="doccomment">/// Context of `bits_event`, seems to only be [`cheer`](BitsContext::Cheer)
-    </span><span class="kw">pub </span>context: BitsContext,
-    <span class="attr">#[serde(default)] </span><span class="comment">// FIXME: docs don't have this field here, but actual responses do
-    </span><span class="doccomment">/// Whether the cheer was anonymous.
-    </span><span class="kw">pub </span>is_anonymous: bool,
-    <span class="doccomment">/// Time when pubsub message was sent
-    </span><span class="kw">pub </span>time: types::Timestamp,
-    <span class="doccomment">/// The total number of bits that were ever sent by the user in the channel.
-    </span><span class="kw">pub </span>total_bits_used: i64,
-    <span class="doccomment">/// ID of user that sent message
-    </span><span class="kw">pub </span>user_id: types::UserId,
-    <span class="doccomment">/// Name of user that sent message
-    </span><span class="kw">pub </span>user_name: types::UserName,
-}
-
-<span class="doccomment">/// [`ChannelBitsEventsV2Reply::BitsEvent`] event unlocked new badge for user.
-</span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
-#[non_exhaustive]
-</span><span class="kw">pub struct </span>BadgeEntitlement {
-    <span class="doccomment">/// New version of badge
-    </span>new_version: u64,
-    <span class="doccomment">/// Previous version of badge
-    </span>previous_version: u64,
-}
-
-<span class="doccomment">/// Context that triggered pubsub message
-</span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[non_exhaustive]
-</span><span class="kw">pub enum </span>BitsContext {
-    <span class="doccomment">/// Cheer
-    </span><span class="attr">#[serde(rename = <span class="string">"cheer"</span>)]
-    </span>Cheer,
-}
-
-<span class="attr">#[cfg(test)]
-</span><span class="kw">mod </span>tests {
-    <span class="kw">use </span><span class="kw">super</span>::<span class="kw">super</span>::{Response, TopicData};
-    <span class="kw">use super</span>::<span class="kw-2">*</span>;
-    <span class="attr">#[test]
-    </span><span class="kw">fn </span>bits_event() {
-        <span class="kw">let </span>source = <span class="string">r#"
-{
-    "type": "MESSAGE",
-    "data": {
-        "topic": "channel-bits-events-v2.1234",
-        "message": "{\"data\":{\"user_name\":\"justintv\",\"channel_name\":\"tmi\",\"user_id\":\"12345\",\"channel_id\":\"1234\",\"time\":\"2020-10-19T17:50:24.807841596Z\",\"chat_message\":\"Corgo1 Corgo1 Corgo1 Corgo1 Corgo1\",\"bits_used\":5,\"total_bits_used\":29,\"is_anonymous\":false,\"context\":\"cheer\",\"badge_entitlement\":null},\"version\":\"1.0\",\"message_type\":\"bits_event\",\"message_id\":\"d1831817-95f2-5dfa-8864-f36f16eeb5d8\"}"
-    }
-}"#</span>;
-        <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            actual,
-            Response::Message {
-                data: TopicData::ChannelBitsEventsV2 { .. },
-            }
-        ));
-    }
-
-    <span class="attr">#[test]
-    </span><span class="kw">fn </span>bits_event_documented() {
-        <span class="kw">let </span>source = <span class="string">r#"
-{
-    "type": "MESSAGE",
-    "data": {
-       "topic": "channel-bits-events-v2.46024993",
-       "message": "{\"data\":{\"user_name\":\"jwp\",\"channel_name\":\"bontakun\",\"user_id\":\"95546976\",\"channel_id\":\"46024993\",\"time\":\"2017-02-09T13:23:58.168Z\",\"chat_message\":\"cheer10000 New badge hype!\",\"bits_used\":10000,\"total_bits_used\":25000,\"context\":\"cheer\",\"badge_entitlement\":{\"new_version\":25000,\"previous_version\":10000}},\"version\":\"1.0\",\"message_type\":\"bits_event\",\"message_id\":\"8145728a4-35f0-4cf7-9dc0-f2ef24de1eb6\",\"is_anonymous\":true}"
-    }
-}
-"#</span>;
-
-        <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
-        <span class="macro">assert!</span>(<span class="macro">matches!</span>(
-            actual,
-            Response::Message {
-                data: TopicData::ChannelBitsEventsV2 { .. },
-            }
-        ));
-    }
-    <span class="attr">#[test]
-    </span><span class="kw">fn </span>check_deser() {
-        <span class="kw">use </span>std::convert::TryInto <span class="kw">as _</span>;
-        <span class="kw">let </span>s = <span class="string">"channel-bits-events-v2.1234"</span>;
-        <span class="macro">assert_eq!</span>(
-            ChannelBitsEventsV2 { channel_id: <span class="number">1234 </span>},
-            s.to_string().try_into().unwrap()
-        );
-    }
-
-    <span class="attr">#[test]
-    </span><span class="kw">fn </span>check_ser() {
-        <span class="kw">let </span>s = <span class="string">"channel-bits-events-v2.1234"</span>;
-        <span class="kw">let </span>right: String = ChannelBitsEventsV2 { channel_id: <span class="number">1234 </span>}.into();
-        <span class="macro">assert_eq!</span>(s.to_string(), right);
-    }
-}
-</code></pre></div></section></main></body></html>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/channel_bits.rs`."><title>channel_bits.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-6c3ea77c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (d8810e3e2 2025-02-14)" data-channel="nightly" data-search-js="search-581efc7a.js" data-settings-js="settings-6dad6058.js" ><script src="../../../static.files/storage-3a5871a4.js"></script><script defer src="../../../static.files/src-script-b8d3f215.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-4d63596a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">twitch_api/pubsub/</div>channel_bits.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="attr">#![doc(alias = <span class="string">"bits"</span>)]
+<a href=#2 id=2 data-nosnippet>2</a>#![doc(alias = <span class="string">"channel-bits-events-v2"</span>)]
+<a href=#3 id=3 data-nosnippet>3</a></span><span class="doccomment">//! PubSub messages for bits
+<a href=#4 id=4 data-nosnippet>4</a></span><span class="kw">use crate</span>::{pubsub, types};
+<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>serde_derive::{Deserialize, Serialize};
+<a href=#6 id=6 data-nosnippet>6</a>
+<a href=#7 id=7 data-nosnippet>7</a><span class="doccomment">/// Anyone cheers in a specified channel.
+<a href=#8 id=8 data-nosnippet>8</a></span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Hash)]
+<a href=#9 id=9 data-nosnippet>9</a>#[serde(into = <span class="string">"String"</span>, try_from = <span class="string">"String"</span>)]
+<a href=#10 id=10 data-nosnippet>10</a></span><span class="kw">pub struct </span>ChannelBitsEventsV2 {
+<a href=#11 id=11 data-nosnippet>11</a>    <span class="doccomment">/// The channel_id to watch. Can be fetched with the [Get Users](crate::helix::users::get_users) endpoint
+<a href=#12 id=12 data-nosnippet>12</a>    </span><span class="kw">pub </span>channel_id: u32,
+<a href=#13 id=13 data-nosnippet>13</a>}
+<a href=#14 id=14 data-nosnippet>14</a>
+<a href=#15 id=15 data-nosnippet>15</a><span class="macro">impl_de_ser!</span>(ChannelBitsEventsV2, <span class="string">"channel-bits-events-v2"</span>, channel_id);
+<a href=#16 id=16 data-nosnippet>16</a>
+<a href=#17 id=17 data-nosnippet>17</a><span class="kw">impl </span>pubsub::Topic <span class="kw">for </span>ChannelBitsEventsV2 {
+<a href=#18 id=18 data-nosnippet>18</a>    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
+<a href=#19 id=19 data-nosnippet>19</a>    </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator =
+<a href=#20 id=20 data-nosnippet>20</a>        <span class="macro">twitch_oauth2::validator!</span>[twitch_oauth2::Scope::BitsRead];
+<a href=#21 id=21 data-nosnippet>21</a>
+<a href=#22 id=22 data-nosnippet>22</a>    <span class="kw">fn </span>into_topic(<span class="self">self</span>) -&gt; pubsub::Topics { <span class="kw">super</span>::Topics::ChannelBitsEventsV2(<span class="self">self</span>) }
+<a href=#23 id=23 data-nosnippet>23</a>}
+<a href=#24 id=24 data-nosnippet>24</a>
+<a href=#25 id=25 data-nosnippet>25</a><span class="doccomment">/// Reply from [ChannelBitsEventsV2]
+<a href=#26 id=26 data-nosnippet>26</a></span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+<a href=#27 id=27 data-nosnippet>27</a>#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
+<a href=#28 id=28 data-nosnippet>28</a>#[serde(tag = <span class="string">"message_type"</span>)]
+<a href=#29 id=29 data-nosnippet>29</a>#[non_exhaustive]
+<a href=#30 id=30 data-nosnippet>30</a></span><span class="kw">pub enum </span>ChannelBitsEventsV2Reply {
+<a href=#31 id=31 data-nosnippet>31</a>    <span class="doccomment">/// Bits event
+<a href=#32 id=32 data-nosnippet>32</a>    </span><span class="attr">#[serde(rename = <span class="string">"bits_event"</span>)]
+<a href=#33 id=33 data-nosnippet>33</a>    </span>BitsEvent {
+<a href=#34 id=34 data-nosnippet>34</a>        <span class="doccomment">/// Data associated with reply
+<a href=#35 id=35 data-nosnippet>35</a>        </span>data: BitsEventData,
+<a href=#36 id=36 data-nosnippet>36</a>        <span class="doccomment">/// Message ID of message associated with this `bits_event`
+<a href=#37 id=37 data-nosnippet>37</a>        </span>message_id: String,
+<a href=#38 id=38 data-nosnippet>38</a>        <span class="doccomment">/// Version of `channel-bits-events-v2` reply
+<a href=#39 id=39 data-nosnippet>39</a>        </span>version: String,
+<a href=#40 id=40 data-nosnippet>40</a>        <span class="attr">#[doc(hidden)]
+<a href=#41 id=41 data-nosnippet>41</a>        #[serde(default)] </span><span class="comment">// FIXME: docs seems to be wrong here.
+<a href=#42 id=42 data-nosnippet>42</a>        </span>is_anonymous: bool,
+<a href=#43 id=43 data-nosnippet>43</a>    },
+<a href=#44 id=44 data-nosnippet>44</a>}
+<a href=#45 id=45 data-nosnippet>45</a>
+<a href=#46 id=46 data-nosnippet>46</a><span class="doccomment">/// Data for bits event
+<a href=#47 id=47 data-nosnippet>47</a></span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+<a href=#48 id=48 data-nosnippet>48</a>#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
+<a href=#49 id=49 data-nosnippet>49</a>#[non_exhaustive]
+<a href=#50 id=50 data-nosnippet>50</a></span><span class="kw">pub struct </span>BitsEventData {
+<a href=#51 id=51 data-nosnippet>51</a>    <span class="doccomment">/// If set, describes new unlocked badge for user
+<a href=#52 id=52 data-nosnippet>52</a>    </span><span class="kw">pub </span>badge_entitlement: <span class="prelude-ty">Option</span>&lt;BadgeEntitlement&gt;,
+<a href=#53 id=53 data-nosnippet>53</a>    <span class="doccomment">/// The number of bits that were sent.
+<a href=#54 id=54 data-nosnippet>54</a>    </span><span class="kw">pub </span>bits_used: i64,
+<a href=#55 id=55 data-nosnippet>55</a>    <span class="doccomment">/// ID of channel where message was sent
+<a href=#56 id=56 data-nosnippet>56</a>    </span><span class="kw">pub </span>channel_id: types::UserId,
+<a href=#57 id=57 data-nosnippet>57</a>    <span class="doccomment">/// Username of channel where message was sent
+<a href=#58 id=58 data-nosnippet>58</a>    </span><span class="kw">pub </span>channel_name: types::UserName,
+<a href=#59 id=59 data-nosnippet>59</a>    <span class="doccomment">/// The full message that was sent with the bits.
+<a href=#60 id=60 data-nosnippet>60</a>    </span><span class="kw">pub </span>chat_message: String,
+<a href=#61 id=61 data-nosnippet>61</a>    <span class="doccomment">/// Context of `bits_event`, seems to only be [`cheer`](BitsContext::Cheer)
+<a href=#62 id=62 data-nosnippet>62</a>    </span><span class="kw">pub </span>context: BitsContext,
+<a href=#63 id=63 data-nosnippet>63</a>    <span class="attr">#[serde(default)] </span><span class="comment">// FIXME: docs don't have this field here, but actual responses do
+<a href=#64 id=64 data-nosnippet>64</a>    </span><span class="doccomment">/// Whether the cheer was anonymous.
+<a href=#65 id=65 data-nosnippet>65</a>    </span><span class="kw">pub </span>is_anonymous: bool,
+<a href=#66 id=66 data-nosnippet>66</a>    <span class="doccomment">/// Time when pubsub message was sent
+<a href=#67 id=67 data-nosnippet>67</a>    </span><span class="kw">pub </span>time: types::Timestamp,
+<a href=#68 id=68 data-nosnippet>68</a>    <span class="doccomment">/// The total number of bits that were ever sent by the user in the channel.
+<a href=#69 id=69 data-nosnippet>69</a>    </span><span class="kw">pub </span>total_bits_used: i64,
+<a href=#70 id=70 data-nosnippet>70</a>    <span class="doccomment">/// ID of user that sent message
+<a href=#71 id=71 data-nosnippet>71</a>    </span><span class="kw">pub </span>user_id: types::UserId,
+<a href=#72 id=72 data-nosnippet>72</a>    <span class="doccomment">/// Name of user that sent message
+<a href=#73 id=73 data-nosnippet>73</a>    </span><span class="kw">pub </span>user_name: types::UserName,
+<a href=#74 id=74 data-nosnippet>74</a>}
+<a href=#75 id=75 data-nosnippet>75</a>
+<a href=#76 id=76 data-nosnippet>76</a><span class="doccomment">/// [`ChannelBitsEventsV2Reply::BitsEvent`] event unlocked new badge for user.
+<a href=#77 id=77 data-nosnippet>77</a></span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+<a href=#78 id=78 data-nosnippet>78</a>#[cfg_attr(feature = <span class="string">"deny_unknown_fields"</span>, serde(deny_unknown_fields))]
+<a href=#79 id=79 data-nosnippet>79</a>#[non_exhaustive]
+<a href=#80 id=80 data-nosnippet>80</a></span><span class="kw">pub struct </span>BadgeEntitlement {
+<a href=#81 id=81 data-nosnippet>81</a>    <span class="doccomment">/// New version of badge
+<a href=#82 id=82 data-nosnippet>82</a>    </span>new_version: u64,
+<a href=#83 id=83 data-nosnippet>83</a>    <span class="doccomment">/// Previous version of badge
+<a href=#84 id=84 data-nosnippet>84</a>    </span>previous_version: u64,
+<a href=#85 id=85 data-nosnippet>85</a>}
+<a href=#86 id=86 data-nosnippet>86</a>
+<a href=#87 id=87 data-nosnippet>87</a><span class="doccomment">/// Context that triggered pubsub message
+<a href=#88 id=88 data-nosnippet>88</a></span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+<a href=#89 id=89 data-nosnippet>89</a>#[non_exhaustive]
+<a href=#90 id=90 data-nosnippet>90</a></span><span class="kw">pub enum </span>BitsContext {
+<a href=#91 id=91 data-nosnippet>91</a>    <span class="doccomment">/// Cheer
+<a href=#92 id=92 data-nosnippet>92</a>    </span><span class="attr">#[serde(rename = <span class="string">"cheer"</span>)]
+<a href=#93 id=93 data-nosnippet>93</a>    </span>Cheer,
+<a href=#94 id=94 data-nosnippet>94</a>}
+<a href=#95 id=95 data-nosnippet>95</a>
+<a href=#96 id=96 data-nosnippet>96</a><span class="attr">#[cfg(test)]
+<a href=#97 id=97 data-nosnippet>97</a></span><span class="kw">mod </span>tests {
+<a href=#98 id=98 data-nosnippet>98</a>    <span class="kw">use </span><span class="kw">super</span>::<span class="kw">super</span>::{Response, TopicData};
+<a href=#99 id=99 data-nosnippet>99</a>    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+<a href=#100 id=100 data-nosnippet>100</a>    <span class="attr">#[test]
+<a href=#101 id=101 data-nosnippet>101</a>    </span><span class="kw">fn </span>bits_event() {
+<a href=#102 id=102 data-nosnippet>102</a>        <span class="kw">let </span>source = <span class="string">r#"
+<a href=#103 id=103 data-nosnippet>103</a>{
+<a href=#104 id=104 data-nosnippet>104</a>    "type": "MESSAGE",
+<a href=#105 id=105 data-nosnippet>105</a>    "data": {
+<a href=#106 id=106 data-nosnippet>106</a>        "topic": "channel-bits-events-v2.1234",
+<a href=#107 id=107 data-nosnippet>107</a>        "message": "{\"data\":{\"user_name\":\"justintv\",\"channel_name\":\"tmi\",\"user_id\":\"12345\",\"channel_id\":\"1234\",\"time\":\"2020-10-19T17:50:24.807841596Z\",\"chat_message\":\"Corgo1 Corgo1 Corgo1 Corgo1 Corgo1\",\"bits_used\":5,\"total_bits_used\":29,\"is_anonymous\":false,\"context\":\"cheer\",\"badge_entitlement\":null},\"version\":\"1.0\",\"message_type\":\"bits_event\",\"message_id\":\"d1831817-95f2-5dfa-8864-f36f16eeb5d8\"}"
+<a href=#108 id=108 data-nosnippet>108</a>    }
+<a href=#109 id=109 data-nosnippet>109</a>}"#</span>;
+<a href=#110 id=110 data-nosnippet>110</a>        <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
+<a href=#111 id=111 data-nosnippet>111</a>        <span class="macro">assert!</span>(<span class="macro">matches!</span>(
+<a href=#112 id=112 data-nosnippet>112</a>            actual,
+<a href=#113 id=113 data-nosnippet>113</a>            Response::Message {
+<a href=#114 id=114 data-nosnippet>114</a>                data: TopicData::ChannelBitsEventsV2 { .. },
+<a href=#115 id=115 data-nosnippet>115</a>            }
+<a href=#116 id=116 data-nosnippet>116</a>        ));
+<a href=#117 id=117 data-nosnippet>117</a>    }
+<a href=#118 id=118 data-nosnippet>118</a>
+<a href=#119 id=119 data-nosnippet>119</a>    <span class="attr">#[test]
+<a href=#120 id=120 data-nosnippet>120</a>    </span><span class="kw">fn </span>bits_event_documented() {
+<a href=#121 id=121 data-nosnippet>121</a>        <span class="kw">let </span>source = <span class="string">r#"
+<a href=#122 id=122 data-nosnippet>122</a>{
+<a href=#123 id=123 data-nosnippet>123</a>    "type": "MESSAGE",
+<a href=#124 id=124 data-nosnippet>124</a>    "data": {
+<a href=#125 id=125 data-nosnippet>125</a>       "topic": "channel-bits-events-v2.46024993",
+<a href=#126 id=126 data-nosnippet>126</a>       "message": "{\"data\":{\"user_name\":\"jwp\",\"channel_name\":\"bontakun\",\"user_id\":\"95546976\",\"channel_id\":\"46024993\",\"time\":\"2017-02-09T13:23:58.168Z\",\"chat_message\":\"cheer10000 New badge hype!\",\"bits_used\":10000,\"total_bits_used\":25000,\"context\":\"cheer\",\"badge_entitlement\":{\"new_version\":25000,\"previous_version\":10000}},\"version\":\"1.0\",\"message_type\":\"bits_event\",\"message_id\":\"8145728a4-35f0-4cf7-9dc0-f2ef24de1eb6\",\"is_anonymous\":true}"
+<a href=#127 id=127 data-nosnippet>127</a>    }
+<a href=#128 id=128 data-nosnippet>128</a>}
+<a href=#129 id=129 data-nosnippet>129</a>"#</span>;
+<a href=#130 id=130 data-nosnippet>130</a>
+<a href=#131 id=131 data-nosnippet>131</a>        <span class="kw">let </span>actual = <span class="macro">dbg!</span>(Response::parse(source).unwrap());
+<a href=#132 id=132 data-nosnippet>132</a>        <span class="macro">assert!</span>(<span class="macro">matches!</span>(
+<a href=#133 id=133 data-nosnippet>133</a>            actual,
+<a href=#134 id=134 data-nosnippet>134</a>            Response::Message {
+<a href=#135 id=135 data-nosnippet>135</a>                data: TopicData::ChannelBitsEventsV2 { .. },
+<a href=#136 id=136 data-nosnippet>136</a>            }
+<a href=#137 id=137 data-nosnippet>137</a>        ));
+<a href=#138 id=138 data-nosnippet>138</a>    }
+<a href=#139 id=139 data-nosnippet>139</a>    <span class="attr">#[test]
+<a href=#140 id=140 data-nosnippet>140</a>    </span><span class="kw">fn </span>check_deser() {
+<a href=#141 id=141 data-nosnippet>141</a>        <span class="kw">use </span>std::convert::TryInto <span class="kw">as _</span>;
+<a href=#142 id=142 data-nosnippet>142</a>        <span class="kw">let </span>s = <span class="string">"channel-bits-events-v2.1234"</span>;
+<a href=#143 id=143 data-nosnippet>143</a>        <span class="macro">assert_eq!</span>(
+<a href=#144 id=144 data-nosnippet>144</a>            ChannelBitsEventsV2 { channel_id: <span class="number">1234 </span>},
+<a href=#145 id=145 data-nosnippet>145</a>            s.to_string().try_into().unwrap()
+<a href=#146 id=146 data-nosnippet>146</a>        );
+<a href=#147 id=147 data-nosnippet>147</a>    }
+<a href=#148 id=148 data-nosnippet>148</a>
+<a href=#149 id=149 data-nosnippet>149</a>    <span class="attr">#[test]
+<a href=#150 id=150 data-nosnippet>150</a>    </span><span class="kw">fn </span>check_ser() {
+<a href=#151 id=151 data-nosnippet>151</a>        <span class="kw">let </span>s = <span class="string">"channel-bits-events-v2.1234"</span>;
+<a href=#152 id=152 data-nosnippet>152</a>        <span class="kw">let </span>right: String = ChannelBitsEventsV2 { channel_id: <span class="number">1234 </span>}.into();
+<a href=#153 id=153 data-nosnippet>153</a>        <span class="macro">assert_eq!</span>(s.to_string(), right);
+<a href=#154 id=154 data-nosnippet>154</a>    }
+<a href=#155 id=155 data-nosnippet>155</a>}</code></pre></div></section></main></body></html>
