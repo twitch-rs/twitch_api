@@ -4,7 +4,10 @@ on:
     - cron: "0 12 * * 5"
   workflow_dispatch:
 jobs:
-  sync-docs:
+  sync-overview-docs:
+    env:
+      RUSTFLAGS: -A warnings
+      BRANCH: auto/sync-overview-docs
     permissions:
       contents: write
       pull-requests: write
@@ -17,27 +20,33 @@ jobs:
         with:
           toolchain: nightly
       - uses: Swatinem/rust-cache@v2
-      - run: git checkout -b sync-docs
+      - run: git checkout -b "${{ env.BRANCH }}"
       - name: Sync Docs
         run: cargo xtask overview
-      - run: |
+      - name: Configure Git user
+        run: |
           git config user.name ${{github.actor}}
           git config user.email "${{github.actor_id}}+${{github.actor}}@users.noreply.github.com"
       - run: git add .
-      - run: >
-          git commit -m "docs: sync docs"
-      - run: git push origin sync-docs --force
-      - run: gh pr list --state open --base main --head sync-docs --json "id" | jq --exit-status 'length == 0'
+      - name: Commit changes
+        run: >
+          git commit -m "docs: sync overview docs"
+      - name: Push changes
+        run: git push origin "${{ env.BRANCH }}" --force
+      - name: Check if PR exists
+        run: gh pr list --state open --base main --head "${{ env.BRANCH }}" --json "id" | jq --exit-status 'length == 0'
         continue-on-error: true
         id: pr-list
         env:
           GH_TOKEN: ${{ github.token }}
       # if there is a pr already open, skip the following steps
-      - run: gh pr create --fill --body "Automatic overview sync" --base main --head sync-docs
+      - name: Create PR
+        run: gh pr create --fill --body "Automatic overview sync" --base main --head "${{ env.BRANCH }}"
         if: steps.pr-list.outcome == 'success'
         env:
           GH_TOKEN: ${{ github.token }}
-      - run: gh pr merge --auto --rebase --delete-branch
+      - name: Merge PR
+        run: gh pr merge --auto --rebase --delete-branch
         if: steps.pr-list.outcome == 'success'
         env:
           GH_TOKEN: ${{ github.token }}
