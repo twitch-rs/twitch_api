@@ -46,7 +46,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
       - name: Merge PR
-        run: gh pr merge --auto --rebase --delete-branch
+        run: gh pr merge --auto --delete-branch
         if: steps.pr-list.outcome == 'success'
         env:
           GH_TOKEN: ${{ github.token }}
