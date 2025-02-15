@@ -31,12 +31,16 @@ jobs:
       - name: Commit changes
         run: >
           git commit -m "docs: sync overview docs"
+        continue-on-error: true
+        id: commit
       - name: Push changes
         run: git push origin "${{ env.BRANCH }}" --force
+        if: steps.commit.outcome == 'success'
       - name: Check if PR exists
         run: gh pr list --state open --base main --head "${{ env.BRANCH }}" --json "id" | jq --exit-status 'length == 0'
         continue-on-error: true
         id: pr-list
+        if: steps.commit.outcome == 'success'
         env:
           GH_TOKEN: ${{ github.token }}
       # if there is a pr already open, skip the following steps
