@@ -6,6 +6,10 @@
 
 [Commits](https://github.com/twitch-rs/twitch_api/compare/v0.7.0...Unreleased)
 
+### Fixed
+
+- Eventsub `channel.moderate` action `Timeout` and `Ban` field `reason` is now `None` when the string is empty.
+
 ## [v0.7.0] - 2025-01-22
 
 [Commits](https://github.com/twitch-rs/twitch_api/compare/v0.6.1...v0.7.0)
