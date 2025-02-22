@@ -83,7 +83,7 @@ where
     ///     }
     /// }
     /// ```
-    pub fn new(
+    pub const fn new(
         data: D,
         pagination: Option<Cursor>,
         request: Option<R>,
@@ -152,7 +152,7 @@ where
     ///     }
     /// }
     /// ```
-    pub fn with_data(data: D, request: Option<R>) -> Self {
+    pub const fn with_data(data: D, request: Option<R>) -> Self {
         Self::new(data, None, request, None, None)
     }
 
@@ -211,8 +211,7 @@ where
         self,
         client: &'a super::HelixClient<'a, C>,
         token: &(impl super::TwitchToken + ?Sized),
-    ) -> Result<Option<Response<R, D>>, super::ClientRequestError<<C as crate::HttpClient>::Error>>
-    {
+    ) -> Result<Option<Self>, super::ClientRequestError<<C as crate::HttpClient>::Error>> {
         if let Some(mut req) = self.request.clone() {
             if self.pagination.is_some() {
                 req.set_pagination(self.pagination);

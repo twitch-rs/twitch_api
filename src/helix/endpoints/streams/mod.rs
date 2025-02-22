@@ -101,5 +101,5 @@ pub enum StreamType {
 
 impl StreamType {
     /// Check if the stream is live or not
-    pub fn is_live(&self) -> bool { matches!(self, StreamType::Live) }
+    pub const fn is_live(&self) -> bool { matches!(self, Self::Live) }
 }

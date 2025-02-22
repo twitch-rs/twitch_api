@@ -79,10 +79,10 @@ impl Fragment {
     /// Get the text data
     pub fn text(&self) -> &str {
         match self {
-            Fragment::Cheermote { text, .. } => text,
-            Fragment::Emote { text, .. } => text,
-            Fragment::Mention { text, .. } => text,
-            Fragment::Text { text } => text,
+            Self::Cheermote { text, .. } => text,
+            Self::Emote { text, .. } => text,
+            Self::Mention { text, .. } => text,
+            Self::Text { text } => text,
         }
     }
 }

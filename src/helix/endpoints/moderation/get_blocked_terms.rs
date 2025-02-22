@@ -1,4 +1,5 @@
 //! Gets the broadcaster’s list of non-private, blocked words or phrases. These are the terms that the broadcaster or moderator added manually, or that were denied by AutoMod.
+//!
 //! [`get-blocked-terms`](https://dev.twitch.tv/docs/api/reference#get-blocked-terms)
 //!
 //! # Accessing the endpoint
@@ -78,7 +79,7 @@ impl<'a> GetBlockedTermsRequest<'a> {
     }
 
     /// Set amount of results returned per page.
-    pub fn first(mut self, first: u32) -> Self {
+    pub const fn first(mut self, first: u32) -> Self {
         self.first = Some(first);
         self
     }

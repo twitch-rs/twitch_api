@@ -1,4 +1,5 @@
 //! Adds a word or phrase to the broadcaster’s list of blocked terms. These are the terms that broadcasters don’t want used in their chat room.
+//!
 //! [`add-blocked-term`](https://dev.twitch.tv/docs/api/reference#add-blocked-term)
 //!
 //! # Accessing the endpoint

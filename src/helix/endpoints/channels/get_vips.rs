@@ -90,7 +90,7 @@ impl<'a> GetVipsRequest<'a> {
     /// use twitch_api::helix::channels::GetVipsRequest;
     /// let request = GetVipsRequest::broadcaster_id("1234").first(100);
     /// ```
-    pub fn first(mut self, first: usize) -> Self {
+    pub const fn first(mut self, first: usize) -> Self {
         self.first = Some(first);
         self
     }

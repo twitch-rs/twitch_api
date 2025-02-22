@@ -1,4 +1,5 @@
 //! Gets a specified user’s block list. The list is sorted by when the block occurred in descending order (i.e. most recent block first).
+//!
 //! [`get-user-block-list`](https://dev.twitch.tv/docs/api/reference#get-user-block-list)
 //!
 //! ## Request: [GetUserBlockListRequest]

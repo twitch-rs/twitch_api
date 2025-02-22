@@ -68,7 +68,7 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     where
         T: TwitchToken + Send + Sync + ?Sized,
     {
-        futures::stream::iter(ids.chunks(100).collect::<Vec<_>>())
+        futures::stream::iter(ids.chunks(100))
             .map(move |c| {
                 let req = helix::users::GetUsersRequest::ids(c);
                 futures::stream::once(self.req_get(req, token)).boxed()
@@ -140,7 +140,7 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     where
         T: TwitchToken + Send + Sync + ?Sized,
     {
-        futures::stream::iter(ids.chunks(100).collect::<Vec<_>>())
+        futures::stream::iter(ids.chunks(100))
             .map(move |c| {
                 let req = helix::channels::GetChannelInformationRequest::broadcaster_ids(c);
                 futures::stream::once(self.req_get(req, token)).boxed()
@@ -838,7 +838,7 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     where
         T: TwitchToken + Send + Sync + ?Sized,
     {
-        futures::stream::iter(ids.chunks(100).collect::<Vec<_>>())
+        futures::stream::iter(ids.chunks(100))
             .map(move |c| {
                 let req = helix::games::GetGamesRequest::ids(c);
                 futures::stream::once(self.req_get(req, token)).boxed()
@@ -1144,7 +1144,7 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     where
         T: TwitchToken + Send + Sync + ?Sized,
     {
-        futures::stream::iter(emote_sets.chunks(25).collect::<Vec<_>>())
+        futures::stream::iter(emote_sets.chunks(25))
             .map(move |c| {
                 let req = helix::chat::GetEmoteSetsRequest::emote_set_ids(c);
                 futures::stream::once(self.req_get(req, token)).boxed()
@@ -2108,7 +2108,7 @@ pub enum ClientExtError<C: crate::HttpClient, E> {
 pub fn make_stream<
     'a,
     C: crate::HttpClient + Send + Sync,
-    T: TwitchToken + Send + Sync + ?Sized + Send + Sync,
+    T: TwitchToken + Send + Sync + ?Sized,
     // FIXME: Why does this have to be clone and debug?
     Req: super::Request
         + super::RequestGet
@@ -2151,14 +2151,14 @@ where
     impl<Req: super::Request + super::RequestGet, Item> StateMode<Req, Item> {
         fn take_initial(&mut self) -> Req {
             match self {
-                StateMode::Req(ref mut r) if r.is_some() => std::mem::take(r).expect("oops"),
+                Self::Req(ref mut r) if r.is_some() => std::mem::take(r).expect("oops"),
                 _ => todo!("hmmm"),
             }
         }
 
         fn take_next(&mut self) -> super::Response<Req, <Req as super::Request>::Response> {
             match self {
-                StateMode::Next(ref mut r) if r.is_some() => std::mem::take(r).expect("oops"),
+                Self::Next(ref mut r) if r.is_some() => std::mem::take(r).expect("oops"),
                 _ => todo!("hmmm"),
             }
         }

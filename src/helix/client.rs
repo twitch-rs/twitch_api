@@ -88,7 +88,7 @@ where C: crate::HttpClient + Clone + 'a
 
 impl<'a, C: crate::HttpClient + 'a> HelixClient<'a, C> {
     /// Create a new client with an existing client
-    pub fn with_client(client: C) -> HelixClient<'a, C> {
+    pub const fn with_client(client: C) -> Self {
         HelixClient {
             client,
             _pd: std::marker::PhantomData,
@@ -96,7 +96,7 @@ impl<'a, C: crate::HttpClient + 'a> HelixClient<'a, C> {
     }
 
     /// Create a new [`HelixClient`] with a default [`HttpClient`][crate::HttpClient]
-    pub fn new() -> HelixClient<'a, C>
+    pub fn new() -> Self
     where C: crate::client::ClientDefault<'a> {
         let client = C::default_client();
         HelixClient::with_client(client)
@@ -109,7 +109,7 @@ impl<'a, C: crate::HttpClient + 'a> HelixClient<'a, C> {
     }
 
     /// Retrieve a reference of the [`HttpClient`][crate::HttpClient] inside this [`HelixClient`]
-    pub fn get_client(&self) -> &C { &self.client }
+    pub const fn get_client(&self) -> &C { &self.client }
 
     /// Request on a valid [`RequestGet`] endpoint
     ///

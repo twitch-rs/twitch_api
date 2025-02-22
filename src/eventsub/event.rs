@@ -514,7 +514,7 @@ pub enum Event {
 
 impl Event {
     /// Parse string slice as an [`Event`]. Consider using [`Event::parse_http`] instead.
-    pub fn parse(source: &str) -> Result<Event, PayloadParseError> {
+    pub fn parse(source: &str) -> Result<Self, PayloadParseError> {
         let (version, ty, message_type) =
             get_version_event_type_and_message_type_from_text(source)?;
         Self::parse_request(version, &ty, message_type, source.as_bytes().into())
@@ -523,21 +523,21 @@ impl Event {
     /// Returns `true` if the message in the [`Payload`] is [`Notification`].
     ///
     /// [`Notification`]: Message::Notification
-    pub fn is_notification(&self) -> bool { is_thing!(self, Notification) }
+    pub const fn is_notification(&self) -> bool { is_thing!(self, Notification) }
 
     /// Returns `true` if the message in the [`Payload`] is [`Revocation`].
     ///
     /// [`Revocation`]: Message::Revocation
-    pub fn is_revocation(&self) -> bool { is_thing!(self, Revocation) }
+    pub const fn is_revocation(&self) -> bool { is_thing!(self, Revocation) }
 
     /// Returns `true` if the message in the [`Payload`] is [`VerificationRequest`].
     ///
     /// [`VerificationRequest`]: Message::VerificationRequest
-    pub fn is_verification_request(&self) -> bool { is_thing!(self, VerificationRequest) }
+    pub const fn is_verification_request(&self) -> bool { is_thing!(self, VerificationRequest) }
 
     /// If this event is a [`VerificationRequest`], return the [`VerificationRequest`] message, including the message.
     #[rustfmt::skip]
-    pub fn get_verification_request(&self) -> Option<&VerificationRequest> {
+    pub const fn get_verification_request(&self) -> Option<&VerificationRequest> {
         macro_rules! match_event {
             ($($(#[$meta:meta])* $module:ident::$event:ident);* $(;)?) => {{
 
@@ -735,7 +735,7 @@ impl Event {
     /// Parse a http payload as an [`Event`]
     ///
     /// Create the webhook via [`CreateEventSubSubscription`](crate::helix::eventsub::CreateEventSubSubscriptionRequest) according to the [Eventsub WebHooks guide](https://dev.twitch.tv/docs/eventsub/handling-webhook-events)
-    pub fn parse_http<B>(request: &http::Request<B>) -> Result<Event, PayloadParseError>
+    pub fn parse_http<B>(request: &http::Request<B>) -> Result<Self, PayloadParseError>
     where B: AsRef<[u8]> {
         let (version, ty, message_type) =
             get_version_event_type_and_message_type_from_http(request)?;
@@ -750,7 +750,7 @@ impl Event {
         event_type: &'a EventType,
         message_type: Cow<'a, [u8]>,
         source: Cow<'a, [u8]>,
-    ) -> Result<Event, PayloadParseError> {
+    ) -> Result<Self, PayloadParseError> {
         /// Match on all defined eventsub types.
         ///
         /// If this is not done, we'd get a much worse error message.

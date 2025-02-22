@@ -106,7 +106,7 @@ impl helix::private::SealedSerialize for UpdateShieldModeStatusBody<'_> {}
 
 impl UpdateShieldModeStatusBody<'_> {
     /// Set status of shield mode
-    pub fn is_active(is_active: bool) -> Self {
+    pub const fn is_active(is_active: bool) -> Self {
         Self {
             is_active,
             _ph: std::marker::PhantomData,

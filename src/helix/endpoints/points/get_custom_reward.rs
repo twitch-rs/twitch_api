@@ -79,7 +79,7 @@ impl<'a> GetCustomRewardRequest<'a> {
     }
 
     /// Only return rewards that this application/client id can edit
-    pub fn only_manageable_rewards(mut self, only_manageable_rewards: bool) -> Self {
+    pub const fn only_manageable_rewards(mut self, only_manageable_rewards: bool) -> Self {
         self.only_manageable_rewards = Some(only_manageable_rewards);
         self
     }

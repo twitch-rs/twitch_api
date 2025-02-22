@@ -279,9 +279,10 @@ async fn write(
         if let Ok(msg) = val.to_message() {
             if let Err(error) = sender.send(msg).await {
                 if let Some(e) = error.source() {
-                    if let Some(tokio_tungstenite::tungstenite::error::Error::ConnectionClosed) =
-                        e.downcast_ref()
-                    {
+                    if matches!(
+                        e.downcast_ref(),
+                        Some(tokio_tungstenite::tungstenite::error::Error::ConnectionClosed)
+                    ) {
                         // NOOP
                     } else {
                         return Err(error.into());

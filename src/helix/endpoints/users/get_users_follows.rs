@@ -94,7 +94,7 @@ impl<'a> GetUsersFollowsRequest<'a> {
     /// # Notes
     ///
     /// This is not a valid request, it needs to be filled with other fields
-    pub fn empty() -> Self {
+    pub const fn empty() -> Self {
         Self {
             after: None,
             first: None,

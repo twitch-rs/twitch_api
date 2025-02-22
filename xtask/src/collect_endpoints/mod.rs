@@ -77,7 +77,7 @@ pub fn run(sh: &Shell, build_json_docs: bool, all_features: &str) -> Result<()> 
     })
 }
 
-pub fn indicator_for(actual: usize, max: usize) -> char {
+pub const fn indicator_for(actual: usize, max: usize) -> char {
     if actual == 0 {
         '🔴'
     } else if actual == max {

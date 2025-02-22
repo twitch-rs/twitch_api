@@ -122,7 +122,7 @@ pub struct UpdateRedemptionStatusBody {
 
 impl UpdateRedemptionStatusBody {
     /// The new status to set
-    pub fn status(status: CustomRewardRedemptionStatus) -> Self { Self { status } }
+    pub const fn status(status: CustomRewardRedemptionStatus) -> Self { Self { status } }
 }
 
 /// FIXME: Returns an object.

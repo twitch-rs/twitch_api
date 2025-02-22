@@ -540,12 +540,12 @@ pub struct Cursor;
 
 impl CursorRef {
     /// Get a borrowed [`Cow<'_, CursorRef>`](std::borrow::Cow::Borrowed)
-    pub fn as_cow(&self) -> ::std::borrow::Cow<'_, CursorRef> { self.into() }
+    pub fn as_cow(&self) -> ::std::borrow::Cow<'_, Self> { self.into() }
 }
 
 impl Cursor {
     /// Get a owned [`Cow<'_, CursorRef>`](std::borrow::Cow::Owned)
-    fn into_cow<'a>(self) -> std::borrow::Cow<'a, CursorRef> { std::borrow::Cow::Owned(self) }
+    const fn into_cow<'a>(self) -> std::borrow::Cow<'a, CursorRef> { std::borrow::Cow::Owned(self) }
 }
 
 /// Errors that can happen when creating a body

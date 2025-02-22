@@ -118,13 +118,13 @@ pub struct CreatePollBody<'a> {
 
 impl<'a> CreatePollBody<'a> {
     /// Set if Channel Points voting is enabled
-    pub fn channel_points_voting_enabled(mut self, enabled: bool) -> Self {
+    pub const fn channel_points_voting_enabled(mut self, enabled: bool) -> Self {
         self.channel_points_voting_enabled = Some(enabled);
         self
     }
 
     /// Channel points per vote
-    pub fn channel_points_per_vote(mut self, points: i64) -> Self {
+    pub const fn channel_points_per_vote(mut self, points: i64) -> Self {
         self.channel_points_per_vote = Some(points);
         self
     }

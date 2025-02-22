@@ -60,7 +60,7 @@ pub struct UpdateUserRequest<'a> {
 
 impl<'a> UpdateUserRequest<'a> {
     /// Update nothing (returns the current user)
-    pub fn empty() -> Self { Self { description: None } }
+    pub const fn empty() -> Self { Self { description: None } }
 
     /// Update the description of the current user
     pub fn description(description: impl Into<Cow<'a, str>>) -> Self {

@@ -81,7 +81,7 @@ impl<E: EventSubscription> helix::HelixRequestBody for CreateEventSubSubscriptio
 // FIXME: Builder?
 impl<E: EventSubscription> CreateEventSubSubscriptionBody<E> {
     /// Create a new [`CreateEventSubSubscriptionBody`]
-    pub fn new(subscription: E, transport: Transport) -> Self {
+    pub const fn new(subscription: E, transport: Transport) -> Self {
         Self {
             subscription,
             transport,

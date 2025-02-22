@@ -39,7 +39,7 @@ impl<'a> GetConduitShardsRequest<'a> {
     }
 
     /// Filter shards by a specific status
-    pub fn status(mut self, status: eventsub::ShardStatus) -> Self {
+    pub const fn status(mut self, status: eventsub::ShardStatus) -> Self {
         self.status = Some(status);
         self
     }

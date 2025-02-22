@@ -147,7 +147,7 @@ impl<'a> GetClipsRequest<'a> {
     }
 
     /// Set amount of results returned per page.
-    pub fn first(mut self, first: usize) -> Self {
+    pub const fn first(mut self, first: usize) -> Self {
         self.first = Some(first);
         self
     }

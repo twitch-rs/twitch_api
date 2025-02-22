@@ -35,7 +35,7 @@ pub struct CreateConduitBody {
 
 impl CreateConduitBody {
     /// Conduit body settings
-    pub fn new(shard_count: usize) -> Self { Self { shard_count } }
+    pub const fn new(shard_count: usize) -> Self { Self { shard_count } }
 }
 
 impl helix::private::SealedSerialize for CreateConduitBody {}

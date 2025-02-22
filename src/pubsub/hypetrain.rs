@@ -607,7 +607,7 @@ pub enum EndingReason {
     Expired,
 }
 
-pub(crate) fn bool_true() -> bool { true }
+pub(crate) const fn bool_true() -> bool { true }
 
 #[cfg(test)]
 mod tests {

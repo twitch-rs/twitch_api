@@ -55,11 +55,11 @@ impl std::convert::TryFrom<&str> for AnnouncementColor {
 
     fn try_from(value: &str) -> Result<Self, Self::Error> {
         Ok(match &*value.to_lowercase() {
-            "blue" => AnnouncementColor::Blue,
-            "green" => AnnouncementColor::Green,
-            "orange" => AnnouncementColor::Orange,
-            "purple" => AnnouncementColor::Purple,
-            "primary" => AnnouncementColor::Primary,
+            "blue" => Self::Blue,
+            "green" => Self::Green,
+            "orange" => Self::Orange,
+            "purple" => Self::Purple,
+            "primary" => Self::Primary,
             _ => return Err(AnnouncementColorError),
         })
     }

@@ -226,7 +226,7 @@ where C: HttpClient + 'a {
 impl<C: HttpClient + 'static> TwitchClient<'static, C> {
     /// Create a new [`TwitchClient`]
     #[cfg(feature = "helix")]
-    pub fn new() -> TwitchClient<'static, C>
+    pub fn new() -> Self
     where C: Clone + client::ClientDefault<'static> {
         let client = C::default_client();
         Self::with_client(client)
@@ -245,7 +245,7 @@ impl<'a, C: HttpClient + 'a> TwitchClient<'a, C> {
     /// Create a new [`TwitchClient`] with an existing [`HttpClient`]
     #[cfg_attr(nightly, doc(cfg(all(feature = "client", feature = "helix"))))]
     #[cfg(feature = "helix")]
-    pub fn with_client(client: C) -> TwitchClient<'a, C>
+    pub const fn with_client(client: C) -> Self
     where C: Clone + 'a {
         TwitchClient {
             #[cfg(feature = "helix")]
@@ -254,7 +254,7 @@ impl<'a, C: HttpClient + 'a> TwitchClient<'a, C> {
     }
 
     /// Retrieve a reference of the [`HttpClient`] inside this [`TwitchClient`]
-    pub fn get_client(&self) -> &C { self.helix.get_client() }
+    pub const fn get_client(&self) -> &C { self.helix.get_client() }
 }
 
 /// A deserialization error

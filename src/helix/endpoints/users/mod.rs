@@ -90,18 +90,18 @@ pub enum ExtensionSlot<T> {
 impl<T: serde::Serialize> serde::Serialize for ExtensionSlot<T> {
     fn serialize<S: serde::Serializer>(&self, ser: S) -> Result<S::Ok, S::Error> {
         match self {
-            ExtensionSlot::Inactive => {
+            Self::Inactive => {
                 let mut state = serde::Serializer::serialize_struct(ser, "ExtensionSlot", 1)?;
                 serde::ser::SerializeStruct::serialize_field(&mut state, "active", &false)?;
                 serde::ser::SerializeStruct::end(state)
             }
-            ExtensionSlot::Active(it) => it.serialize(ActiveTaggedSerializer { delegate: ser }),
+            Self::Active(it) => it.serialize(ActiveTaggedSerializer { delegate: ser }),
         }
     }
 }
 
 impl<'de, T: serde::Deserialize<'de>> serde::Deserialize<'de> for ExtensionSlot<T> {
-    fn deserialize<D>(deserializer: D) -> Result<ExtensionSlot<T>, D::Error>
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where D: serde::de::Deserializer<'de> {
         let mut map = serde_json::Map::deserialize(deserializer)?;
 

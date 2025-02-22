@@ -286,17 +286,19 @@ impl<E: EventSubscription + Clone> Message<E> {
     /// Returns `true` if the message is [`VerificationRequest`].
     ///
     /// [`VerificationRequest`]: Message::VerificationRequest
-    pub fn is_verification_request(&self) -> bool { matches!(self, Self::VerificationRequest(..)) }
+    pub const fn is_verification_request(&self) -> bool {
+        matches!(self, Self::VerificationRequest(..))
+    }
 
     /// Returns `true` if the message is [`Revocation`].
     ///
     /// [`Revocation`]: Message::Revocation
-    pub fn is_revocation(&self) -> bool { matches!(self, Self::Revocation(..)) }
+    pub const fn is_revocation(&self) -> bool { matches!(self, Self::Revocation(..)) }
 
     /// Returns `true` if the message is [`Notification`].
     ///
     /// [`Notification`]: Message::Notification
-    pub fn is_notification(&self) -> bool { matches!(self, Self::Notification(..)) }
+    pub const fn is_notification(&self) -> bool { matches!(self, Self::Notification(..)) }
 }
 
 impl<E: EventSubscription> Payload<E> {
@@ -341,7 +343,7 @@ impl<E: EventSubscription> Payload<E> {
     ///     Payload::parse_notification(notification)?;
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
-    pub fn parse_notification(source: &str) -> Result<Payload<E>, PayloadParseError> {
+    pub fn parse_notification(source: &str) -> Result<Self, PayloadParseError> {
         #[derive(Deserialize)]
         #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
         struct Notification<E: EventSubscription> {
@@ -356,7 +358,7 @@ impl<E: EventSubscription> Payload<E> {
             event,
         } = parse_json::<Notification<E>>(source, true)?;
 
-        Ok(Payload {
+        Ok(Self {
             subscription,
             message: Message::Notification(event),
         })
@@ -392,7 +394,7 @@ impl<E: EventSubscription> Payload<E> {
     ///     Payload::parse_revocation(notification)?;
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
-    pub fn parse_revocation(source: &str) -> Result<Payload<E>, PayloadParseError> {
+    pub fn parse_revocation(source: &str) -> Result<Self, PayloadParseError> {
         #[derive(Deserialize)]
         #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
         struct Notification<E: EventSubscription> {
@@ -402,7 +404,7 @@ impl<E: EventSubscription> Payload<E> {
 
         let Notification { subscription } = parse_json::<Notification<E>>(source, true)?;
 
-        Ok(Payload {
+        Ok(Self {
             subscription,
             message: Message::Revocation(),
         })
@@ -439,7 +441,7 @@ impl<E: EventSubscription> Payload<E> {
     ///     Payload::parse_verification_request(notification)?;
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
-    pub fn parse_verification_request(source: &str) -> Result<Payload<E>, PayloadParseError> {
+    pub fn parse_verification_request(source: &str) -> Result<Self, PayloadParseError> {
         #[derive(Deserialize)]
         #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
         struct Notification<E: EventSubscription> {
@@ -454,7 +456,7 @@ impl<E: EventSubscription> Payload<E> {
             challenge,
         } = parse_json::<Notification<E>>(source, true)?;
 
-        Ok(Payload {
+        Ok(Self {
             subscription,
             message: Message::VerificationRequest(VerificationRequest { challenge }),
         })
@@ -478,7 +480,7 @@ impl<E: EventSubscription> Payload<E> {
     /// Payload::<ChannelFollowV2>::parse_http(&converted_request)?
     /// # ; Ok(())}
     /// ```
-    pub fn parse_http<B>(request: &http::Request<B>) -> Result<Payload<E>, PayloadParseError>
+    pub fn parse_http<B>(request: &http::Request<B>) -> Result<Self, PayloadParseError>
     where B: AsRef<[u8]> {
         // FIXME: Add some debug assertions for version and type
 
@@ -497,21 +499,18 @@ impl<E: EventSubscription> Payload<E> {
     pub fn parse_request<'a>(
         ty: Cow<'a, [u8]>,
         source: Cow<'a, [u8]>,
-    ) -> Result<Payload<E>, PayloadParseError> {
+    ) -> Result<Self, PayloadParseError> {
         let source = std::str::from_utf8(&source)?;
         Self::parse_request_str(ty.as_ref(), source)
     }
 
     /// Parse a string slice as a [`Payload`] with a specific message type. You should not use this, instead, use [`Payload::parse_http`] or the specific `parse_*` functions
     #[doc(hidden)]
-    pub fn parse_request_str<'a>(
-        ty: &'a [u8],
-        source: &'a str,
-    ) -> Result<Payload<E>, PayloadParseError> {
+    pub fn parse_request_str<'a>(ty: &'a [u8], source: &'a str) -> Result<Self, PayloadParseError> {
         match ty {
-            b"notification" => Payload::parse_notification(source),
-            b"webhook_callback_verification" => Payload::parse_verification_request(source),
-            b"revocation" => Payload::parse_revocation(source),
+            b"notification" => Self::parse_notification(source),
+            b"webhook_callback_verification" => Self::parse_verification_request(source),
+            b"revocation" => Self::parse_revocation(source),
             typ => Err(PayloadParseError::UnknownMessageType(
                 String::from_utf8_lossy(typ).into_owned(),
             )),
@@ -557,10 +556,10 @@ pub struct Payload<E: EventSubscription + Clone> {
 
 impl<E: EventSubscription + Clone> Payload<E> {
     /// Convenience method for getting the event type from the payload.
-    pub fn get_event_type(&self) -> EventType { E::EVENT_TYPE }
+    pub const fn get_event_type(&self) -> EventType { E::EVENT_TYPE }
 
     /// Convenience method for getting the event version from the payload.
-    pub fn get_event_version(&self) -> &'static str { E::VERSION }
+    pub const fn get_event_version(&self) -> &'static str { E::VERSION }
 }
 
 /// Metadata about the subscription.
@@ -649,23 +648,23 @@ pub enum Transport {
 
 impl Transport {
     /// Convenience method for making a webhook transport
-    pub fn webhook(callback: impl std::string::ToString, secret: String) -> Transport {
-        Transport::Webhook(WebhookTransport {
+    pub fn webhook(callback: impl std::string::ToString, secret: String) -> Self {
+        Self::Webhook(WebhookTransport {
             callback: callback.to_string(),
             secret,
         })
     }
 
     /// Convenience method for making a websocket transport
-    pub fn websocket(session_id: impl std::string::ToString) -> Transport {
-        Transport::Websocket(WebsocketTransport {
+    pub fn websocket(session_id: impl std::string::ToString) -> Self {
+        Self::Websocket(WebsocketTransport {
             session_id: session_id.to_string(),
         })
     }
 
     /// Convenience method for making a conduit transport
-    pub fn conduit(conduit_id: impl std::string::ToString) -> Transport {
-        Transport::Conduit(ConduitTransport {
+    pub fn conduit(conduit_id: impl std::string::ToString) -> Self {
+        Self::Conduit(ConduitTransport {
             conduit_id: conduit_id.to_string(),
         })
     }
@@ -674,22 +673,22 @@ impl Transport {
     ///
     /// [`Webhook`]: Transport::Webhook
     #[must_use]
-    pub fn is_webhook(&self) -> bool { matches!(self, Self::Webhook(..)) }
+    pub const fn is_webhook(&self) -> bool { matches!(self, Self::Webhook(..)) }
 
     /// Returns `true` if the transport is [`Websocket`].
     ///
     /// [`Websocket`]: Transport::Websocket
     #[must_use]
-    pub fn is_websocket(&self) -> bool { matches!(self, Self::Websocket(..)) }
+    pub const fn is_websocket(&self) -> bool { matches!(self, Self::Websocket(..)) }
 
     /// Returns `true` if the transport is [`Conduit`].
     ///
     /// [`Conduit`]: Transport::Conduit
     #[must_use]
-    pub fn is_conduit(&self) -> bool { matches!(self, Self::Conduit(..)) }
+    pub const fn is_conduit(&self) -> bool { matches!(self, Self::Conduit(..)) }
 
     /// Returns `Some(&WebhookTransport)` if this transport is a [webhook](WebhookTransport)
-    pub fn as_webhook(&self) -> Option<&WebhookTransport> {
+    pub const fn as_webhook(&self) -> Option<&WebhookTransport> {
         if let Self::Webhook(v) = self {
             Some(v)
         } else {
@@ -698,7 +697,7 @@ impl Transport {
     }
 
     /// Returns `Some(&WebsocketTransport)` if this transport is a [websocket](WebsocketTransport)
-    pub fn as_websocket(&self) -> Option<&WebsocketTransport> {
+    pub const fn as_websocket(&self) -> Option<&WebsocketTransport> {
         if let Self::Websocket(v) = self {
             Some(v)
         } else {
@@ -707,7 +706,7 @@ impl Transport {
     }
 
     /// Returns `Some(&ConduitTransport)` if this transport is a [conduit](ConduitTransport)
-    pub fn as_conduit(&self) -> Option<&ConduitTransport> {
+    pub const fn as_conduit(&self) -> Option<&ConduitTransport> {
         if let Self::Conduit(v) = self {
             Some(v)
         } else {
@@ -802,22 +801,22 @@ impl TransportResponse {
     ///
     /// [`Webhook`]: TransportResponse::Webhook
     #[must_use]
-    pub fn is_webhook(&self) -> bool { matches!(self, Self::Webhook(..)) }
+    pub const fn is_webhook(&self) -> bool { matches!(self, Self::Webhook(..)) }
 
     /// Returns `true` if the transport response is [`Websocket`].
     ///
     /// [`Websocket`]: TransportResponse::Websocket
     #[must_use]
-    pub fn is_websocket(&self) -> bool { matches!(self, Self::Websocket(..)) }
+    pub const fn is_websocket(&self) -> bool { matches!(self, Self::Websocket(..)) }
 
     /// Returns `true` if the transport response is [`Conduit`].
     ///
     /// [`Conduit`]: TransportResponse::Conduit
     #[must_use]
-    pub fn is_conduit(&self) -> bool { matches!(self, Self::Conduit(..)) }
+    pub const fn is_conduit(&self) -> bool { matches!(self, Self::Conduit(..)) }
 
     /// Returns `Some(&WebhookTransport)` if this transport response is a [webhook](WebhookTransportResponse)
-    pub fn as_webhook(&self) -> Option<&WebhookTransportResponse> {
+    pub const fn as_webhook(&self) -> Option<&WebhookTransportResponse> {
         if let Self::Webhook(v) = self {
             Some(v)
         } else {
@@ -826,7 +825,7 @@ impl TransportResponse {
     }
 
     /// Returns `Some(&WebsocketTransport)` if this transport response is a [websocket](WebsocketTransportResponse)
-    pub fn as_websocket(&self) -> Option<&WebsocketTransportResponse> {
+    pub const fn as_websocket(&self) -> Option<&WebsocketTransportResponse> {
         if let Self::Websocket(v) = self {
             Some(v)
         } else {
@@ -835,7 +834,7 @@ impl TransportResponse {
     }
 
     /// Returns `Some(&ConduitTransport)` if this transport response is a [conduit](ConduitTransportResponse)
-    pub fn as_conduit(&self) -> Option<&ConduitTransportResponse> {
+    pub const fn as_conduit(&self) -> Option<&ConduitTransportResponse> {
         if let Self::Conduit(v) = self {
             Some(v)
         } else {
@@ -1086,7 +1085,7 @@ mod enum_field_as_inner {
     use serde::ser::SerializeMap;
 
     use super::*;
-    pub(crate) fn deserialize<'de, D, S>(deserializer: D) -> Result<S, D::Error>
+    pub fn deserialize<'de, D, S>(deserializer: D) -> Result<S, D::Error>
     where
         D: serde::Deserializer<'de>,
         S: serde::Deserialize<'de> + NamedField, {
@@ -1118,7 +1117,7 @@ mod enum_field_as_inner {
         deserializer.deserialize_any(Inner(std::marker::PhantomData))
     }
 
-    pub(crate) fn serialize<S, T>(value: &T, serializer: S) -> Result<S::Ok, S::Error>
+    pub fn serialize<S, T>(value: &T, serializer: S) -> Result<S::Ok, S::Error>
     where
         T: serde::Serialize + NamedField,
         S: serde::Serializer, {
@@ -1134,7 +1133,7 @@ mod enum_field_as_inner_prefixed {
     use serde::ser::SerializeMap;
 
     use super::*;
-    pub(crate) fn deserialize<'de, D, S>(deserializer: D) -> Result<S, D::Error>
+    pub fn deserialize<'de, D, S>(deserializer: D) -> Result<S, D::Error>
     where
         D: serde::Deserializer<'de>,
         S: serde::Deserialize<'de> + NamedField, {
@@ -1167,7 +1166,7 @@ mod enum_field_as_inner_prefixed {
         deserializer.deserialize_any(Inner(std::marker::PhantomData))
     }
 
-    pub(crate) fn serialize<S, T>(value: &T, serializer: S) -> Result<S::Ok, S::Error>
+    pub fn serialize<S, T>(value: &T, serializer: S) -> Result<S::Ok, S::Error>
     where
         T: serde::Serialize + NamedField,
         S: serde::Serializer, {
