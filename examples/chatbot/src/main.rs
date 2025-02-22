@@ -206,7 +206,7 @@ impl Bot {
                     &payload.message_id,
                     response
                         .response
-                        .replace("{user}", &payload.chatter_user_name.as_str())
+                        .replace("{user}", payload.chatter_user_name.as_str())
                         .as_str(),
                     token,
                 )

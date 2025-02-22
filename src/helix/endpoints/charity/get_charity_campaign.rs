@@ -1,4 +1,5 @@
 //! Gets information about the charity campaign that a broadcaster is running, such as their fundraising goal and the amount that’s been donated so far.
+//!
 //! [`get-charity-campaign`](https://dev.twitch.tv/docs/api/reference#get-charity-campaign)
 //!
 //! # Accessing the endpoint

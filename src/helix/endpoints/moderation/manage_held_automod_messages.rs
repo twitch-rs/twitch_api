@@ -132,8 +132,8 @@ pub enum AutoModAction {
 impl From<bool> for AutoModAction {
     fn from(b: bool) -> Self {
         match b {
-            true => AutoModAction::Allow,
-            false => AutoModAction::Deny,
+            true => Self::Allow,
+            false => Self::Deny,
         }
     }
 }

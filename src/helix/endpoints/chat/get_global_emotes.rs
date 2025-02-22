@@ -47,7 +47,7 @@ pub struct GetGlobalEmotesRequest {}
 
 impl GetGlobalEmotesRequest {
     /// Get global emotes
-    pub fn new() -> Self { Self {} }
+    pub const fn new() -> Self { Self {} }
 }
 
 /// Return Values for [Get Channel Emotes](super::get_global_emotes)

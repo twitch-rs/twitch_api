@@ -316,7 +316,7 @@ pub async fn checker(
     Ok::<(), eyre::Report>(())
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum LiveStatus {
     Live {
         started_at: types::Timestamp,
@@ -331,12 +331,12 @@ impl LiveStatus {
     /// Returns `true` if the live status is [`Live`].
     ///
     /// [`Live`]: LiveStatus::Live
-    pub fn is_live(&self) -> bool { matches!(self, Self::Live { .. }) }
+    pub const fn is_live(&self) -> bool { matches!(self, Self::Live { .. }) }
 
     /// Returns `true` if the live status is [`Offline`].
     ///
     /// [`Offline`]: LiveStatus::Offline
-    pub fn is_offline(&self) -> bool { matches!(self, Self::Offline { .. }) }
+    pub const fn is_offline(&self) -> bool { matches!(self, Self::Offline { .. }) }
 
     pub fn to_message(&self) -> eyre::Result<ws::Message> {
         #[derive(serde_derive::Serialize)]

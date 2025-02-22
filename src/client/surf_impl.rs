@@ -157,7 +157,7 @@ where Self: Default
             }
         }
 
-        let client = surf::Client::default();
+        let client = Self::default();
         let user_agent = if let Some(product) = product {
             let mut user_agent = product.as_bytes().to_owned();
             user_agent.push(b' ');

@@ -119,7 +119,7 @@ impl<'de> serde::Deserialize<'de> for ShieldModeStatus {
             }),
             _ => None,
         };
-        Ok(ShieldModeStatus {
+        Ok(Self {
             is_active: s.is_active,
             last_shield_mode: last,
         })

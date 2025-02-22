@@ -1,4 +1,6 @@
-//! Applies specified tags to a specified stream, overwriting any existing tags applied to that stream. If no tags are specified, all tags previously applied to the stream are removed. Automated tags are not affected by this operation.
+//! Applies specified tags to a specified stream, overwriting any existing tags applied to that stream.
+//! If no tags are specified, all tags previously applied to the stream are removed. Automated tags are not affected by this operation.
+//!
 //! [`replace-stream-tags`](https://dev.twitch.tv/docs/api/reference#replace-stream-tags)
 //!
 //! # Accessing the endpoint

@@ -5,10 +5,10 @@ use super::rustdoc::ParsedHelixRustdoc;
 use color_eyre::eyre::{bail, Result};
 use url::Url;
 
-pub fn make_overview<'a>(
+pub fn make_overview(
     base_url: &Url,
     raw: &str,
-    rustdoc: &'a ParsedHelixRustdoc,
+    rustdoc: &ParsedHelixRustdoc,
 ) -> Result<(String, BTreeMap<String, String>)> {
     let parser = tl::parse(raw, tl::ParserOptions::new())?;
     let table = html::tbody_below_id(&parser, "twitch-api-reference")?;

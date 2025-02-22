@@ -60,14 +60,14 @@ impl<S, ReqBody> TowerService<S, ReqBody> {
     /// Make sure your service stack can be cloned, one easy way to ensure this is to use [`tower::buffer`](https://docs.rs/tower/*/tower/builder/struct.ServiceBuilder.html#method.buffer)
     pub fn new(s: S) -> Self
     where S: Clone {
-        TowerService(s, std::marker::PhantomData)
+        Self(s, std::marker::PhantomData)
     }
 }
 
 impl<S: Default, ReqBody> Default for TowerService<S, ReqBody> {
-    fn default() -> Self { TowerService(<_>::default(), std::marker::PhantomData) }
+    fn default() -> Self { Self(<_>::default(), std::marker::PhantomData) }
 }
 
 impl<S: Clone, ReqBody> Clone for TowerService<S, ReqBody> {
-    fn clone(&self) -> Self { TowerService(self.0.clone(), std::marker::PhantomData) }
+    fn clone(&self) -> Self { Self(self.0.clone(), std::marker::PhantomData) }
 }

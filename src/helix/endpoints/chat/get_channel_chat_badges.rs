@@ -1,4 +1,5 @@
 //! Gets a list of custom chat badges that can be used in chat for the specified channel. This includes subscriber badges and Bit badges.
+//!
 //! [`get-channel-chat-badges`](https://dev.twitch.tv/docs/api/reference#get-channel-chat-badges)
 //!
 //! # Accessing the endpoint

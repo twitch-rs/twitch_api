@@ -162,17 +162,17 @@ impl helix::private::SealedSerialize for UpdateAutoModSettingsBody {}
 
 impl UpdateAutoModSettingsBody {
     /// Set the `overall_level`
-    pub fn overall(overall_level: u8) -> Self { Self::Overall { overall_level } }
+    pub const fn overall(overall_level: u8) -> Self { Self::Overall { overall_level } }
 
     /// Constructs an `Individual` from [AutoModSettings]
-    pub fn from_settings(settings: &AutoModSettings) -> Self {
+    pub const fn from_settings(settings: &AutoModSettings) -> Self {
         Self::Individual(UpdateAutoModSettingsIndividual::from_settings(settings))
     }
 }
 
 impl UpdateAutoModSettingsIndividual {
     /// Constructs an update on individual settings from [AutoModSettings]
-    pub fn from_settings(settings: &AutoModSettings) -> Self {
+    pub const fn from_settings(settings: &AutoModSettings) -> Self {
         Self {
             aggression: Some(settings.aggression),
             bullying: Some(settings.bullying),

@@ -1,4 +1,5 @@
 //! Gets a list of users that follow the specified broadcaster. You can also use this endpoint to see whether a specific user follows the broadcaster.
+//!
 //! [`get-channel-followers`](https://dev.twitch.tv/docs/api/reference#get-channel-followers)
 //!
 //! # Accessing the endpoint
@@ -86,7 +87,7 @@ impl<'a> GetChannelFollowersRequest<'a> {
     }
 
     /// Set amount of results returned per page.
-    pub fn first(mut self, first: usize) -> Self {
+    pub const fn first(mut self, first: usize) -> Self {
         self.first = Some(first);
         self
     }

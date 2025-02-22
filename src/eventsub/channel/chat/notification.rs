@@ -102,13 +102,13 @@ impl Chatter {
     ///
     /// [`Anonymous`]: Chatter::Anonymous
     #[must_use]
-    pub fn is_anonymous(&self) -> bool { matches!(self, Self::Anonymous) }
+    pub const fn is_anonymous(&self) -> bool { matches!(self, Self::Anonymous) }
 
     /// Returns `true` if the chatter is [`Chatter`].
     ///
     /// [`Chatter`]: Chatter::Chatter
     #[must_use]
-    pub fn is_chatter(&self) -> bool { matches!(self, Self::Chatter { .. }) }
+    pub const fn is_chatter(&self) -> bool { matches!(self, Self::Chatter { .. }) }
 }
 
 impl serde::Serialize for Chatter {
@@ -124,7 +124,7 @@ impl serde::Serialize for Chatter {
         }
 
         match self {
-            Chatter::Chatter {
+            Self::Chatter {
                 chatter_user_id,
                 chatter_user_name,
                 chatter_user_login,
@@ -136,7 +136,7 @@ impl serde::Serialize for Chatter {
                 color: Some(color),
                 chatter_is_anonymous: false,
             },
-            Chatter::Anonymous => InnerChatter {
+            Self::Anonymous => InnerChatter {
                 chatter_is_anonymous: true,
                 ..Default::default()
             },
@@ -165,9 +165,9 @@ impl<'de> serde::Deserialize<'de> for Chatter {
                     tracing::error!("got an anonymous user with color set to {c}");
                 }
             }
-            Ok(Chatter::Anonymous)
+            Ok(Self::Anonymous)
         } else {
-            Ok(Chatter::Chatter {
+            Ok(Self::Chatter {
                 chatter_user_id: chatter
                     .chatter_user_id
                     .ok_or_else(|| serde::de::Error::missing_field("chatter_user_id"))?,
@@ -350,13 +350,13 @@ impl Gifter {
     ///
     /// [`Anonymous`]: Gifter::Anonymous
     #[must_use]
-    pub fn is_anonymous(&self) -> bool { matches!(self, Self::Anonymous) }
+    pub const fn is_anonymous(&self) -> bool { matches!(self, Self::Anonymous) }
 
     /// Returns `true` if the gifter is [`Gifter`].
     ///
     /// [`Gifter`]: Gifter::Gifter
     #[must_use]
-    pub fn is_gifter(&self) -> bool { matches!(self, Self::Gifter { .. }) }
+    pub const fn is_gifter(&self) -> bool { matches!(self, Self::Gifter { .. }) }
 }
 
 impl serde::Serialize for Gifter {
@@ -371,7 +371,7 @@ impl serde::Serialize for Gifter {
         }
 
         match self {
-            Gifter::Gifter {
+            Self::Gifter {
                 gifter_user_id,
                 gifter_user_name,
                 gifter_user_login,
@@ -381,11 +381,11 @@ impl serde::Serialize for Gifter {
                 gifter_user_login: Some(gifter_user_login),
                 gifter_is_anonymous: Some(false),
             },
-            Gifter::Anonymous => InnerGifter {
+            Self::Anonymous => InnerGifter {
                 gifter_is_anonymous: Some(true),
                 ..Default::default()
             },
-            Gifter::None => Default::default(),
+            Self::None => Default::default(),
         }
         .serialize(serializer)
     }
@@ -403,12 +403,12 @@ impl<'de> serde::Deserialize<'de> for Gifter {
         }
 
         let gifter = InnerGifter::deserialize(deserializer)?;
-        if let Some(true) = gifter.gifter_is_anonymous {
-            Ok(Gifter::Anonymous)
+        if gifter.gifter_is_anonymous == Some(true) {
+            Ok(Self::Anonymous)
         } else if gifter.gifter_is_anonymous.is_none() {
-            Ok(Gifter::None)
+            Ok(Self::None)
         } else {
-            Ok(Gifter::Gifter {
+            Ok(Self::Gifter {
                 gifter_user_id: gifter
                     .gifter_user_id
                     .ok_or_else(|| serde::de::Error::missing_field("gifter_user_id"))?,

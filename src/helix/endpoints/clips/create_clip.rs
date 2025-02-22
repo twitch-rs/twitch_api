@@ -63,7 +63,7 @@ impl<'a> CreateClipRequest<'a> {
     }
 
     /// Sets the has_delay parameter
-    pub fn has_delay(mut self, has_delay: bool) -> Self {
+    pub const fn has_delay(mut self, has_delay: bool) -> Self {
         self.has_delay = Some(has_delay);
         self
     }

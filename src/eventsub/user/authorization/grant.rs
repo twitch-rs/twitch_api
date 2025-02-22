@@ -14,7 +14,7 @@ pub struct UserAuthorizationGrantV1 {
 
 impl UserAuthorizationGrantV1 {
     /// Your application’s client id. The provided client_id must match the client id in the application access token
-    pub fn new(client_id: String) -> Self { Self { client_id } }
+    pub const fn new(client_id: String) -> Self { Self { client_id } }
 }
 
 impl EventSubscription for UserAuthorizationGrantV1 {

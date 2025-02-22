@@ -138,7 +138,7 @@ pub struct ContentClassificationLabel {
 
 impl ContentClassificationLabel {
     /// Create a new [`ContentClassificationLabel`]
-    pub fn new(is_enabled: bool, id: types::ContentClassificationId) -> Self {
+    pub const fn new(is_enabled: bool, id: types::ContentClassificationId) -> Self {
         Self { is_enabled, id }
     }
 }

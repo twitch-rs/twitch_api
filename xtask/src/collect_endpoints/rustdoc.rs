@@ -157,7 +157,7 @@ fn find_resolve_use<'a>(
         .map(|id| get_doc_item(rustdoc, id))
 }
 
-fn as_module(item: &rustdoc_types::Item) -> Option<&rustdoc_types::Module> {
+const fn as_module(item: &rustdoc_types::Item) -> Option<&rustdoc_types::Module> {
     if let ItemEnum::Module(ref m) = item.inner {
         Some(m)
     } else {
@@ -165,7 +165,7 @@ fn as_module(item: &rustdoc_types::Item) -> Option<&rustdoc_types::Module> {
     }
 }
 
-fn as_impl(item: &rustdoc_types::Item) -> Option<&rustdoc_types::Impl> {
+const fn as_impl(item: &rustdoc_types::Item) -> Option<&rustdoc_types::Impl> {
     if let ItemEnum::Impl(ref i) = item.inner {
         Some(i)
     } else {
@@ -173,7 +173,7 @@ fn as_impl(item: &rustdoc_types::Item) -> Option<&rustdoc_types::Impl> {
     }
 }
 
-fn as_struct(item: &rustdoc_types::Item) -> Option<&rustdoc_types::Struct> {
+const fn as_struct(item: &rustdoc_types::Item) -> Option<&rustdoc_types::Struct> {
     if let ItemEnum::Struct(ref s) = item.inner {
         Some(s)
     } else {
@@ -181,7 +181,7 @@ fn as_struct(item: &rustdoc_types::Item) -> Option<&rustdoc_types::Struct> {
     }
 }
 
-fn as_use(item: &rustdoc_types::Item) -> Option<&rustdoc_types::Use> {
+const fn as_use(item: &rustdoc_types::Item) -> Option<&rustdoc_types::Use> {
     if let ItemEnum::Use(ref u) = item.inner {
         Some(u)
     } else {

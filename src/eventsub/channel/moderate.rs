@@ -83,11 +83,11 @@ pub struct ChannelModerateV1Payload {
     /// Is [Some] when in a shared chat session, and the action happens in the channel of a participant other than the broadcaster.
     pub source_broadcaster_user_name: Option<types::DisplayName>,
 
-    /// The broadcaster user ID.
+    /// The user ID of moderator who performed the action.
     pub moderator_user_id: types::UserId,
-    /// The broadcaster display name.
+    /// The display name of the moderator who performed the action.
     pub moderator_user_name: types::DisplayName,
-    /// The broadcaster login.
+    /// The login of the moderator who performed the action.
     pub moderator_user_login: types::UserName,
     /// The action being taken
     #[serde(flatten)]
@@ -743,11 +743,11 @@ pub struct ChannelModerateV2Payload {
     /// Is [Some] when in a shared chat session, and the action happens in the channel of a participant other than the broadcaster.
     pub source_broadcaster_user_name: Option<types::DisplayName>,
 
-    /// The broadcaster user ID.
+    /// The user ID of moderator who performed the action.
     pub moderator_user_id: types::UserId,
-    /// The broadcaster display name.
+    /// The display name of the moderator who performed the action.
     pub moderator_user_name: types::DisplayName,
-    /// The broadcaster login.
+    /// The login of the moderator who performed the action.
     pub moderator_user_login: types::UserName,
     /// The action being taken
     #[serde(flatten)]

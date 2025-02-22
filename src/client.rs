@@ -149,18 +149,18 @@ pub trait ClientDefault<'a>: Clone + Sized {
 pub struct DummyHttpClient;
 
 impl Client for DummyHttpClient {
-    type Error = DummyHttpClient;
+    type Error = Self;
 
     fn req(&self, _: Request) -> BoxedFuture<'_, Result<Response, Self::Error>> {
-        Box::pin(async { Err(DummyHttpClient) })
+        Box::pin(async { Err(Self) })
     }
 }
 
 impl Client for twitch_oauth2::client::DummyClient {
-    type Error = twitch_oauth2::client::DummyClient;
+    type Error = Self;
 
     fn req(&self, _: Request) -> BoxedFuture<'_, Result<Response, Self::Error>> {
-        Box::pin(async { Err(twitch_oauth2::client::DummyClient) })
+        Box::pin(async { Err(Self) })
     }
 }
 
@@ -187,7 +187,7 @@ where C: Client
 impl ClientDefault<'static> for DummyHttpClient
 where Self: Default
 {
-    type Error = DummyHttpClient;
+    type Error = Self;
 
     fn default_client_with_name(_: Option<http::HeaderValue>) -> Result<Self, Self::Error> {
         Ok(Self)

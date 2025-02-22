@@ -1,4 +1,5 @@
 //! Get information about all predictions or specific predictions for a Twitch channel. Prediction information is available for 90 days.
+//!
 //! [`get-predictions`](https://dev.twitch.tv/docs/api/reference#get-predictions)
 //!
 //! ## Request: [GetPredictionsRequest]

@@ -54,35 +54,35 @@ pub enum Error {
 impl Error {
     #[track_caller]
     fn top_level_not_supported() -> Self {
-        Error::TopLevelNotSupported {
+        Self::TopLevelNotSupported {
             location: std::panic::Location::caller(),
         }
     }
 
     #[track_caller]
     fn field_not_supported() -> Self {
-        Error::FieldNotSupported {
+        Self::FieldNotSupported {
             location: std::panic::Location::caller(),
         }
     }
 
     #[track_caller]
     fn pair_not_supported() -> Self {
-        Error::PairNotSupported {
+        Self::PairNotSupported {
             location: std::panic::Location::caller(),
         }
     }
 
     #[track_caller]
     fn value_not_supported() -> Self {
-        Error::ValueNotSupported {
+        Self::ValueNotSupported {
             location: std::panic::Location::caller(),
         }
     }
 }
 
 impl ser::Error for Error {
-    fn custom<T: std::fmt::Display>(msg: T) -> Self { Error::Custom(msg.to_string().into()) }
+    fn custom<T: std::fmt::Display>(msg: T) -> Self { Self::Custom(msg.to_string().into()) }
 }
 
 impl<'input, 'output> ser::Serializer for Serializer<'input, 'output> {

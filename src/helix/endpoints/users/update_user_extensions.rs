@@ -107,7 +107,7 @@ impl helix::private::SealedSerialize for UpdateUserExtensionsBody<'_> {}
 
 impl<'a> UpdateUserExtensionsBody<'a> {
     /// Create a new specificaton for the user's extensions
-    pub fn new(data: ExtensionSpecification<'a>) -> Self { Self { data } }
+    pub const fn new(data: ExtensionSpecification<'a>) -> Self { Self { data } }
 }
 
 /// Inner body for [Update User Extensions](super::update_user_extensions)

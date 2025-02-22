@@ -1,4 +1,5 @@
 //! Delete a single scheduled broadcast or a recurring scheduled broadcast for a channel’s [stream schedule](https://help.twitch.tv/s/article/channel-page-setup#Schedule).
+//!
 //! [`delete-channel-stream-schedule-segment`](https://dev.twitch.tv/docs/api/reference#delete-channel-stream-schedule-segment)
 //!
 //! # Notes

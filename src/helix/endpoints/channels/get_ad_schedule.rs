@@ -1,4 +1,5 @@
 //! Gets ad schedule related information, including snooze, when the last ad was run, when the next ad is scheduled, and if the channel is currently in pre-roll free time.
+//!
 //! [`get-ad-schedule`](https://dev.twitch.tv/docs/api/reference#get-ad-schedule)
 //!
 //! # Accessing the endpoint

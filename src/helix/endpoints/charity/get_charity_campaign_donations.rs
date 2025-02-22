@@ -1,4 +1,5 @@
 //! Gets the list of donations that users have made to the broadcaster’s active charity campaign.
+//!
 //! [`get-charity-campaign-donations`](https://dev.twitch.tv/docs/api/reference#get-charity-campaign-donations)
 //!
 //! # Accessing the endpoint
@@ -68,7 +69,7 @@ impl<'a> GetCharityCampaignDonationsRequest<'a> {
     }
 
     /// Set amount of results returned per page.
-    pub fn first(mut self, first: usize) -> Self {
+    pub const fn first(mut self, first: usize) -> Self {
         self.first = Some(first);
         self
     }

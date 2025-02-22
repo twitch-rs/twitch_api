@@ -49,7 +49,7 @@ impl std::str::FromStr for SignSecret {
     type Err = std::convert::Infallible;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        Ok(SignSecret {
+        Ok(Self {
             secret: s.to_string(),
         })
     }

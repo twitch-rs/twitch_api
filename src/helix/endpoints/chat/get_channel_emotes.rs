@@ -1,4 +1,5 @@
 //! Gets all custom emotes for a specific Twitch channel including subscriber emotes, Bits tier emotes, and follower emotes.
+//!
 //! [`get-channel-emotes`](https://dev.twitch.tv/docs/api/reference#get-channel-emotes)
 //!
 //! # Accessing the endpoint

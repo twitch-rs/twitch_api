@@ -1,4 +1,5 @@
 //! Returns a list of channels (users who have streamed within the past 6 months) that match the query via channel name or description either entirely or partially.
+//!
 //! [`search-channels`](https://dev.twitch.tv/docs/api/reference#search-channels)
 //!
 //! # Accessing the endpoint
@@ -73,13 +74,13 @@ impl<'a> SearchChannelsRequest<'a> {
     }
 
     /// Get live streams only
-    pub fn live_only(mut self, live_only: bool) -> Self {
+    pub const fn live_only(mut self, live_only: bool) -> Self {
         self.live_only = Some(live_only);
         self
     }
 
     /// Set amount of results returned per page.
-    pub fn first(mut self, first: usize) -> Self {
+    pub const fn first(mut self, first: usize) -> Self {
         self.first = Some(first);
         self
     }
