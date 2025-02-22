@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/response.rs`."><title>response.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-6c3ea77c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (d8810e3e2 2025-02-14)" data-channel="nightly" data-search-js="search-581efc7a.js" data-settings-js="settings-6dad6058.js" ><script src="../../../static.files/storage-3a5871a4.js"></script><script defer src="../../../static.files/src-script-b8d3f215.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-4d63596a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">twitch_api/helix/</div>response.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="doccomment">//! Responses contains the return values of a [request](super::Request).
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/response.rs`."><title>response.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-6c3ea77c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.87.0-nightly (794c12416 2025-02-21)" data-channel="nightly" data-search-js="search-f7327375.js" data-settings-js="settings-6dad6058.js" ><script src="../../../static.files/storage-3a5871a4.js"></script><script defer src="../../../static.files/src-script-b8d3f215.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5332ae0c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">twitch_api/helix/</div>response.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="doccomment">//! Responses contains the return values of a [request](super::Request).
 <a href=#2 id=2 data-nosnippet>2</a></span><span class="kw">use super</span>::{Cursor, Request};
 <a href=#3 id=3 data-nosnippet>3</a>
 <a href=#4 id=4 data-nosnippet>4</a><span class="doccomment">/// Response retrieved from endpoint. Data is the type in [`Request::Response`]
@@ -83,7 +83,7 @@
 <a href=#83 id=83 data-nosnippet>83</a>    ///     }
 <a href=#84 id=84 data-nosnippet>84</a>    /// }
 <a href=#85 id=85 data-nosnippet>85</a>    /// ```
-<a href=#86 id=86 data-nosnippet>86</a>    </span><span class="kw">pub fn </span>new(
+<a href=#86 id=86 data-nosnippet>86</a>    </span><span class="kw">pub const fn </span>new(
 <a href=#87 id=87 data-nosnippet>87</a>        data: D,
 <a href=#88 id=88 data-nosnippet>88</a>        pagination: <span class="prelude-ty">Option</span>&lt;Cursor&gt;,
 <a href=#89 id=89 data-nosnippet>89</a>        request: <span class="prelude-ty">Option</span>&lt;R&gt;,
@@ -152,7 +152,7 @@
 <a href=#152 id=152 data-nosnippet>152</a>    ///     }
 <a href=#153 id=153 data-nosnippet>153</a>    /// }
 <a href=#154 id=154 data-nosnippet>154</a>    /// ```
-<a href=#155 id=155 data-nosnippet>155</a>    </span><span class="kw">pub fn </span>with_data(data: D, request: <span class="prelude-ty">Option</span>&lt;R&gt;) -&gt; <span class="self">Self </span>{
+<a href=#155 id=155 data-nosnippet>155</a>    </span><span class="kw">pub const fn </span>with_data(data: D, request: <span class="prelude-ty">Option</span>&lt;R&gt;) -&gt; <span class="self">Self </span>{
 <a href=#156 id=156 data-nosnippet>156</a>        <span class="self">Self</span>::new(data, <span class="prelude-val">None</span>, request, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>)
 <a href=#157 id=157 data-nosnippet>157</a>    }
 <a href=#158 id=158 data-nosnippet>158</a>
@@ -211,30 +211,29 @@
 <a href=#211 id=211 data-nosnippet>211</a>        <span class="self">self</span>,
 <a href=#212 id=212 data-nosnippet>212</a>        client: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">super</span>::HelixClient&lt;<span class="lifetime">'a</span>, C&gt;,
 <a href=#213 id=213 data-nosnippet>213</a>        token: <span class="kw-2">&amp;</span>(<span class="kw">impl </span><span class="kw">super</span>::TwitchToken + <span class="question-mark">?</span>Sized),
-<a href=#214 id=214 data-nosnippet>214</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Response&lt;R, D&gt;&gt;, <span class="kw">super</span>::ClientRequestError&lt;&lt;C <span class="kw">as </span><span class="kw">crate</span>::HttpClient&gt;::Error&gt;&gt;
-<a href=#215 id=215 data-nosnippet>215</a>    {
-<a href=#216 id=216 data-nosnippet>216</a>        <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">mut </span>req) = <span class="self">self</span>.request.clone() {
-<a href=#217 id=217 data-nosnippet>217</a>            <span class="kw">if </span><span class="self">self</span>.pagination.is_some() {
-<a href=#218 id=218 data-nosnippet>218</a>                req.set_pagination(<span class="self">self</span>.pagination);
-<a href=#219 id=219 data-nosnippet>219</a>                <span class="kw">let </span>res = client.req_get(req, token).<span class="kw">await</span>.map(<span class="prelude-val">Some</span>);
-<a href=#220 id=220 data-nosnippet>220</a>                <span class="kw">if let </span><span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(r)) = res {
-<a href=#221 id=221 data-nosnippet>221</a>                    <span class="comment">// FIXME: Workaround for https://github.com/twitchdev/issues/issues/18
-<a href=#222 id=222 data-nosnippet>222</a>                    </span><span class="kw">if </span>r.data == <span class="self">self</span>.data {
-<a href=#223 id=223 data-nosnippet>223</a>                        <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
-<a href=#224 id=224 data-nosnippet>224</a>                    } <span class="kw">else </span>{
-<a href=#225 id=225 data-nosnippet>225</a>                        <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(r))
-<a href=#226 id=226 data-nosnippet>226</a>                    }
-<a href=#227 id=227 data-nosnippet>227</a>                } <span class="kw">else </span>{
-<a href=#228 id=228 data-nosnippet>228</a>                    res
-<a href=#229 id=229 data-nosnippet>229</a>                }
-<a href=#230 id=230 data-nosnippet>230</a>            } <span class="kw">else </span>{
-<a href=#231 id=231 data-nosnippet>231</a>                <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
-<a href=#232 id=232 data-nosnippet>232</a>            }
-<a href=#233 id=233 data-nosnippet>233</a>        } <span class="kw">else </span>{
-<a href=#234 id=234 data-nosnippet>234</a>            <span class="comment">// TODO: Make into proper error
-<a href=#235 id=235 data-nosnippet>235</a>            </span><span class="prelude-val">Err</span>(<span class="kw">super</span>::ClientRequestError::Custom(
-<a href=#236 id=236 data-nosnippet>236</a>                <span class="string">"no source request attached"</span>.into(),
-<a href=#237 id=237 data-nosnippet>237</a>            ))
-<a href=#238 id=238 data-nosnippet>238</a>        }
-<a href=#239 id=239 data-nosnippet>239</a>    }
-<a href=#240 id=240 data-nosnippet>240</a>}</code></pre></div></section></main></body></html>
+<a href=#214 id=214 data-nosnippet>214</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;, <span class="kw">super</span>::ClientRequestError&lt;&lt;C <span class="kw">as </span><span class="kw">crate</span>::HttpClient&gt;::Error&gt;&gt; {
+<a href=#215 id=215 data-nosnippet>215</a>        <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">mut </span>req) = <span class="self">self</span>.request.clone() {
+<a href=#216 id=216 data-nosnippet>216</a>            <span class="kw">if </span><span class="self">self</span>.pagination.is_some() {
+<a href=#217 id=217 data-nosnippet>217</a>                req.set_pagination(<span class="self">self</span>.pagination);
+<a href=#218 id=218 data-nosnippet>218</a>                <span class="kw">let </span>res = client.req_get(req, token).<span class="kw">await</span>.map(<span class="prelude-val">Some</span>);
+<a href=#219 id=219 data-nosnippet>219</a>                <span class="kw">if let </span><span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(r)) = res {
+<a href=#220 id=220 data-nosnippet>220</a>                    <span class="comment">// FIXME: Workaround for https://github.com/twitchdev/issues/issues/18
+<a href=#221 id=221 data-nosnippet>221</a>                    </span><span class="kw">if </span>r.data == <span class="self">self</span>.data {
+<a href=#222 id=222 data-nosnippet>222</a>                        <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
+<a href=#223 id=223 data-nosnippet>223</a>                    } <span class="kw">else </span>{
+<a href=#224 id=224 data-nosnippet>224</a>                        <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(r))
+<a href=#225 id=225 data-nosnippet>225</a>                    }
+<a href=#226 id=226 data-nosnippet>226</a>                } <span class="kw">else </span>{
+<a href=#227 id=227 data-nosnippet>227</a>                    res
+<a href=#228 id=228 data-nosnippet>228</a>                }
+<a href=#229 id=229 data-nosnippet>229</a>            } <span class="kw">else </span>{
+<a href=#230 id=230 data-nosnippet>230</a>                <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
+<a href=#231 id=231 data-nosnippet>231</a>            }
+<a href=#232 id=232 data-nosnippet>232</a>        } <span class="kw">else </span>{
+<a href=#233 id=233 data-nosnippet>233</a>            <span class="comment">// TODO: Make into proper error
+<a href=#234 id=234 data-nosnippet>234</a>            </span><span class="prelude-val">Err</span>(<span class="kw">super</span>::ClientRequestError::Custom(
+<a href=#235 id=235 data-nosnippet>235</a>                <span class="string">"no source request attached"</span>.into(),
+<a href=#236 id=236 data-nosnippet>236</a>            ))
+<a href=#237 id=237 data-nosnippet>237</a>        }
+<a href=#238 id=238 data-nosnippet>238</a>    }
+<a href=#239 id=239 data-nosnippet>239</a>}</code></pre></div></section></main></body></html>

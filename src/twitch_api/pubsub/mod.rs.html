@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-6c3ea77c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.86.0-nightly (d8810e3e2 2025-02-14)" data-channel="nightly" data-search-js="search-581efc7a.js" data-settings-js="settings-6dad6058.js" ><script src="../../../static.files/storage-3a5871a4.js"></script><script defer src="../../../static.files/src-script-b8d3f215.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-4d63596a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">twitch_api/pubsub/</div>mod.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="attr">#![allow(deprecated)]
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/pubsub/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-6c3ea77c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.87.0-nightly (794c12416 2025-02-21)" data-channel="nightly" data-search-js="search-f7327375.js" data-settings-js="settings-6dad6058.js" ><script src="../../../static.files/storage-3a5871a4.js"></script><script defer src="../../../static.files/src-script-b8d3f215.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5332ae0c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">twitch_api/pubsub/</div>mod.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="attr">#![allow(deprecated)]
 <a href=#2 id=2 data-nosnippet>2</a></span><span class="doccomment">//! Holds serializable pubsub stuff
 <a href=#3 id=3 data-nosnippet>3</a>//!
 <a href=#4 id=4 data-nosnippet>4</a>//! Use [`listen_command()`] to send subscription listen and parse the responses with [`Response::parse`]
@@ -490,76 +490,76 @@
 <a href=#490 id=490 data-nosnippet>490</a>            serde::de::Error::custom(<span class="macro">format!</span>(<span class="string">"could not deserialize topic reply: {e}"</span>))
 <a href=#491 id=491 data-nosnippet>491</a>        })<span class="question-mark">?</span>;
 <a href=#492 id=492 data-nosnippet>492</a>        <span class="prelude-val">Ok</span>(<span class="kw">match </span>reply.topic {
-<a href=#493 id=493 data-nosnippet>493</a>            Topics::AutoModQueue(topic) =&gt; TopicData::AutoModQueue {
+<a href=#493 id=493 data-nosnippet>493</a>            Topics::AutoModQueue(topic) =&gt; <span class="self">Self</span>::AutoModQueue {
 <a href=#494 id=494 data-nosnippet>494</a>                topic,
 <a href=#495 id=495 data-nosnippet>495</a>                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
 <a href=#496 id=496 data-nosnippet>496</a>            },
 <a href=#497 id=497 data-nosnippet>497</a>            <span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
-<a href=#498 id=498 data-nosnippet>498</a>            </span>Topics::CommunityPointsChannelV1(topic) =&gt; TopicData::CommunityPointsChannelV1 {
+<a href=#498 id=498 data-nosnippet>498</a>            </span>Topics::CommunityPointsChannelV1(topic) =&gt; <span class="self">Self</span>::CommunityPointsChannelV1 {
 <a href=#499 id=499 data-nosnippet>499</a>                topic,
 <a href=#500 id=500 data-nosnippet>500</a>                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
 <a href=#501 id=501 data-nosnippet>501</a>            },
-<a href=#502 id=502 data-nosnippet>502</a>            Topics::ChannelBitsEventsV2(topic) =&gt; TopicData::ChannelBitsEventsV2 {
+<a href=#502 id=502 data-nosnippet>502</a>            Topics::ChannelBitsEventsV2(topic) =&gt; <span class="self">Self</span>::ChannelBitsEventsV2 {
 <a href=#503 id=503 data-nosnippet>503</a>                topic,
 <a href=#504 id=504 data-nosnippet>504</a>                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
 <a href=#505 id=505 data-nosnippet>505</a>            },
-<a href=#506 id=506 data-nosnippet>506</a>            Topics::ChannelBitsBadgeUnlocks(topic) =&gt; TopicData::ChannelBitsBadgeUnlocks {
+<a href=#506 id=506 data-nosnippet>506</a>            Topics::ChannelBitsBadgeUnlocks(topic) =&gt; <span class="self">Self</span>::ChannelBitsBadgeUnlocks {
 <a href=#507 id=507 data-nosnippet>507</a>                topic,
 <a href=#508 id=508 data-nosnippet>508</a>                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
 <a href=#509 id=509 data-nosnippet>509</a>            },
 <a href=#510 id=510 data-nosnippet>510</a>            <span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
-<a href=#511 id=511 data-nosnippet>511</a>            </span>Topics::ChannelSubGiftsV1(topic) =&gt; TopicData::ChannelSubGiftsV1 {
+<a href=#511 id=511 data-nosnippet>511</a>            </span>Topics::ChannelSubGiftsV1(topic) =&gt; <span class="self">Self</span>::ChannelSubGiftsV1 {
 <a href=#512 id=512 data-nosnippet>512</a>                topic,
 <a href=#513 id=513 data-nosnippet>513</a>                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
 <a href=#514 id=514 data-nosnippet>514</a>            },
 <a href=#515 id=515 data-nosnippet>515</a>            <span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
-<a href=#516 id=516 data-nosnippet>516</a>            </span>Topics::ChannelCheerEventsPublicV1(topic) =&gt; TopicData::ChannelCheerEventsPublicV1 {
+<a href=#516 id=516 data-nosnippet>516</a>            </span>Topics::ChannelCheerEventsPublicV1(topic) =&gt; <span class="self">Self</span>::ChannelCheerEventsPublicV1 {
 <a href=#517 id=517 data-nosnippet>517</a>                topic,
 <a href=#518 id=518 data-nosnippet>518</a>                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
 <a href=#519 id=519 data-nosnippet>519</a>            },
-<a href=#520 id=520 data-nosnippet>520</a>            Topics::ChatModeratorActions(topic) =&gt; TopicData::ChatModeratorActions {
+<a href=#520 id=520 data-nosnippet>520</a>            Topics::ChatModeratorActions(topic) =&gt; <span class="self">Self</span>::ChatModeratorActions {
 <a href=#521 id=521 data-nosnippet>521</a>                topic,
 <a href=#522 id=522 data-nosnippet>522</a>                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
 <a href=#523 id=523 data-nosnippet>523</a>            },
-<a href=#524 id=524 data-nosnippet>524</a>            Topics::ChannelPointsChannelV1(topic) =&gt; TopicData::ChannelPointsChannelV1 {
+<a href=#524 id=524 data-nosnippet>524</a>            Topics::ChannelPointsChannelV1(topic) =&gt; <span class="self">Self</span>::ChannelPointsChannelV1 {
 <a href=#525 id=525 data-nosnippet>525</a>                topic,
 <a href=#526 id=526 data-nosnippet>526</a>                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
 <a href=#527 id=527 data-nosnippet>527</a>            },
-<a href=#528 id=528 data-nosnippet>528</a>            Topics::ChannelSubscribeEventsV1(topic) =&gt; TopicData::ChannelSubscribeEventsV1 {
+<a href=#528 id=528 data-nosnippet>528</a>            Topics::ChannelSubscribeEventsV1(topic) =&gt; <span class="self">Self</span>::ChannelSubscribeEventsV1 {
 <a href=#529 id=529 data-nosnippet>529</a>                topic,
 <a href=#530 id=530 data-nosnippet>530</a>                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
 <a href=#531 id=531 data-nosnippet>531</a>            },
 <a href=#532 id=532 data-nosnippet>532</a>            <span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
-<a href=#533 id=533 data-nosnippet>533</a>            </span>Topics::VideoPlayback(topic) =&gt; TopicData::VideoPlayback {
+<a href=#533 id=533 data-nosnippet>533</a>            </span>Topics::VideoPlayback(topic) =&gt; <span class="self">Self</span>::VideoPlayback {
 <a href=#534 id=534 data-nosnippet>534</a>                topic,
 <a href=#535 id=535 data-nosnippet>535</a>                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
 <a href=#536 id=536 data-nosnippet>536</a>            },
 <a href=#537 id=537 data-nosnippet>537</a>            <span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
-<a href=#538 id=538 data-nosnippet>538</a>            </span>Topics::VideoPlaybackById(topic) =&gt; TopicData::VideoPlaybackById {
+<a href=#538 id=538 data-nosnippet>538</a>            </span>Topics::VideoPlaybackById(topic) =&gt; <span class="self">Self</span>::VideoPlaybackById {
 <a href=#539 id=539 data-nosnippet>539</a>                topic,
 <a href=#540 id=540 data-nosnippet>540</a>                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
 <a href=#541 id=541 data-nosnippet>541</a>            },
 <a href=#542 id=542 data-nosnippet>542</a>            <span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
-<a href=#543 id=543 data-nosnippet>543</a>            </span>Topics::HypeTrainEventsV1(topic) =&gt; TopicData::HypeTrainEventsV1 {
+<a href=#543 id=543 data-nosnippet>543</a>            </span>Topics::HypeTrainEventsV1(topic) =&gt; <span class="self">Self</span>::HypeTrainEventsV1 {
 <a href=#544 id=544 data-nosnippet>544</a>                topic,
 <a href=#545 id=545 data-nosnippet>545</a>                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
 <a href=#546 id=546 data-nosnippet>546</a>            },
 <a href=#547 id=547 data-nosnippet>547</a>            <span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
-<a href=#548 id=548 data-nosnippet>548</a>            </span>Topics::HypeTrainEventsV1Rewards(topic) =&gt; TopicData::HypeTrainEventsV1Rewards {
+<a href=#548 id=548 data-nosnippet>548</a>            </span>Topics::HypeTrainEventsV1Rewards(topic) =&gt; <span class="self">Self</span>::HypeTrainEventsV1Rewards {
 <a href=#549 id=549 data-nosnippet>549</a>                topic,
 <a href=#550 id=550 data-nosnippet>550</a>                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
 <a href=#551 id=551 data-nosnippet>551</a>            },
 <a href=#552 id=552 data-nosnippet>552</a>            <span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
-<a href=#553 id=553 data-nosnippet>553</a>            </span>Topics::Following(topic) =&gt; TopicData::Following {
+<a href=#553 id=553 data-nosnippet>553</a>            </span>Topics::Following(topic) =&gt; <span class="self">Self</span>::Following {
 <a href=#554 id=554 data-nosnippet>554</a>                topic,
 <a href=#555 id=555 data-nosnippet>555</a>                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
 <a href=#556 id=556 data-nosnippet>556</a>            },
 <a href=#557 id=557 data-nosnippet>557</a>            <span class="attr">#[cfg(feature = <span class="string">"unsupported"</span>)]
-<a href=#558 id=558 data-nosnippet>558</a>            </span>Topics::Raid(topic) =&gt; TopicData::Raid {
+<a href=#558 id=558 data-nosnippet>558</a>            </span>Topics::Raid(topic) =&gt; <span class="self">Self</span>::Raid {
 <a href=#559 id=559 data-nosnippet>559</a>                topic,
 <a href=#560 id=560 data-nosnippet>560</a>                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
 <a href=#561 id=561 data-nosnippet>561</a>            },
-<a href=#562 id=562 data-nosnippet>562</a>            Topics::UserModerationNotifications(topic) =&gt; TopicData::UserModerationNotifications {
+<a href=#562 id=562 data-nosnippet>562</a>            Topics::UserModerationNotifications(topic) =&gt; <span class="self">Self</span>::UserModerationNotifications {
 <a href=#563 id=563 data-nosnippet>563</a>                topic,
 <a href=#564 id=564 data-nosnippet>564</a>                reply: parse_json(<span class="kw-2">&amp;</span>reply.message, <span class="bool-val">true</span>).map_err(serde::de::Error::custom)<span class="question-mark">?</span>,
 <a href=#565 id=565 data-nosnippet>565</a>            },
@@ -593,7 +593,7 @@
 <a href=#593 id=593 data-nosnippet>593</a><span class="kw">impl </span>Response {
 <a href=#594 id=594 data-nosnippet>594</a>    <span class="comment">// FIXME: Add example
 <a href=#595 id=595 data-nosnippet>595</a>    </span><span class="doccomment">/// Parse string slice as a response.
-<a href=#596 id=596 data-nosnippet>596</a>    </span><span class="kw">pub fn </span>parse(source: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;Response, <span class="kw">crate</span>::DeserError&gt; { parse_json(source, <span class="bool-val">true</span>) }
+<a href=#596 id=596 data-nosnippet>596</a>    </span><span class="kw">pub fn </span>parse(source: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="kw">crate</span>::DeserError&gt; { parse_json(source, <span class="bool-val">true</span>) }
 <a href=#597 id=597 data-nosnippet>597</a>}
 <a href=#598 id=598 data-nosnippet>598</a>
 <a href=#599 id=599 data-nosnippet>599</a><span class="doccomment">/// Deserialize 'null' as &lt;T as Default&gt;::Default
