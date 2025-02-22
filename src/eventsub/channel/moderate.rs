@@ -279,6 +279,10 @@ pub struct Ban {
     /// The user name of the user being banned.
     pub user_name: types::DisplayName,
     /// Reason given for the ban.
+    #[serde(
+        default,
+        deserialize_with = "crate::deserialize_none_from_empty_string"
+    )]
     pub reason: Option<String>,
 }
 
@@ -307,6 +311,10 @@ pub struct Timeout {
     /// The user name of the user being timed out.
     pub user_name: types::DisplayName,
     /// The reason given for the timeout.
+    #[serde(
+        default,
+        deserialize_with = "crate::deserialize_none_from_empty_string"
+    )]
     pub reason: Option<String>,
     /// The time at which the timeout ends.
     pub expires_at: types::Timestamp,
@@ -870,6 +878,10 @@ pub struct Warn {
     /// The user name of the user being warned.
     pub user_name: types::DisplayName,
     /// Reason given for the warning.
+    #[serde(
+        default,
+        deserialize_with = "crate::deserialize_none_from_empty_string"
+    )]
     pub reason: Option<String>,
     /// Chat rules cited for the warning.
     pub chat_rules_cited: Option<Vec<String>>,
