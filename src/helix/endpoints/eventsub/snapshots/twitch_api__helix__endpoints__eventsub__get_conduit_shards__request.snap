@@ -1,0 +1,5 @@
+---
+source: src/helix/endpoints/eventsub/get_conduit_shards.rs
+expression: uri
+---
+https://api.twitch.tv/helix/eventsub/conduits/shards?conduit_id=12345

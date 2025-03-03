@@ -1,0 +1,62 @@
+---
+source: src/eventsub/automod/message/hold.rs
+expression: parsed
+---
+AutomodMessageHoldV2(
+    Payload {
+        subscription: EventSubscriptionInformation {
+            id: "85c8dcb0-7af4-4581-b684-32087d386384",
+            status: Enabled,
+            cost: 0,
+            condition: AutomodMessageHoldV2 {
+                broadcaster_user_id: "129546453",
+                moderator_user_id: "129546453",
+            },
+            created_at: "2024-11-18T16:36:08.691979783Z",
+            transport: Websocket(
+                WebsocketTransportResponse {
+                    session_id: "AgoQREw4FYBWQ5quz4J-S4VYkRIGY2VsbC1j",
+                    connected_at: None,
+                    disconnected_at: None,
+                },
+            ),
+            type_: AutomodMessageHold,
+            version: "2",
+        },
+        message: Notification(
+            AutomodMessageHoldV2Payload {
+                broadcaster_user_id: "129546453",
+                broadcaster_user_login: "nerixyz",
+                broadcaster_user_name: "nerixyz",
+                user_id: "489584266",
+                user_login: "uint128",
+                user_name: "uint128",
+                message_id: "78ccd959-3e7e-4f8d-bd8b-f92c359b0a7d",
+                message: AutomodMessage {
+                    text: "😂 ass",
+                    fragments: [
+                        Text {
+                            text: "😂 ",
+                        },
+                        Text {
+                            text: "ass",
+                        },
+                    ],
+                },
+                reason: Automod(
+                    AutomodMessageInfo {
+                        category: Swearing,
+                        level: 4,
+                        boundaries: [
+                            AutomodMessageBoundary {
+                                start_pos: 2,
+                                end_pos: 4,
+                            },
+                        ],
+                    },
+                ),
+                held_at: "2024-11-18T16:59:46.323937273Z",
+            },
+        ),
+    },
+)

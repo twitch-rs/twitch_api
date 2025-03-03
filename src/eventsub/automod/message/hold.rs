@@ -71,9 +71,8 @@ pub struct AutomodMessageHoldV1Payload {
 #[cfg(test)]
 #[test]
 fn parse_payload_v1() {
-    use crate::eventsub::{Event, Message};
-
-    let payload = r##"
+    crate::eventsub::assert_eventsub_snapshot!(
+        r##"
     {
         "subscription": {
             "id": "e523fda0-01b6-4b0e-9024-a5a80c5ad680",
@@ -115,22 +114,8 @@ fn parse_payload_v1() {
             "held_at": "2024-10-19T20:11:16.799750627Z"
         }
     }
-    "##;
-
-    let val = Event::parse(payload).unwrap();
-    crate::tests::roundtrip(&val);
-
-    let Event::AutomodMessageHoldV1(val) = val else {
-        panic!("invalid event type");
-    };
-    let Message::Notification(notif) = val.message else {
-        panic!("invalid message type");
-    };
-
-    assert_eq!(notif.broadcaster_user_id.as_str(), "129546453");
-    assert_eq!(notif.category, AutomodCategory::Sexwords);
-    assert_eq!(notif.level, 4);
-    assert_eq!(notif.message.fragments.len(), 1);
+    "##
+    );
 }
 
 /// [`automod.message.hold`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#automodmessagehold-v2): a message was caught by automod for review.
@@ -200,9 +185,8 @@ pub struct AutomodMessageHoldV2Payload {
 
 #[test]
 fn parse_payload_v2_automod() {
-    use crate::eventsub::{Event, Message};
-
-    let payload = r##"
+    crate::eventsub::assert_eventsub_snapshot!(
+        r##"
     {
         "subscription": {
             "id": "85c8dcb0-7af4-4581-b684-32087d386384",
@@ -260,40 +244,14 @@ fn parse_payload_v2_automod() {
             "held_at": "2024-11-18T16:59:46.323937273Z"
         }
     }
-    "##;
-
-    let val = Event::parse(payload).unwrap();
-    crate::tests::roundtrip(&val);
-
-    let Event::AutomodMessageHoldV2(val) = val else {
-        panic!("invalid event type");
-    };
-    let Message::Notification(notif) = val.message else {
-        panic!("invalid message type");
-    };
-
-    assert_eq!(notif.broadcaster_user_id.as_str(), "129546453");
-    assert_eq!(notif.message.fragments.len(), 2);
-
-    let AutomodHeldReason::Automod(automod) = &notif.reason else {
-        panic!("invalid held reason");
-    };
-    assert_eq!(automod.category, AutomodCategory::Swearing);
-    assert_eq!(automod.level, 4);
-    assert_eq!(
-        automod.boundaries,
-        &[AutomodMessageBoundary {
-            start_pos: 2,
-            end_pos: 4
-        }]
+    "##
     );
 }
 
 #[test]
 fn parse_payload_v2_blocked_term() {
-    use crate::eventsub::{Event, Message};
-
-    let payload = r##"
+    crate::eventsub::assert_eventsub_snapshot!(
+        r##"
     {
         "subscription": {
             "id": "85c8dcb0-7af4-4581-b684-32087d386384",
@@ -398,34 +356,6 @@ fn parse_payload_v2_blocked_term() {
             "held_at": "2024-11-18T16:58:41.476117057Z"
         }
     }
-    "##;
-
-    let val = Event::parse(payload).unwrap();
-    crate::tests::roundtrip(&val);
-
-    let Event::AutomodMessageHoldV2(val) = val else {
-        panic!("invalid event type");
-    };
-    let Message::Notification(notif) = val.message else {
-        panic!("invalid message type");
-    };
-
-    assert_eq!(notif.broadcaster_user_id.as_str(), "129546453");
-    assert_eq!(notif.message.fragments.len(), 7);
-
-    let AutomodHeldReason::BlockedTerm(blocked_term) = &notif.reason else {
-        panic!("invalid held reason");
-    };
-    assert_eq!(blocked_term.terms_found.len(), 2);
-    assert_eq!(
-        blocked_term.terms_found[0].term_id.as_str(),
-        "e4d4f1ba-99bf-4b19-9875-cd4eda98ead9"
-    );
-    assert_eq!(
-        blocked_term.terms_found[0].boundary,
-        AutomodMessageBoundary {
-            start_pos: 15,
-            end_pos: 17
-        }
+    "##
     );
 }
