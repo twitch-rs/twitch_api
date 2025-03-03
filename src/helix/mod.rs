@@ -290,12 +290,12 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer">Schedule 🟡 5/6</summary>
+//! <details><summary style="cursor: pointer">Schedule 🟢 6/6</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
 //! | [Get Channel Stream Schedule](https://dev.twitch.tv/docs/api/reference#get-channel-stream-schedule) | - | [`schedule::get_channel_stream_schedule`] |
-//! | [Get Channel iCalendar](https://dev.twitch.tv/docs/api/reference#get-channel-icalendar) | - | - |
+//! | [Get Channel iCalendar](https://dev.twitch.tv/docs/api/reference#get-channel-icalendar) | [`HelixClient::get_channel_icalendar`] | [`schedule::get_channel_icalendar`] |
 //! | [Update Channel Stream Schedule](https://dev.twitch.tv/docs/api/reference#update-channel-stream-schedule) | - | [`schedule::update_channel_stream_schedule`] |
 //! | [Create Channel Stream Schedule Segment](https://dev.twitch.tv/docs/api/reference#create-channel-stream-schedule-segment) | - | [`schedule::create_channel_stream_schedule_segment`] |
 //! | [Update Channel Stream Schedule Segment](https://dev.twitch.tv/docs/api/reference#update-channel-stream-schedule-segment) | - | [`schedule::update_channel_stream_schedule_segment`] |
