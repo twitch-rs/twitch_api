@@ -43,29 +43,27 @@ pub struct ChannelBitsUseV1Payload {
     /// The login name of the redeeming user.
     pub user_login: types::UserName,
     /// The display name of the redeeming user.
-    pub user_name: types::UserName,
+    pub user_name: types::DisplayName,
     /// The User ID of the channel where the Bits were redeemed.
     pub broadcaster_user_id: types::UserId,
     /// The login of the channel where the Bits were used.
     pub broadcaster_user_login: types::UserName,
     /// The display name of the channel where the Bits were used.
-    pub broadcaster_user_name: types::UserName,
+    pub broadcaster_user_name: types::DisplayName,
     /// The number of Bits used.
     pub bits: usize,
-    /// Possible values are: cheer | power_up
+    /// The type of Bits used.
     #[serde(rename = "type")]
-    pub _type: BitsType,
-    /// Optional. Data about Power-up.
+    pub type_: BitsType,
+    /// Data about Power-up.
     pub power_up: Option<BitsPowerUp>,
-    /// Optional. An object that contains the user message and emote information needed to recreate the message.
-    pub message: crate::eventsub::automod::message::AutomodMessage,
+    /// An object that contains the user message and emote information needed to recreate the message.
+    pub message: crate::eventsub::channel::chat::Message,
 }
 
 #[cfg(test)]
 #[test]
 fn parse_payload() {
-    // FIXME: twitch docs has trailing commas
-    // FIXME: it uses string for the integer and bool, https://github.com/twitchdev/issues/issues/857#issuecomment-1793796590
     let payload = r##"
     {
         "subscription": {

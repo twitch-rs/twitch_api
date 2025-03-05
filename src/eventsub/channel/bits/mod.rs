@@ -24,13 +24,13 @@ pub enum BitsType {
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[non_exhaustive]
 pub struct BitsPowerUp {
-    /// Possible values: message_effect | celebration | gigantify_an_emote
+    /// The type of Power Up used
     #[serde(rename = "type")]
-    pub _type: BitsPowerUpType,
-    /// Optional. Emote associated with the reward.
+    pub type_: BitsPowerUpType,
+    /// Emote associated with the reward.
     pub emote: Option<crate::eventsub::channel::chat::Emote>,
-    /// Optional. The ID of the message effect.
-    pub message_effect_id: Option<String>,
+    /// The ID of the message effect.
+    pub message_effect_id: String,
 }
 
 /// The type of Power Up used.
@@ -38,10 +38,13 @@ pub struct BitsPowerUp {
 #[non_exhaustive]
 #[serde(rename_all = "snake_case")]
 pub enum BitsPowerUpType {
-    /// Message Effect Power-Up used
+    /// Message Effect Power-Up
     MessageEffect,
-    /// Celebration Effect Power-Up used
+    /// Celebration Effect Power-Up
     Celebration,
-    /// Gigantify an Emote Effect Power-Up used
+    /// Gigantify an Emote Effect Power-Up
     GigantifyAnEmote,
+    /// An unknown Power-Up, contains the raw string provided by Twitch.
+    #[serde(untagged)]
+    Unknown(String),
 }
