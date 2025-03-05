@@ -30,7 +30,7 @@ pub struct BitsPowerUp {
     /// Emote associated with the reward.
     pub emote: Option<crate::eventsub::channel::chat::Emote>,
     /// The ID of the message effect.
-    pub message_effect_id: String,
+    pub message_effect_id: Option<String>,
 }
 
 /// The type of Power Up used.
