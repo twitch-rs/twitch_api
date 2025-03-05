@@ -92,13 +92,13 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer"><code style="color: var(--link-color)">channel.*</code> 🟡 65/67</summary>
+//! <details><summary style="cursor: pointer"><code style="color: var(--link-color)">channel.*</code> 🟡 66/67</summary>
 //!
 //! | Name | Subscription<br>Payload |
 //! |---|:---|
 //! | [`channel.ad_break.begin`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelad_breakbegin) (v1) | [ChannelAdBreakBeginV1](channel::ChannelAdBreakBeginV1)<br>[ChannelAdBreakBeginV1Payload](channel::ChannelAdBreakBeginV1Payload) |
 //! | [`channel.ban`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelban) (v1) | [ChannelBanV1](channel::ChannelBanV1)<br>[ChannelBanV1Payload](channel::ChannelBanV1Payload) |
-//! | [`channel.bits.use`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelbitsuse) (v1) | -<br>- |
+//! | [`channel.bits.use`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelbitsuse) (v1) | [ChannelBitsUseV1](channel::ChannelBitsUseV1)<br>[ChannelBitsUseV1Payload](channel::ChannelBitsUseV1Payload) |
 //! | [<span style="font-size: 0.9em">`channel.channel_points_automatic_reward_redemption.add`</span>](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_automatic_reward_redemptionadd) (v1) | [ChannelPointsAutomaticRewardRedemptionAddV1](channel::ChannelPointsAutomaticRewardRedemptionAddV1)<br>[ChannelPointsAutomaticRewardRedemptionAddV1Payload](channel::ChannelPointsAutomaticRewardRedemptionAddV1Payload) |
 //! | [<span style="font-size: 0.9em">`channel.channel_points_automatic_reward_redemption.add`</span>](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_automatic_reward_redemptionadd-v2) (v2) | -<br>- |
 //! | [<span style="font-size: 0.9em">`channel.channel_points_custom_reward.add`</span>](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_rewardadd) (v1) | [ChannelPointsCustomRewardAddV1](channel::ChannelPointsCustomRewardAddV1)<br>[ChannelPointsCustomRewardAddV1Payload](channel::ChannelPointsCustomRewardAddV1Payload) |
