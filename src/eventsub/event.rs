@@ -19,6 +19,7 @@ macro_rules! fill_events {
             automod::AutomodTermsUpdateV1;
             channel::ChannelAdBreakBeginV1;
             channel::ChannelBanV1;
+            channel::ChannelBitsUseV1;
             channel::ChannelCharityCampaignDonateV1;
             channel::ChannelCharityCampaignProgressV1;
             channel::ChannelCharityCampaignStartV1;
@@ -179,6 +180,8 @@ make_event_type!("Event Types": pub enum EventType {
     AutomodTermsUpdate => "automod.terms.update",
     "a user runs a midroll commercial break, either manually or automatically via ads manager.":
     ChannelAdBreakBegin => "channel.ad_break.begin",
+    "sends a notification whenever Bits are used on a channel.":
+    ChannelBitsUse => "channel.bits.use",
     "a moderator or bot clears all messages from the chat room.":
     ChannelChatClear => "channel.chat.clear",
     "a moderator or bot clears all messages for a specific user.":
@@ -352,6 +355,8 @@ pub enum Event {
     AutomodTermsUpdateV1(Payload<automod::AutomodTermsUpdateV1>),
     /// Channel Ad Break Begin V1 Event
     ChannelAdBreakBeginV1(Payload<channel::ChannelAdBreakBeginV1>),
+    /// Channel Bit Use V1 Event
+    ChannelBitsUseV1(Payload<channel::ChannelBitsUseV1>),
     /// Channel Chat Clear V1 Event
     ChannelChatClearV1(Payload<channel::ChannelChatClearV1>),
     /// Channel Chat ClearUserMessages V1 Event

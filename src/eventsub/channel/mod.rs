@@ -7,6 +7,7 @@ use serde_derive::{Deserialize, Serialize};
 
 pub mod ad_break;
 pub mod ban;
+pub mod bits;
 pub mod channel_points_automatic_reward_redemption;
 pub mod channel_points_custom_reward;
 pub mod channel_points_custom_reward_redemption;
@@ -44,6 +45,8 @@ pub mod warning;
 pub use ad_break::{ChannelAdBreakBeginV1, ChannelAdBreakBeginV1Payload};
 #[doc(inline)]
 pub use ban::{ChannelBanV1, ChannelBanV1Payload};
+#[doc(inline)]
+pub use bits::{ChannelBitsUseV1, ChannelBitsUseV1Payload};
 #[doc(inline)]
 pub use channel_points_automatic_reward_redemption::{
     ChannelPointsAutomaticRewardRedemptionAddV1, ChannelPointsAutomaticRewardRedemptionAddV1Payload,
