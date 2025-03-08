@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["ChannelBitsUseV1","ChannelBitsUseV1Payload"]};
