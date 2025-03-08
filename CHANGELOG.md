@@ -6,6 +6,11 @@
 
 [Commits](https://github.com/twitch-rs/twitch_api/compare/v0.7.0...Unreleased)
 
+### Added
+
+- Added the following eventsub topics:
+  `Channel Bits Use V1`
+
 ### Fixed
 
 - Eventsub `channel.moderate` action `Timeout` and `Ban` field `reason` is now `None` when the string is empty.
