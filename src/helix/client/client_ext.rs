@@ -2189,7 +2189,11 @@ where
             r: super::Response<Req, <Req as super::Request>::Response>,
             d: std::collections::VecDeque<Item>,
         ) -> Self {
-            self.mode = StateMode::Cont(r, d);
+            self.mode = if d.is_empty() {
+                StateMode::Next(Some(r))
+            } else {
+                StateMode::Cont(r, d)
+            };
             self
         }
 
