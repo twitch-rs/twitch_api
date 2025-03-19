@@ -33,12 +33,13 @@ pub enum LowTrustStatus {
 #[non_exhaustive]
 #[serde(rename_all = "snake_case")]
 pub enum SuspiciousUserType {
-    /// A manually marked user
+    /// A manually added user
+    #[serde(rename = "manually_added")]
     Manual,
     /// A detected ban evader
-    #[serde(alias = "ban_evader_detector")] // <- this is what the docs say
     BanEvader,
     /// A user banned in another channel that shares ban information
+    #[serde(rename = "banned_in_shared_channel")]
     SharedChannelBan,
     /// An unknown user type, contains the raw string provided by Twitch.
     #[serde(untagged)]

@@ -15,6 +15,7 @@
 
 - Eventsub `channel.moderate` action `Timeout` and `Ban` field `reason` is now `None` when the string is empty.
 - `ClientExt::get_eventsub_subscriptions` now returns all pages (previously, only the first page was returned).
+- Corrected the names of types for `ChannelSuspiciousUserMessageV1Payload::types`
 
 ## [v0.7.0] - 2025-01-22
 
