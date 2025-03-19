@@ -1,13 +1,13 @@
 [package]
 name = "twitch_api"
-version = "0.7.0"
+version = "0.7.1"
 authors = ["Emil Gardström <emil.gardstrom@gmail.com>"]
 edition = "2018"
 repository = "https://github.com/twitch-rs/twitch_api"
 license = "MIT OR Apache-2.0"
 description = "Library for talking with the new Twitch API aka. \"Helix\", EventSub and more!"
 keywords = ["oauth", "twitch", "async", "asynchronous", "api"]
-documentation = "https://docs.rs/twitch_api/0.7.0"
+documentation = "https://docs.rs/twitch_api/0.7.1"
 readme = "README.md"
 resolver = "2"
 include = [
@@ -27,7 +27,7 @@ members = ["xtask", "examples/*"]
 exclude = ["twitch_types", "twitch_oauth2"]
 
 [workspace.dependencies]
-twitch_api = { version = "0.7.0", path = "." }
+twitch_api = { version = "0.7.1", path = "." }
 twitch_oauth2 = { version = "0.15.1", path = "twitch_oauth2/" }
 twitch_types = { version = "0.4.8", features = [
     "serde",
