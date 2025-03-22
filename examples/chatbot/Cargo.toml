@@ -5,8 +5,9 @@ edition = "2021"
 
 [dependencies]
 twitch_api = { workspace = true, features = ["eventsub", "helix", "reqwest"] }
-clap = { version = "4.5.26", features = ["derive", "env"] }
 twitch_oauth2 = { workspace = true, features = ["client"] }
+twitch_types = { workspace = true, features = ["time"] }
+clap = { version = "4.5.26", features = ["derive", "env"] }
 dotenvy = "0.15.7"
 color-eyre = "0.6.3"
 tracing = "0.1.41"
@@ -20,3 +21,4 @@ reqwest = "0.12.12"
 eyre = "0.6.12"
 url.workspace = true
 futures = "0.3.31"
+time = { version = "0.3.37", features = ["formatting"] }
