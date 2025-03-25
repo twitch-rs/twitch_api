@@ -14,6 +14,7 @@
 
 - Added the following eventsub topics:
   `Channel Bits Use V1`
+- Added `HelixClient::get_users_from_logins`
 
 ### Fixed
 

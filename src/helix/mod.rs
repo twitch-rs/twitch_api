@@ -355,7 +355,7 @@
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
-//! | [Get Users](https://dev.twitch.tv/docs/api/reference#get-users) | [`HelixClient::get_user_from_id`], [`HelixClient::get_user_from_login`], [`HelixClient::get_users_from_ids`] | [`users::get_users`] |
+//! | [Get Users](https://dev.twitch.tv/docs/api/reference#get-users) | [`HelixClient::get_user_from_id`], [`HelixClient::get_user_from_login`], [`HelixClient::get_users_from_ids`], [`HelixClient::get_users_from_logins`] | [`users::get_users`] |
 //! | [Update User](https://dev.twitch.tv/docs/api/reference#update-user) | [`HelixClient::update_user_description`] | [`users::update_user`] |
 //! | [Get User Block List](https://dev.twitch.tv/docs/api/reference#get-user-block-list) | - | [`users::get_user_block_list`] |
 //! | [Block User](https://dev.twitch.tv/docs/api/reference#block-user) | [`HelixClient::block_user`] | [`users::block_user`] |

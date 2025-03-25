@@ -27,7 +27,7 @@
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
-//! | [Get Users](https://dev.twitch.tv/docs/api/reference#get-users) | [`HelixClient::get_user_from_id`](crate::helix::HelixClient::get_user_from_id), [`HelixClient::get_user_from_login`](crate::helix::HelixClient::get_user_from_login), [`HelixClient::get_users_from_ids`](crate::helix::HelixClient::get_users_from_ids) | [`get_users`] |
+//! | [Get Users](https://dev.twitch.tv/docs/api/reference#get-users) | [`HelixClient::get_user_from_id`](crate::helix::HelixClient::get_user_from_id), [`HelixClient::get_user_from_login`](crate::helix::HelixClient::get_user_from_login), [`HelixClient::get_users_from_ids`](crate::helix::HelixClient::get_users_from_ids), [`HelixClient::get_users_from_logins`](crate::helix::HelixClient::get_users_from_logins) | [`get_users`] |
 //! | [Update User](https://dev.twitch.tv/docs/api/reference#update-user) | [`HelixClient::update_user_description`](crate::helix::HelixClient::update_user_description) | [`update_user`] |
 //! | [Get User Block List](https://dev.twitch.tv/docs/api/reference#get-user-block-list) | - | [`get_user_block_list`] |
 //! | [Block User](https://dev.twitch.tv/docs/api/reference#block-user) | [`HelixClient::block_user`](crate::helix::HelixClient::block_user) | [`block_user`] |

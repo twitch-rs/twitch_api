@@ -78,6 +78,41 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
             .try_flatten_unordered(None)
     }
 
+    /// Get multiple [User](helix::users::User)s from user logins/nicknames.
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+    /// use twitch_api::{helix, types};
+    /// use futures::TryStreamExt;
+    ///
+    /// let users: Vec<helix::users::User> = client
+    ///     .get_users_from_ids(&["twitchdev", "justintv"][..].into(), &token).try_collect().await?;
+    /// # Ok(()) }
+    /// ```
+    pub fn get_users_from_logins<T>(
+        &'client self,
+        ids: &'client types::Collection<'client, types::UserName>,
+        token: &'client T,
+    ) -> impl futures::Stream<Item = Result<helix::users::User, ClientError<C>>> + Send + Unpin + 'client
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        futures::stream::iter(ids.chunks(100))
+            .map(move |c| {
+                let req = helix::users::GetUsersRequest::logins(c);
+                futures::stream::once(self.req_get(req, token)).boxed()
+            })
+            .flatten_unordered(None)
+            .map_ok(|resp| futures::stream::iter(resp.data.into_iter().map(Ok)))
+            .try_flatten_unordered(None)
+    }
+
     /// Get [ChannelInformation](helix::channels::ChannelInformation) from a broadcasters login
     pub async fn get_channel_from_login<T>(
         &'client self,
