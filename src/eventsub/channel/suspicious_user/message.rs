@@ -61,10 +61,10 @@ pub struct ChannelSuspiciousUserMessageV1Payload {
     /// The status set for the suspicious user.
     pub low_trust_status: LowTrustStatus,
     /// A list of channel IDs where the suspicious user is also banned.
-    #[serde(default)]
+    #[serde(deserialize_with = "crate::deserialize_default_from_null")]
     pub shared_ban_channel_ids: Vec<types::UserId>,
     /// User types (if any) that apply to the suspicious user.
-    #[serde(default)]
+    #[serde(deserialize_with = "crate::deserialize_default_from_null")]
     pub types: Vec<SuspiciousUserType>,
     /// A ban evasion likelihood value (if any) that as been applied to the user automatically by Twitch.
     pub ban_evasion_evaluation: BanEvasionEvaluation,
