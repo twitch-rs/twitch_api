@@ -6,6 +6,14 @@
 
 [Commits](https://github.com/twitch-rs/twitch_api/compare/v0.7.1...Unreleased)
 
+### Added
+
+- Added `HelixClient::get_users_from_logins`
+
+### Fixed
+
+- Fixed incorrect handling of nullable fields in `channel.suspicious_user.message`
+
 ## [v0.7.1] - 2025-03-19
 
 [Commits](https://github.com/twitch-rs/twitch_api/compare/v0.7.0...v0.7.1)
@@ -14,14 +22,12 @@
 
 - Added the following eventsub topics:
   `Channel Bits Use V1`
-- Added `HelixClient::get_users_from_logins`
 
 ### Fixed
 
 - Eventsub `channel.moderate` action `Timeout` and `Ban` field `reason` is now `None` when the string is empty.
 - `ClientExt::get_eventsub_subscriptions` now returns all pages (previously, only the first page was returned).
 - Corrected the names of types for `ChannelSuspiciousUserMessageV1Payload::types`
-- Fixed incorrect handling of nullable fields in `channel.suspicious_user.message`
 
 ## [v0.7.0] - 2025-01-22
 
