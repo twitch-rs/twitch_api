@@ -6,6 +6,10 @@
 
 [Commits](https://github.com/twitch-rs/twitch_api/compare/v0.7.2...Unreleased)
 
+### Added
+
+- Added `conduit_deleted` to `eventsub::Status`
+
 ## [v0.7.2] - 2025-03-29
 
 [Commits](https://github.com/twitch-rs/twitch_api/compare/v0.7.1...v0.7.2)
