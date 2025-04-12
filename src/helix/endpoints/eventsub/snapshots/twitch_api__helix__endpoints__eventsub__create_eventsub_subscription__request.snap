@@ -1,5 +1,0 @@
----
-source: src/helix/endpoints/eventsub/create_eventsub_subscription.rs
-expression: body_str
----
-{"type":"user.update","version":"1","condition":{"user_id":"1234"},"transport":{"method":"webhook","callback":"https://this-is-a-callback.com","secret":"s3cre7"}}

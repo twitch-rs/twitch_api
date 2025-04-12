@@ -114,7 +114,54 @@ fn parse_payload_v1() {
             "held_at": "2024-10-19T20:11:16.799750627Z"
         }
     }
-    "##
+    "##,
+    @r#"
+    AutomodMessageHoldV1(
+        Payload {
+            subscription: EventSubscriptionInformation {
+                id: "e523fda0-01b6-4b0e-9024-a5a80c5ad680",
+                status: Enabled,
+                cost: 0,
+                condition: AutomodMessageHoldV1 {
+                    broadcaster_user_id: "129546453",
+                    moderator_user_id: "129546453",
+                },
+                created_at: "2024-10-19T20:11:13.917500523Z",
+                transport: Websocket(
+                    WebsocketTransportResponse {
+                        session_id: "AgoQRniKAQ1ITYSESh4ku8anEBIGY2VsbC1j",
+                        connected_at: None,
+                        disconnected_at: None,
+                    },
+                ),
+                type_: AutomodMessageHold,
+                version: "1",
+            },
+            message: Notification(
+                AutomodMessageHoldV1Payload {
+                    broadcaster_user_id: "129546453",
+                    broadcaster_user_login: "nerixyz",
+                    broadcaster_user_name: "nerixyz",
+                    user_id: "489584266",
+                    user_login: "uint128",
+                    user_name: "uint128",
+                    message_id: "332e99ac-e19c-4368-a15b-793e8266b51f",
+                    message: AutomodMessage {
+                        text: "boobs",
+                        fragments: [
+                            Text {
+                                text: "boobs",
+                            },
+                        ],
+                    },
+                    category: Sexwords,
+                    level: 4,
+                    held_at: "2024-10-19T20:11:16.799750627Z",
+                },
+            ),
+        },
+    )
+    "#
     );
 }
 
@@ -244,7 +291,67 @@ fn parse_payload_v2_automod() {
             "held_at": "2024-11-18T16:59:46.323937273Z"
         }
     }
-    "##
+    "##,
+    @r#"
+    AutomodMessageHoldV2(
+        Payload {
+            subscription: EventSubscriptionInformation {
+                id: "85c8dcb0-7af4-4581-b684-32087d386384",
+                status: Enabled,
+                cost: 0,
+                condition: AutomodMessageHoldV2 {
+                    broadcaster_user_id: "129546453",
+                    moderator_user_id: "129546453",
+                },
+                created_at: "2024-11-18T16:36:08.691979783Z",
+                transport: Websocket(
+                    WebsocketTransportResponse {
+                        session_id: "AgoQREw4FYBWQ5quz4J-S4VYkRIGY2VsbC1j",
+                        connected_at: None,
+                        disconnected_at: None,
+                    },
+                ),
+                type_: AutomodMessageHold,
+                version: "2",
+            },
+            message: Notification(
+                AutomodMessageHoldV2Payload {
+                    broadcaster_user_id: "129546453",
+                    broadcaster_user_login: "nerixyz",
+                    broadcaster_user_name: "nerixyz",
+                    user_id: "489584266",
+                    user_login: "uint128",
+                    user_name: "uint128",
+                    message_id: "78ccd959-3e7e-4f8d-bd8b-f92c359b0a7d",
+                    message: AutomodMessage {
+                        text: "😂 ass",
+                        fragments: [
+                            Text {
+                                text: "😂 ",
+                            },
+                            Text {
+                                text: "ass",
+                            },
+                        ],
+                    },
+                    reason: Automod(
+                        AutomodMessageInfo {
+                            category: Swearing,
+                            level: 4,
+                            boundaries: [
+                                AutomodMessageBoundary {
+                                    start_pos: 2,
+                                    end_pos: 4,
+                                },
+                            ],
+                        },
+                    ),
+                    held_at: "2024-11-18T16:59:46.323937273Z",
+                },
+            ),
+        },
+    )
+    "#
     );
 }
 
@@ -356,6 +463,99 @@ fn parse_payload_v2_blocked_term() {
             "held_at": "2024-11-18T16:58:41.476117057Z"
         }
     }
-    "##
+    "##,
+    @r#"
+    AutomodMessageHoldV2(
+        Payload {
+            subscription: EventSubscriptionInformation {
+                id: "85c8dcb0-7af4-4581-b684-32087d386384",
+                status: Enabled,
+                cost: 0,
+                condition: AutomodMessageHoldV2 {
+                    broadcaster_user_id: "129546453",
+                    moderator_user_id: "129546453",
+                },
+                created_at: "2024-11-18T16:36:08.691979783Z",
+                transport: Websocket(
+                    WebsocketTransportResponse {
+                        session_id: "AgoQREw4FYBWQ5quz4J-S4VYkRIGY2VsbC1j",
+                        connected_at: None,
+                        disconnected_at: None,
+                    },
+                ),
+                type_: AutomodMessageHold,
+                version: "2",
+            },
+            message: Notification(
+                AutomodMessageHoldV2Payload {
+                    broadcaster_user_id: "129546453",
+                    broadcaster_user_login: "nerixyz",
+                    broadcaster_user_name: "nerixyz",
+                    user_id: "489584266",
+                    user_login: "uint128",
+                    user_name: "uint128",
+                    message_id: "dcfc6b48-0fd1-446c-8cf5-d1810bb55b73",
+                    message: AutomodMessage {
+                        text: "boobs Kappa 😂😂 foo private",
+                        fragments: [
+                            Text {
+                                text: "boobs",
+                            },
+                            Text {
+                                text: " ",
+                            },
+                            Emote {
+                                text: "Kappa",
+                                emote: AutomodMessageEmote {
+                                    id: "25",
+                                    emote_set_id: "0",
+                                },
+                            },
+                            Text {
+                                text: " 😂😂 ",
+                            },
+                            Text {
+                                text: "foo",
+                            },
+                            Text {
+                                text: " ",
+                            },
+                            Text {
+                                text: "private",
+                            },
+                        ],
+                    },
+                    reason: BlockedTerm(
+                        AutomodBlockedTermInfo {
+                            terms_found: [
+                                AutomodBlockedTerm {
+                                    term_id: "e4d4f1ba-99bf-4b19-9875-cd4eda98ead9",
+                                    boundary: AutomodMessageBoundary {
+                                        start_pos: 15,
+                                        end_pos: 17,
+                                    },
+                                    owner_broadcaster_user_id: "129546453",
+                                    owner_broadcaster_user_login: "nerixyz",
+                                    owner_broadcaster_user_name: "nerixyz",
+                                },
+                                AutomodBlockedTerm {
+                                    term_id: "e60a94ea-e5d9-444e-a114-4cfd2f86c6ad",
+                                    boundary: AutomodMessageBoundary {
+                                        start_pos: 19,
+                                        end_pos: 25,
+                                    },
+                                    owner_broadcaster_user_id: "129546453",
+                                    owner_broadcaster_user_login: "nerixyz",
+                                    owner_broadcaster_user_name: "nerixyz",
+                                },
+                            ],
+                        },
+                    ),
+                    held_at: "2024-11-18T16:58:41.476117057Z",
+                },
+            ),
+        },
+    )
+    "#
     );
 }

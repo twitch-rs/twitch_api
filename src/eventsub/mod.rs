@@ -1181,10 +1181,10 @@ mod enum_field_as_inner_prefixed {
 
 #[cfg(test)]
 macro_rules! assert_eventsub_snapshot {
-    ($payload:literal) => {{
+    ($payload:literal, @$inline:literal) => {{
         let parsed = $crate::eventsub::Event::parse($payload).unwrap();
         $crate::tests::roundtrip(&parsed);
-        ::insta::assert_debug_snapshot!(parsed);
+        ::insta::assert_debug_snapshot!(parsed, @$inline);
     }};
 }
 

@@ -592,30 +592,49 @@ pub(crate) mod private {
 }
 
 #[cfg(test)]
+struct SnapshotWrap<'a, R> {
+    response: R,
+    uri: http::Uri,
+    body: Option<&'a str>,
+}
+
+#[cfg(test)]
+impl<'a, R> std::fmt::Display for SnapshotWrap<'a, R>
+where R: std::fmt::Debug
+{
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "uri\n----\n{}\n", self.uri)?;
+        if let Some(body) = self.body {
+            write!(f, "\nbody\n----\n{}\n", body)?;
+        }
+        write!(f, "\nresponse\n----\n{:#?}", self.response)
+    }
+}
+
+#[cfg(test)]
 macro_rules! assert_helix_snapshot {
-    ($req_ty:ty: req = $req:expr $(,)?) => {
-        $crate::helix::assert_helix_snapshot!($req_ty: req = $req, res = b"", status = 204);
+    ($req_ty:ty: req = $req:expr, @$snap:literal $(,)?) => {
+        $crate::helix::assert_helix_snapshot!($req_ty: req = $req, res = b"", status = 204, @$snap);
     };
-    ($req_ty:ty: req = $req:expr, res = $res:literal $(,)?) => {
-        $crate::helix::assert_helix_snapshot!($req_ty: req = $req, res = $res, status = 200);
+    ($req_ty:ty: req = $req:expr, res = $res:literal, @$snap:literal $(,)?) => {
+        $crate::helix::assert_helix_snapshot!($req_ty: req = $req, res = $res, status = 200, @$snap);
     };
-    ($req_ty:ty: req = $req:expr, body = $body:expr $(,)?) => {
-        $crate::helix::assert_helix_snapshot!($req_ty: req = $req, body = $body, res = b"", status = 200);
+    ($req_ty:ty: req = $req:expr, body = $body:expr, @$snap:literal $(,)?) => {
+        $crate::helix::assert_helix_snapshot!($req_ty: req = $req, body = $body, res = b"", status = 200, @$snap);
     };
-    ($req_ty:ty: req = $req:expr, body = $body:expr, res = $res:literal $(,)?) => {
-        $crate::helix::assert_helix_snapshot!($req_ty: req = $req, body = $body, res = $res, status = 200);
+    ($req_ty:ty: req = $req:expr, body = $body:expr, res = $res:literal, @$snap:literal $(,)?) => {
+        $crate::helix::assert_helix_snapshot!($req_ty: req = $req, body = $body, res = $res, status = 200, @$snap);
     };
-    ($req_ty:ty: req = $req:expr, body = $body:expr, res = $res:literal, status = $status:literal $(,)?) => {
-        {
-            use $crate::helix::*;
-            let body = $body;
-            let body = body.try_to_body().unwrap();
-            let body_str = std::str::from_utf8(&body).unwrap();
-            ::insta::assert_display_snapshot!(body_str);
+    ($req_ty:ty: req = $req:expr, body = $body:expr, res = $res:literal, status = $status:literal, @$snap:literal $(,)?) => {
+        use $crate::helix::*;
+        let body = $body;
+        let body = body.try_to_body().unwrap();
+        let body_str = {
+            std::str::from_utf8(&body).unwrap()
         };
-        $crate::helix::assert_helix_snapshot!($req_ty: req = $req, res = $res, status = $status);
+        $crate::helix::assert_helix_snapshot!($req_ty: req = $req, res = $res, status = $status, body_str, @$snap);
     };
-    ($req_ty:ty: req = $req:expr, res = $res:literal, status = $status:literal $(,)?) => {{
+    ($req_ty:ty: req = $req:expr, res = $res:literal, status = $status:literal, $($body:expr,)? @$snap:literal $(,)?) => {{
         use $crate::helix::*;
 
         let req = $req;
@@ -624,9 +643,14 @@ macro_rules! assert_helix_snapshot {
 
         let uri = req.get_uri().unwrap();
         let response = <$req_ty>::parse_response(Some(req), &uri, http_response).unwrap();
+        let wrap = SnapshotWrap {
+            response,
+            uri: uri,
+            body: None,
+        };
+        $(let mut wrap = wrap; wrap.body = Some($body);)?
 
-        ::insta::assert_display_snapshot!(uri);
-        ::insta::assert_debug_snapshot!(response.data);
+        ::insta::assert_display_snapshot!(wrap, @$snap);
     }};
 }
 

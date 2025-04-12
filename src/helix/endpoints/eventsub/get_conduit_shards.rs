@@ -133,5 +133,88 @@ fn test_request() {
           ],
           "pagination": {}
         }"#,
+        @r#"
+    uri
+    ----
+    https://api.twitch.tv/helix/eventsub/conduits/shards?conduit_id=12345
+
+    response
+    ----
+    Response {
+        data: [
+            ShardResponse {
+                id: "0",
+                status: Enabled,
+                transport: Webhook(
+                    WebhookTransportResponse {
+                        callback: "https://this-is-a-callback.com",
+                    },
+                ),
+            },
+            ShardResponse {
+                id: "1",
+                status: WebhookCallbackVerificationPending,
+                transport: Webhook(
+                    WebhookTransportResponse {
+                        callback: "https://this-is-a-callback-2.com",
+                    },
+                ),
+            },
+            ShardResponse {
+                id: "2",
+                status: Enabled,
+                transport: Websocket(
+                    WebsocketTransportResponse {
+                        session_id: "9fd5164a-a958-4c60-b7f4-6a7202506ca0",
+                        connected_at: Some(
+                            "2020-11-10T14:32:18.730260295Z",
+                        ),
+                        disconnected_at: None,
+                    },
+                ),
+            },
+            ShardResponse {
+                id: "3",
+                status: Enabled,
+                transport: Websocket(
+                    WebsocketTransportResponse {
+                        session_id: "238b4b08-13f1-4b8f-8d31-56665a7a9d9f",
+                        connected_at: Some(
+                            "2020-11-10T14:32:18.730260295Z",
+                        ),
+                        disconnected_at: None,
+                    },
+                ),
+            },
+            ShardResponse {
+                id: "4",
+                status: WebsocketDisconnected,
+                transport: Websocket(
+                    WebsocketTransportResponse {
+                        session_id: "ad1c9fc3-0d99-4eb7-8a04-8608e8ff9ec9",
+                        connected_at: Some(
+                            "2020-11-10T14:32:18.730260295Z",
+                        ),
+                        disconnected_at: Some(
+                            "2020-11-11T14:32:18.730260295Z",
+                        ),
+                    },
+                ),
+            },
+        ],
+        pagination: None,
+        request: Some(
+            GetConduitShardsRequest {
+                conduit_id: "12345",
+                status: None,
+                after: None,
+            },
+        ),
+        total: None,
+        other: Some(
+            {},
+        ),
+    }
+    "#,
     );
 }

@@ -73,5 +73,24 @@ fn test_request() {
     helix::assert_helix_snapshot!(
         DeleteEventSubSubscriptionRequest:
         req = DeleteEventSubSubscriptionRequest::id("deadbeef"),
+        @r#"
+    uri
+    ----
+    https://api.twitch.tv/helix/eventsub/subscriptions?id=deadbeef
+
+    response
+    ----
+    Response {
+        data: Success,
+        pagination: None,
+        request: Some(
+            DeleteEventSubSubscriptionRequest {
+                id: "deadbeef",
+            },
+        ),
+        total: None,
+        other: None,
+    }
+    "#,
     );
 }

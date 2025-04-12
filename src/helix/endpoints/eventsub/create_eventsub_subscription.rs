@@ -223,5 +223,46 @@ fn test_request() {
             "max_total_cost": 10000
         }"#,
         status = 202,
+        @r#"
+    uri
+    ----
+    https://api.twitch.tv/helix/eventsub/subscriptions?
+
+    body
+    ----
+    {"type":"user.update","version":"1","condition":{"user_id":"1234"},"transport":{"method":"webhook","callback":"https://this-is-a-callback.com","secret":"s3cre7"}}
+
+    response
+    ----
+    Response {
+        data: CreateEventSubSubscription {
+            id: "26b1c993-bfcf-44d9-b876-379dacafe75a",
+            status: WebhookCallbackVerificationPending,
+            type_: UserUpdate,
+            version: "1",
+            condition: UserUpdateV1 {
+                user_id: "1234",
+            },
+            created_at: "2020-11-10T14:32:18.730260295Z",
+            transport: Webhook(
+                WebhookTransportResponse {
+                    callback: "https://this-is-a-callback.com",
+                },
+            ),
+            total: 1,
+            total_cost: 1,
+            max_total_cost: 10000,
+            cost: 1,
+        },
+        pagination: None,
+        request: Some(
+            CreateEventSubSubscriptionRequest {
+                phantom: PhantomData<twitch_api::eventsub::user::update::UserUpdateV1>,
+            },
+        ),
+        total: None,
+        other: None,
+    }
+    "#,
     );
 }

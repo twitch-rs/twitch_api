@@ -177,5 +177,68 @@ fn test_request() {
             "max_total_cost": 10000,
             "pagination": {}
         }"#,
+        @r#"
+    uri
+    ----
+    https://api.twitch.tv/helix/eventsub/subscriptions?
+
+    response
+    ----
+    Response {
+        data: EventSubSubscriptions {
+            total: 2,
+            total_cost: 1,
+            max_total_cost: 10000,
+            subscriptions: [
+                EventSubSubscription {
+                    cost: 1,
+                    condition: Object {
+                        "broadcaster_user_id": String("1234"),
+                    },
+                    created_at: "2020-11-10T20:08:33.12345678Z",
+                    id: "26b1c993-bfcf-44d9-b876-379dacafe75a",
+                    status: Enabled,
+                    transport: Webhook(
+                        WebhookTransportResponse {
+                            callback: "https://this-is-a-callback.com",
+                        },
+                    ),
+                    type_: StreamOnline,
+                    version: "1",
+                },
+                EventSubSubscription {
+                    cost: 0,
+                    condition: Object {
+                        "user_id": String("1234"),
+                    },
+                    created_at: "2020-11-10T14:32:18.730260295Z",
+                    id: "35016908-41ff-33ce-7879-61b8dfc2ee16",
+                    status: WebhookCallbackVerificationPending,
+                    transport: Webhook(
+                        WebhookTransportResponse {
+                            callback: "https://this-is-a-callback.com",
+                        },
+                    ),
+                    type_: UserUpdate,
+                    version: "1",
+                },
+            ],
+        },
+        pagination: None,
+        request: Some(
+            GetEventSubSubscriptionsRequest {
+                status: None,
+                type_: None,
+                user_id: None,
+                after: None,
+                first: None,
+            },
+        ),
+        total: Some(
+            2,
+        ),
+        other: None,
+    }
+    "#,
     );
 }

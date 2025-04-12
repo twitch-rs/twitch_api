@@ -76,5 +76,24 @@ fn test_response() {
     helix::assert_helix_snapshot!(
         DeleteConduitRequest:
         req = DeleteConduitRequest::new("bfcfc993-26b1-b876-44d9-afe75a379dac"),
+        @r#"
+    uri
+    ----
+    https://api.twitch.tv/helix/eventsub/conduits?id=bfcfc993-26b1-b876-44d9-afe75a379dac
+
+    response
+    ----
+    Response {
+        data: Success,
+        pagination: None,
+        request: Some(
+            DeleteConduitRequest {
+                id: "bfcfc993-26b1-b876-44d9-afe75a379dac",
+            },
+        ),
+        total: None,
+        other: None,
+    }
+    "#,
     );
 }

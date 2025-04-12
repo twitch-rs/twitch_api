@@ -87,6 +87,32 @@ fn test_successful_response() {
                 }
             ]
         }"#,
+        @r#"
+    uri
+    ----
+    https://api.twitch.tv/helix/eventsub/conduits?
+
+    body
+    ----
+    {"id":"bfcfc993-26b1-b876-44d9-afe75a379dac","shard_count":5}
+
+    response
+    ----
+    Response {
+        data: Conduit {
+            id: "bfcfc993-26b1-b876-44d9-afe75a379dac",
+            shard_count: 5,
+        },
+        pagination: None,
+        request: Some(
+            UpdateConduitRequest {
+                _phantom: PhantomData<&()>,
+            },
+        ),
+        total: None,
+        other: None,
+    }
+    "#,
     );
 }
 

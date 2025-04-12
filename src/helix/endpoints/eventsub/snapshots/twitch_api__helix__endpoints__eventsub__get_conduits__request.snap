@@ -1,5 +1,0 @@
----
-source: src/helix/endpoints/eventsub/get_conduits.rs
-expression: uri
----
-https://api.twitch.tv/helix/eventsub/conduits?
