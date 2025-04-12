@@ -108,6 +108,14 @@ pub struct SendChatMessageBody<'a> {
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub reply_parent_message_id: Option<Cow<'a, types::MsgIdRef>>,
+    /// Determines if the chat message is sent only to the source channel (broadcaster_id) during a shared chat session.
+    ///
+    /// # Notes
+    ///
+    /// Only available when using an App Access Token.
+    /// Has no effect if the message is not sent during a shared chat session.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub for_source_only: Option<bool>,
 }
 
 impl<'a> SendChatMessageBody<'a> {
@@ -122,6 +130,7 @@ impl<'a> SendChatMessageBody<'a> {
             sender_id: sender_id.into_cow(),
             message: message.into_cow(),
             reply_parent_message_id: None,
+            for_source_only: None,
         }
     }
 
@@ -131,6 +140,17 @@ impl<'a> SendChatMessageBody<'a> {
         reply_parent_message_id: impl types::IntoCow<'a, types::MsgIdRef> + 'a,
     ) -> Self {
         self.reply_parent_message_id = Some(reply_parent_message_id.into_cow());
+        self
+    }
+
+    /// Send the chat message only to the source channel (broadcaster_id) during a shared chat session.
+    ///
+    /// # Notes
+    ///
+    /// Only available when using an App Access Token.
+    /// Has no effect if the message is not sent during a shared chat session.
+    pub fn for_source_only(mut self, source_only: bool) -> Self {
+        self.for_source_only = Some(source_only);
         self
     }
 }

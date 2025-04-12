@@ -9,6 +9,8 @@
 ### Added
 
 - Added `conduit_deleted` to `eventsub::Status`
+- Added `for_source_only` to helix endpoint `Send Chat Message`
+- Added `is_source_only` to EventSub `Channel Chat Message`
 
 ## [v0.7.2] - 2025-03-29
 
