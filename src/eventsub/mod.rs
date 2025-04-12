@@ -938,6 +938,9 @@ pub enum Status {
     /// The client failed to reconnect to the Twitch WebSocket server within the required time after a Reconnect Message.
     #[serde(rename = "websocket_failed_to_reconnect")]
     WebsocketFailedToReconnect,
+    /// The conduit was deleted.
+    #[serde(rename = "conduit_deleted")]
+    ConduitDeleted,
 }
 
 /// General information about an EventSub subscription.
