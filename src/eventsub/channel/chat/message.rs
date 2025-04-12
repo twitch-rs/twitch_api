@@ -91,6 +91,8 @@ pub struct ChannelChatMessageV1Payload {
     /// Only present when in a shared chat session. The list of chat badges for the chatter in the channel the message was sent from.
     #[serde(deserialize_with = "crate::deserialize_default_from_null")]
     pub source_badges: Vec<Badge>,
+    /// Determines if a message delivered during a shared chat session is only sent to the source channel.
+    pub is_source_only: Option<bool>,
 }
 
 /// The type a message.
@@ -310,7 +312,8 @@ fn parse_payload_shared() {
                     "id": "3",
                     "info": "3"
                 }
-            ]
+            ],
+            "is_source_only": true
         }
     }
     "##;
