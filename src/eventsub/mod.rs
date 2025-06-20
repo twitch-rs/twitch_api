@@ -92,7 +92,7 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer"><code style="color: var(--link-color)">channel.*</code> 🟡 66/67</summary>
+//! <details><summary style="cursor: pointer"><code style="color: var(--link-color)">channel.*</code> 🟡 66/70</summary>
 //!
 //! | Name | Subscription<br>Payload |
 //! |---|:---|
@@ -128,8 +128,11 @@
 //! | [`channel.guest_star_session.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelguest_star_sessionend) (beta) | [ChannelGuestStarSessionEndBeta](channel::ChannelGuestStarSessionEndBeta)<br>[ChannelGuestStarSessionEndBetaPayload](channel::ChannelGuestStarSessionEndBetaPayload) |
 //! | [`channel.guest_star_settings.update`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelguest_star_settingsupdate) (beta) | [ChannelGuestStarSettingsUpdateBeta](channel::ChannelGuestStarSettingsUpdateBeta)<br>[ChannelGuestStarSettingsUpdateBetaPayload](channel::ChannelGuestStarSettingsUpdateBetaPayload) |
 //! | [`channel.hype_train.begin`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelhype_trainbegin) (v1) | [ChannelHypeTrainBeginV1](channel::ChannelHypeTrainBeginV1)<br>[ChannelHypeTrainBeginV1Payload](channel::ChannelHypeTrainBeginV1Payload) |
+//! | [`channel.hype_train.begin`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelhype_trainbegin-v2) (v2) | -<br>- |
 //! | [`channel.hype_train.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelhype_trainend) (v1) | [ChannelHypeTrainEndV1](channel::ChannelHypeTrainEndV1)<br>[ChannelHypeTrainEndV1Payload](channel::ChannelHypeTrainEndV1Payload) |
+//! | [`channel.hype_train.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelhype_trainend-v2) (v2) | -<br>- |
 //! | [`channel.hype_train.progress`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelhype_trainprogress) (v1) | [ChannelHypeTrainProgressV1](channel::ChannelHypeTrainProgressV1)<br>[ChannelHypeTrainProgressV1Payload](channel::ChannelHypeTrainProgressV1Payload) |
+//! | [`channel.hype_train.progress`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelhype_trainprogress-v2) (v2) | -<br>- |
 //! | [`channel.moderate`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelmoderate) (v1) | [ChannelModerateV1](channel::ChannelModerateV1)<br>[ChannelModerateV1Payload](channel::ChannelModerateV1Payload) |
 //! | [`channel.moderate`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelmoderate-v2) (v2) | [ChannelModerateV2](channel::ChannelModerateV2)<br>[ChannelModerateV2Payload](channel::ChannelModerateV2Payload) |
 //! | [`channel.moderator.add`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelmoderatoradd) (v1) | [ChannelModeratorAddV1](channel::ChannelModeratorAddV1)<br>[ChannelModeratorAddV1Payload](channel::ChannelModeratorAddV1Payload) |
