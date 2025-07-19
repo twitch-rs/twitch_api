@@ -54,6 +54,7 @@ pub struct RemoveChannelModeratorRequest<'a> {
     /// The ID of the user to remove as a moderator from the broadcaster’s chat room.
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
+    #[serde(rename = "user_id")] // SEMVER: the field itself should be named user_id
     pub moderator_id: Cow<'a, types::UserIdRef>,
 }
 
@@ -131,7 +132,7 @@ fn test_request() {
     let uri = req.get_uri().unwrap();
     assert_eq!(
         uri.to_string(),
-        "https://api.twitch.tv/helix/moderation/moderators?broadcaster_id=1234&moderator_id=5678"
+        "https://api.twitch.tv/helix/moderation/moderators?broadcaster_id=1234&user_id=5678"
     );
 
     dbg!(RemoveChannelModeratorRequest::parse_response(Some(req), &uri, http_response).unwrap());

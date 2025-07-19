@@ -12,6 +12,10 @@
 - Added `for_source_only` to helix endpoint `Send Chat Message`
 - Added `is_source_only` to EventSub `Channel Chat Message`
 
+### Fixed
+
+- Fixed the query parameter name for the moderator ID in `Add Channel Moderator` and `Remove Channel Moderator`
+
 ## [v0.7.2] - 2025-03-29
 
 [Commits](https://github.com/twitch-rs/twitch_api/compare/v0.7.1...v0.7.2)
