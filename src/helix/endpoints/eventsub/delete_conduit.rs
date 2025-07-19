@@ -72,27 +72,28 @@ impl RequestDelete for DeleteConduitRequest<'_> {
 
 #[cfg(test)]
 #[test]
-fn test_uri() {
-    use helix::*;
-    let req = DeleteConduitRequest::new("bfcfc993-26b1-b876-44d9-afe75a379dac");
+fn test_response() {
+    helix::assert_helix_snapshot!(
+        DeleteConduitRequest:
+        req = DeleteConduitRequest::new("bfcfc993-26b1-b876-44d9-afe75a379dac"),
+        @r#"
+    uri
+    ----
+    https://api.twitch.tv/helix/eventsub/conduits?id=bfcfc993-26b1-b876-44d9-afe75a379dac
 
-    let uri = req.get_uri().unwrap();
-    assert_eq!(
-        uri.to_string(),
-        "https://api.twitch.tv/helix/eventsub/conduits?id=bfcfc993-26b1-b876-44d9-afe75a379dac"
+    response
+    ----
+    Response {
+        data: Success,
+        pagination: None,
+        request: Some(
+            DeleteConduitRequest {
+                id: "bfcfc993-26b1-b876-44d9-afe75a379dac",
+            },
+        ),
+        total: None,
+        other: None,
+    }
+    "#,
     );
-}
-
-#[cfg(test)]
-#[test]
-fn test_successful_response() {
-    use helix::*;
-    let req = DeleteConduitRequest::new("bfcfc993-26b1-b876-44d9-afe75a379dac");
-
-    let http_response = http::Response::builder().status(204).body(vec![]).unwrap();
-
-    let uri = req.get_uri().unwrap();
-    let response = DeleteConduitRequest::parse_response(Some(req), &uri, http_response).unwrap();
-
-    assert_eq!(response.data, DeleteConduitResponse::Success);
 }
