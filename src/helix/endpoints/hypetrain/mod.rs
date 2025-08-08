@@ -6,11 +6,12 @@
 //!
 //! <!-- generate with "cargo xtask overview" (with a nightly toolchain) -->
 //! <!-- BEGIN-OVERVIEW -->
-//! <details open><summary style="cursor: pointer">Hype Train 🟢 1/1</summary>
+//! <details open><summary style="cursor: pointer">Hype Train 🟡 1/2</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
 //! | [Get Hype Train Events](https://dev.twitch.tv/docs/api/reference#get-hype-train-events) | - | [`get_hypetrain_events`] |
+//! | [Get Hype Train Status](https://dev.twitch.tv/docs/api/reference#get-hype-train-status) | - | - |
 //!
 //! </details>
 //!

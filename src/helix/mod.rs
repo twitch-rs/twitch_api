@@ -223,11 +223,12 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer">Hype Train 🟢 1/1</summary>
+//! <details><summary style="cursor: pointer">Hype Train 🟡 1/2</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
 //! | [Get Hype Train Events](https://dev.twitch.tv/docs/api/reference#get-hype-train-events) | - | [`hypetrain::get_hypetrain_events`] |
+//! | [Get Hype Train Status](https://dev.twitch.tv/docs/api/reference#get-hype-train-status) | - | - |
 //!
 //! </details>
 //!
