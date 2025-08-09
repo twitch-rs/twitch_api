@@ -12,7 +12,7 @@
 //! let request = create_clip::CreateClipRequest::broadcaster_id("1234");
 //! ```
 //!
-//! ## Response: [Vec<CreatedClip>]
+//! ## Response: [CreatedClip]
 //!
 //! Send the request to receive the response with [`HelixClient::req_post()`](helix::HelixClient::req_post).
 //!
