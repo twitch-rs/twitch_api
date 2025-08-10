@@ -26,7 +26,7 @@
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = create_clip::CreateClipRequest::broadcaster_id("1234");
 //! let body = helix::EmptyBody;
-//! let response: Vec<create_clip::CreatedClip> = client.req_post(request, body, &token).await?.data;
+//! let response: create_clip::CreatedClip = client.req_post(request, body, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
@@ -86,7 +86,7 @@ pub struct CreatedClip {
 }
 
 impl Request for CreateClipRequest<'_> {
-    type Response = Vec<CreatedClip>;
+    type Response = CreatedClip;
 
     const PATH: &'static str = "clips";
     #[cfg(feature = "twitch_oauth2")]
@@ -96,6 +96,18 @@ impl Request for CreateClipRequest<'_> {
 
 impl RequestPost for CreateClipRequest<'_> {
     type Body = helix::EmptyBody;
+
+    fn parse_inner_response(
+        request: Option<Self>,
+        uri: &http::Uri,
+        response: &str,
+        status: http::StatusCode,
+    ) -> Result<helix::Response<Self, <Self as Request>::Response>, helix::HelixRequestPostError>
+    where
+        Self: Sized,
+    {
+        helix::parse_single_return(request, uri, response, status)
+    }
 }
 
 #[cfg(test)]
