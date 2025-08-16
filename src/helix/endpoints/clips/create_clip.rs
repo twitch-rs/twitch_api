@@ -14,7 +14,7 @@
 //!
 //! ## Response: [CreatedClip]
 //!
-//! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
+//! Send the request to receive the response with [`HelixClient::req_post()`](helix::HelixClient::req_post).
 //!
 //! ```rust, no_run
 //! use twitch_api::helix::{self, clips::create_clip};
@@ -25,16 +25,17 @@
 //! # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = create_clip::CreateClipRequest::broadcaster_id("1234");
-//! let response: Vec<create_clip::CreatedClip> = client.req_get(request, &token).await?.data;
+//! let body = helix::EmptyBody;
+//! let response: create_clip::CreatedClip = client.req_post(request, body, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
 //!
-//! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
+//! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestPost::create_request)
 //! and parse the [`http::Response`] with [`CreateClipRequest::parse_response(None, &request.get_uri(), response)`](CreateClipRequest::parse_response)
 
 use super::*;
-use helix::RequestGet;
+use helix::RequestPost;
 
 /// Query Parameters for [Create Clip](super::create_clip)
 ///
@@ -48,7 +49,7 @@ pub struct CreateClipRequest<'a> {
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
-    /// A Boolean value that determines whether the API captures the clip at the moment the viewer requests it or after a delay. If false (default), Twitch captures the clip at the moment the viewer requests it (this is the same clip experience as the Twitch UX). If true, Twitch adds a delay before capturing the clip
+    /// A Boolean value that determines whether the API captures the clip at the moment the viewer requests it or after a delay. If false (default), Twitch captures the clip at the moment the viewer requests it (this is the same clip experience as the Twitch UX). If true, Twitch adds a delay before capturing the clip (this basically shifts the capture window to the right slightly).
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     pub has_delay: Option<bool>,
 }
@@ -76,14 +77,16 @@ impl<'a> CreateClipRequest<'a> {
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct CreatedClip {
-    /// ID of the created clip.
+    /// An ID that uniquely identifies the clip.
     pub id: types::ClipId,
     /// A URL that you can use to edit the clip’s title, identify the part of the clip to publish, and publish the clip.
+    ///
+    /// The URL is valid for up to 24 hours or until the clip is published, whichever comes first.
     pub edit_url: String,
 }
 
 impl Request for CreateClipRequest<'_> {
-    type Response = Vec<CreatedClip>;
+    type Response = CreatedClip;
 
     const PATH: &'static str = "clips";
     #[cfg(feature = "twitch_oauth2")]
@@ -91,7 +94,21 @@ impl Request for CreateClipRequest<'_> {
         twitch_oauth2::validator![twitch_oauth2::Scope::ClipsEdit];
 }
 
-impl RequestGet for CreateClipRequest<'_> {}
+impl RequestPost for CreateClipRequest<'_> {
+    type Body = helix::EmptyBody;
+
+    fn parse_inner_response(
+        request: Option<Self>,
+        uri: &http::Uri,
+        response: &str,
+        status: http::StatusCode,
+    ) -> Result<helix::Response<Self, <Self as Request>::Response>, helix::HelixRequestPostError>
+    where
+        Self: Sized,
+    {
+        helix::parse_single_return(request, uri, response, status)
+    }
+}
 
 #[cfg(test)]
 #[test]
