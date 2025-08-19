@@ -26,55 +26,49 @@ impl RequestGet for GetConduitsRequest {}
 
 #[cfg(test)]
 #[test]
-fn test_uri() {
-    use helix::*;
-    let req: GetConduitsRequest = GetConduitsRequest::default();
-
-    let uri = req.get_uri().unwrap();
-    assert_eq!(
-        uri.to_string(),
-        "https://api.twitch.tv/helix/eventsub/conduits?"
-    );
-}
-
-#[cfg(test)]
-#[test]
 fn test_request() {
-    use helix::*;
-    let req: GetConduitsRequest = GetConduitsRequest::default();
+    helix::assert_helix_snapshot!(
+      GetConduitsRequest:
+      req = GetConduitsRequest::default(),
+      res = br#"{
+        "data": [
+          {
+            "id": "26b1c993-bfcf-44d9-b876-379dacafe75a",
+            "shard_count": 15
+          },
+          {
+            "id": "bfcfc993-26b1-b876-44d9-afe75a379dac",
+            "shard_count": 5
+          }
+        ]
+      }"#,
+      @r#"
+    uri
+    ----
+    https://api.twitch.tv/helix/eventsub/conduits?
 
-    let data = br#"{
-      "data": [
-        {
-          "id": "26b1c993-bfcf-44d9-b876-379dacafe75a",
-          "shard_count": 15
-        },
-        {
-          "id": "bfcfc993-26b1-b876-44d9-afe75a379dac",
-          "shard_count": 5
-        }
-      ]
-    }
-    "#
-    .to_vec();
-    let http_response = http::Response::builder().status(200).body(data).unwrap();
-
-    let uri = req.get_uri().unwrap();
-    let response = GetConduitsRequest::parse_response(Some(req), &uri, http_response).unwrap();
-
-    assert_eq!(
-        response.data,
-        vec![
-            crate::eventsub::Conduit {
-                id: "26b1c993-bfcf-44d9-b876-379dacafe75a".into(),
+    response
+    ----
+    Response {
+        data: [
+            Conduit {
+                id: "26b1c993-bfcf-44d9-b876-379dacafe75a",
                 shard_count: 15,
             },
-            crate::eventsub::Conduit {
-                id: "bfcfc993-26b1-b876-44d9-afe75a379dac".into(),
+            Conduit {
+                id: "bfcfc993-26b1-b876-44d9-afe75a379dac",
                 shard_count: 5,
             },
-        ]
+        ],
+        pagination: None,
+        request: Some(
+            GetConduitsRequest,
+        ),
+        total: None,
+        other: Some(
+            {},
+        ),
+    }
+    "#,
     );
-
-    dbg!("{:#?}", response);
 }

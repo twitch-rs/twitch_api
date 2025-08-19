@@ -192,59 +192,77 @@ impl<E: EventSubscription> helix::RequestPost for CreateEventSubSubscriptionRequ
 #[test]
 fn test_request() {
     use crate::eventsub::{self, user::UserUpdateV1};
-    use helix::*;
-    let req: CreateEventSubSubscriptionRequest<UserUpdateV1> =
-        CreateEventSubSubscriptionRequest::default();
 
     let sub = UserUpdateV1::new("1234");
     let transport =
         eventsub::Transport::webhook("https://this-is-a-callback.com", "s3cre7".to_string());
 
-    let body = CreateEventSubSubscriptionBody::new(sub, transport);
+    helix::assert_helix_snapshot!(CreateEventSubSubscriptionRequest::<UserUpdateV1>:
+        req = CreateEventSubSubscriptionRequest::<UserUpdateV1>::default(),
+        body = CreateEventSubSubscriptionBody::new(sub, transport),
+        res = br#"{
+            "data": [
+                {
+                    "id": "26b1c993-bfcf-44d9-b876-379dacafe75a",
+                    "status": "webhook_callback_verification_pending",
+                    "type": "user.update",
+                    "version": "1",
+                    "condition": {
+                        "user_id": "1234"
+                    },
+                    "created_at": "2020-11-10T14:32:18.730260295Z",
+                    "transport": {
+                        "method": "webhook",
+                        "callback": "https://this-is-a-callback.com"
+                    },
+                    "cost": 1
+                }
+            ],
+            "total": 1,
+            "total_cost": 1,
+            "max_total_cost": 10000
+        }"#,
+        status = 202,
+        @r#"
+    uri
+    ----
+    https://api.twitch.tv/helix/eventsub/subscriptions?
 
-    assert_eq!(
-        std::str::from_utf8(&body.try_to_body().unwrap()).unwrap(),
-        r#"{"type":"user.update","version":"1","condition":{"user_id":"1234"},"transport":{"method":"webhook","callback":"https://this-is-a-callback.com","secret":"s3cre7"}}"#
-    );
+    body
+    ----
+    {"type":"user.update","version":"1","condition":{"user_id":"1234"},"transport":{"method":"webhook","callback":"https://this-is-a-callback.com","secret":"s3cre7"}}
 
-    dbg!(req.create_request(body, "token", "clientid").unwrap());
-
-    // From twitch docs, FIXME: docs say `users.update` in example for Create EventSub Subscription, they also use kebab-case for status
-    // "{"type":"users.update","version":"1","condition":{"user_id":"1234"},"transport":{"method":"webhook","callback":"https://this-is-a-callback.com","secret":"s3cre7"}}"
-    let data = br#"{
-    "data": [
-        {
-            "id": "26b1c993-bfcf-44d9-b876-379dacafe75a",
-            "status": "webhook_callback_verification_pending",
-            "type": "user.update",
-            "version": "1",
-            "condition": {
-                "user_id": "1234"
+    response
+    ----
+    Response {
+        data: CreateEventSubSubscription {
+            id: "26b1c993-bfcf-44d9-b876-379dacafe75a",
+            status: WebhookCallbackVerificationPending,
+            type_: UserUpdate,
+            version: "1",
+            condition: UserUpdateV1 {
+                user_id: "1234",
             },
-            "created_at": "2020-11-10T14:32:18.730260295Z",
-            "transport": {
-                "method": "webhook",
-                "callback": "https://this-is-a-callback.com"
+            created_at: "2020-11-10T14:32:18.730260295Z",
+            transport: Webhook(
+                WebhookTransportResponse {
+                    callback: "https://this-is-a-callback.com",
+                },
+            ),
+            total: 1,
+            total_cost: 1,
+            max_total_cost: 10000,
+            cost: 1,
+        },
+        pagination: None,
+        request: Some(
+            CreateEventSubSubscriptionRequest {
+                phantom: PhantomData<twitch_api::eventsub::user::update::UserUpdateV1>,
             },
-            "cost": 1
-        }
-    ],
-    "total": 1,
-    "total_cost": 1,
-    "max_total_cost": 10000
-}
-    "#
-    .to_vec();
-    let http_response = http::Response::builder().status(202).body(data).unwrap();
-
-    let uri = req.get_uri().unwrap();
-    assert_eq!(
-        uri.to_string(),
-        "https://api.twitch.tv/helix/eventsub/subscriptions?"
-    );
-
-    dbg!(
-        "{:#?}",
-        CreateEventSubSubscriptionRequest::parse_response(Some(req), &uri, http_response).unwrap()
+        ),
+        total: None,
+        other: None,
+    }
+    "#,
     );
 }

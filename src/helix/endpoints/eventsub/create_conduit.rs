@@ -75,47 +75,39 @@ impl RequestPost for CreateConduitRequest {
 
 #[cfg(test)]
 #[test]
-fn test_uri() {
-    use helix::*;
-    let req: CreateConduitRequest = CreateConduitRequest::default();
+fn test_response() {
+    helix::assert_helix_snapshot!(
+        CreateConduitRequest:
+        req = CreateConduitRequest::default(),
+        res = br#"{
+            "data": [
+                {
+                    "id": "bfcfc993-26b1-b876-44d9-afe75a379dac",
+                    "shard_count": 5
+                }
+            ]
+        }"#,
+        @r#"
+    uri
+    ----
+    https://api.twitch.tv/helix/eventsub/conduits?
 
-    let uri = req.get_uri().unwrap();
-    assert_eq!(
-        uri.to_string(),
-        "https://api.twitch.tv/helix/eventsub/conduits?"
-    );
-}
-
-#[cfg(test)]
-#[test]
-fn test_successful_response() {
-    use helix::*;
-    let req: CreateConduitRequest = CreateConduitRequest::default();
-
-    let data = br#"{
-      "data": [
-        {
-          "id": "bfcfc993-26b1-b876-44d9-afe75a379dac",
-          "shard_count": 5
-        }
-      ]
-    }
-    "#
-    .to_vec();
-    let http_response = http::Response::builder().status(200).body(data).unwrap();
-
-    let uri = req.get_uri().unwrap();
-    let response = CreateConduitRequest::parse_response(Some(req), &uri, http_response).unwrap();
-
-    assert_eq!(
-        response.data,
-        crate::eventsub::Conduit {
-            id: "bfcfc993-26b1-b876-44d9-afe75a379dac".into(),
+    response
+    ----
+    Response {
+        data: Conduit {
+            id: "bfcfc993-26b1-b876-44d9-afe75a379dac",
             shard_count: 5,
         },
+        pagination: None,
+        request: Some(
+            CreateConduitRequest,
+        ),
+        total: None,
+        other: None,
+    }
+    "#,
     );
-
-    dbg!("{:#?}", response);
 }
 
 #[cfg(test)]

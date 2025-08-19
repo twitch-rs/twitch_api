@@ -74,53 +74,46 @@ impl<'a> RequestPatch for UpdateConduitRequest<'a> {
 
 #[cfg(test)]
 #[test]
-fn test_uri() {
-    use helix::*;
-    let req = UpdateConduitRequest::default();
-
-    let uri = req.get_uri().unwrap();
-    assert_eq!(
-        uri.to_string(),
-        "https://api.twitch.tv/helix/eventsub/conduits?"
-    );
-}
-
-#[cfg(test)]
-#[test]
 fn test_successful_response() {
-    use helix::*;
-    let req = UpdateConduitRequest::default();
+    helix::assert_helix_snapshot!(
+        UpdateConduitRequest:
+        req = UpdateConduitRequest::default(),
+        body = UpdateConduitBody::new("bfcfc993-26b1-b876-44d9-afe75a379dac", 5),
+        res = br#"{
+            "data": [
+                {
+                    "id": "bfcfc993-26b1-b876-44d9-afe75a379dac",
+                    "shard_count": 5
+                }
+            ]
+        }"#,
+        @r#"
+    uri
+    ----
+    https://api.twitch.tv/helix/eventsub/conduits?
 
-    let body = UpdateConduitBody::new("bfcfc993-26b1-b876-44d9-afe75a379dac", 5);
-    assert_eq!(
-        std::str::from_utf8(&body.try_to_body().unwrap()).unwrap(),
-        r#"{"id":"bfcfc993-26b1-b876-44d9-afe75a379dac","shard_count":5}"#
-    );
+    body
+    ----
+    {"id":"bfcfc993-26b1-b876-44d9-afe75a379dac","shard_count":5}
 
-    let data = br#"{
-      "data": [
-        {
-          "id": "bfcfc993-26b1-b876-44d9-afe75a379dac",
-          "shard_count": 5
-        }
-      ]
-    }
-    "#
-    .to_vec();
-    let http_response = http::Response::builder().status(200).body(data).unwrap();
-
-    let uri = req.get_uri().unwrap();
-    let response = UpdateConduitRequest::parse_response(Some(req), &uri, http_response).unwrap();
-
-    assert_eq!(
-        response.data,
-        crate::eventsub::Conduit {
-            id: "bfcfc993-26b1-b876-44d9-afe75a379dac".into(),
+    response
+    ----
+    Response {
+        data: Conduit {
+            id: "bfcfc993-26b1-b876-44d9-afe75a379dac",
             shard_count: 5,
         },
+        pagination: None,
+        request: Some(
+            UpdateConduitRequest {
+                _phantom: PhantomData<&()>,
+            },
+        ),
+        total: None,
+        other: None,
+    }
+    "#,
     );
-
-    dbg!("{:#?}", response);
 }
 
 #[cfg(test)]

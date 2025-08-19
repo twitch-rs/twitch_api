@@ -1183,6 +1183,18 @@ mod enum_field_as_inner_prefixed {
 }
 
 #[cfg(test)]
+macro_rules! assert_eventsub_snapshot {
+    ($payload:literal, @$inline:literal) => {{
+        let parsed = $crate::eventsub::Event::parse($payload).unwrap();
+        $crate::tests::roundtrip(&parsed);
+        ::insta::assert_debug_snapshot!(parsed, @$inline);
+    }};
+}
+
+#[cfg(test)]
+pub(crate) use assert_eventsub_snapshot;
+
+#[cfg(test)]
 mod test {
 
     #[test]

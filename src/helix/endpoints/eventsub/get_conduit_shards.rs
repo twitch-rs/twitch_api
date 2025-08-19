@@ -80,129 +80,141 @@ impl helix::Paginated for GetConduitShardsRequest<'_> {
 
 #[cfg(test)]
 #[test]
-fn test_uri() {
-    use helix::*;
-    let req = GetConduitShardsRequest::new("12345");
-
-    let uri = req.get_uri().unwrap();
-    assert_eq!(
-        uri.to_string(),
-        "https://api.twitch.tv/helix/eventsub/conduits/shards?conduit_id=12345"
-    );
-}
-
-#[cfg(test)]
-#[test]
 fn test_request() {
-    use helix::*;
-    use types::Timestamp;
+    helix::assert_helix_snapshot!(
+        GetConduitShardsRequest:
+        req = GetConduitShardsRequest::new("12345"),
+        res = br#"{
+          "data": [
+            {
+              "id": "0",
+              "status": "enabled",
+              "transport": {
+                "method": "webhook",
+                "callback": "https://this-is-a-callback.com"
+              }
+            },
+            {
+              "id": "1",
+              "status": "webhook_callback_verification_pending",
+              "transport": {
+                "method": "webhook",
+                "callback": "https://this-is-a-callback-2.com"
+              }
+            },
+            {
+              "id": "2",
+              "status": "enabled",
+              "transport": {
+                "method": "websocket",
+                "session_id": "9fd5164a-a958-4c60-b7f4-6a7202506ca0",
+                "connected_at": "2020-11-10T14:32:18.730260295Z"
+              }
+            },
+            {
+              "id": "3",
+              "status": "enabled",
+              "transport": {
+                "method": "websocket",
+                "session_id": "238b4b08-13f1-4b8f-8d31-56665a7a9d9f",
+                "connected_at": "2020-11-10T14:32:18.730260295Z"
+              }
+            },
+            {
+              "id": "4",
+              "status": "websocket_disconnected",
+              "transport": {
+                "method": "websocket",
+                "session_id": "ad1c9fc3-0d99-4eb7-8a04-8608e8ff9ec9",
+                "connected_at": "2020-11-10T14:32:18.730260295Z",
+                "disconnected_at": "2020-11-11T14:32:18.730260295Z"
+              }
+            }
+          ],
+          "pagination": {}
+        }"#,
+        @r#"
+    uri
+    ----
+    https://api.twitch.tv/helix/eventsub/conduits/shards?conduit_id=12345
 
-    use crate::eventsub::{
-        ShardStatus, TransportResponse, WebhookTransportResponse, WebsocketTransportResponse,
-    };
-    let req = GetConduitShardsRequest::new("12345");
-
-    let data = br#"{
-  "data": [
-    {
-      "id": "0",
-      "status": "enabled",
-      "transport": {
-        "method": "webhook",
-        "callback": "https://this-is-a-callback.com"
-      }
-    },
-    {
-      "id": "1",
-      "status": "webhook_callback_verification_pending",
-      "transport": {
-        "method": "webhook",
-        "callback": "https://this-is-a-callback-2.com"
-      }
-    },
-    {
-      "id": "2",
-      "status": "enabled",
-      "transport": {
-        "method": "websocket",
-        "session_id": "9fd5164a-a958-4c60-b7f4-6a7202506ca0",
-        "connected_at": "2020-11-10T14:32:18.730260295Z"
-      }
-    },
-    {
-      "id": "3",
-      "status": "enabled",
-      "transport": {
-        "method": "websocket",
-        "session_id": "238b4b08-13f1-4b8f-8d31-56665a7a9d9f",
-        "connected_at": "2020-11-10T14:32:18.730260295Z"
-      }
-    },
-    {
-      "id": "4",
-      "status": "websocket_disconnected",
-      "transport": {
-        "method": "websocket",
-        "session_id": "ad1c9fc3-0d99-4eb7-8a04-8608e8ff9ec9",
-        "connected_at": "2020-11-10T14:32:18.730260295Z",
-        "disconnected_at": "2020-11-11T14:32:18.730260295Z"
-      }
+    response
+    ----
+    Response {
+        data: [
+            ShardResponse {
+                id: "0",
+                status: Enabled,
+                transport: Webhook(
+                    WebhookTransportResponse {
+                        callback: "https://this-is-a-callback.com",
+                    },
+                ),
+            },
+            ShardResponse {
+                id: "1",
+                status: WebhookCallbackVerificationPending,
+                transport: Webhook(
+                    WebhookTransportResponse {
+                        callback: "https://this-is-a-callback-2.com",
+                    },
+                ),
+            },
+            ShardResponse {
+                id: "2",
+                status: Enabled,
+                transport: Websocket(
+                    WebsocketTransportResponse {
+                        session_id: "9fd5164a-a958-4c60-b7f4-6a7202506ca0",
+                        connected_at: Some(
+                            "2020-11-10T14:32:18.730260295Z",
+                        ),
+                        disconnected_at: None,
+                    },
+                ),
+            },
+            ShardResponse {
+                id: "3",
+                status: Enabled,
+                transport: Websocket(
+                    WebsocketTransportResponse {
+                        session_id: "238b4b08-13f1-4b8f-8d31-56665a7a9d9f",
+                        connected_at: Some(
+                            "2020-11-10T14:32:18.730260295Z",
+                        ),
+                        disconnected_at: None,
+                    },
+                ),
+            },
+            ShardResponse {
+                id: "4",
+                status: WebsocketDisconnected,
+                transport: Websocket(
+                    WebsocketTransportResponse {
+                        session_id: "ad1c9fc3-0d99-4eb7-8a04-8608e8ff9ec9",
+                        connected_at: Some(
+                            "2020-11-10T14:32:18.730260295Z",
+                        ),
+                        disconnected_at: Some(
+                            "2020-11-11T14:32:18.730260295Z",
+                        ),
+                    },
+                ),
+            },
+        ],
+        pagination: None,
+        request: Some(
+            GetConduitShardsRequest {
+                conduit_id: "12345",
+                status: None,
+                after: None,
+            },
+        ),
+        total: None,
+        other: Some(
+            {},
+        ),
     }
-  ],
-  "pagination": {}
-}"#
-    .to_vec();
-    let http_response = http::Response::builder().status(200).body(data).unwrap();
-
-    let uri = req.get_uri().unwrap();
-    let response = GetConduitShardsRequest::parse_response(Some(req), &uri, http_response).unwrap();
-
-    assert_eq!(
-        response.data,
-        vec![
-            crate::eventsub::ShardResponse {
-                id: "0".into(),
-                status: ShardStatus::Enabled,
-                transport: TransportResponse::Webhook(WebhookTransportResponse {
-                    callback: "https://this-is-a-callback.com".to_string(),
-                }),
-            },
-            crate::eventsub::ShardResponse {
-                id: "1".into(),
-                status: ShardStatus::WebhookCallbackVerificationPending,
-                transport: TransportResponse::Webhook(WebhookTransportResponse {
-                    callback: "https://this-is-a-callback-2.com".to_string(),
-                }),
-            },
-            crate::eventsub::ShardResponse {
-                id: "2".into(),
-                status: ShardStatus::Enabled,
-                transport: TransportResponse::Websocket(WebsocketTransportResponse {
-                    session_id: "9fd5164a-a958-4c60-b7f4-6a7202506ca0".to_string(),
-                    connected_at: Some(Timestamp::from_static("2020-11-10T14:32:18.730260295Z")),
-                    disconnected_at: None,
-                }),
-            },
-            crate::eventsub::ShardResponse {
-                id: "3".into(),
-                status: ShardStatus::Enabled,
-                transport: TransportResponse::Websocket(WebsocketTransportResponse {
-                    session_id: "238b4b08-13f1-4b8f-8d31-56665a7a9d9f".to_string(),
-                    connected_at: Some(Timestamp::from_static("2020-11-10T14:32:18.730260295Z")),
-                    disconnected_at: None,
-                }),
-            },
-            crate::eventsub::ShardResponse {
-                id: "4".into(),
-                status: ShardStatus::WebsocketDisconnected,
-                transport: TransportResponse::Websocket(WebsocketTransportResponse {
-                    session_id: "ad1c9fc3-0d99-4eb7-8a04-8608e8ff9ec9".to_string(),
-                    connected_at: Some(Timestamp::from_static("2020-11-10T14:32:18.730260295Z")),
-                    disconnected_at: Some(Timestamp::from_static("2020-11-11T14:32:18.730260295Z")),
-                }),
-            },
-        ]
+    "#,
     );
-
-    dbg!("{:#?}", response);
 }
