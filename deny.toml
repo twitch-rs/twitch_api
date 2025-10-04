@@ -35,6 +35,10 @@ ignore = [
   # https://rustsec.org/advisories/RUSTSEC-2025-0036
   # `surf` is unmaintained
   "RUSTSEC-2025-0036",
+  # https://rustsec.org/advisories/RUSTSEC-2025-0052
+  # `async-std` has been discontinued
+  # Dependent on via surf
+  "RUSTSEC-2025-0052",
 ]
 
 # This section is considered when running `cargo deny check licenses`
