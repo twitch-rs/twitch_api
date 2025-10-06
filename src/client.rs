@@ -55,7 +55,7 @@
 //!
 //! Of course, sometimes the clients use different types for their responses and requests. but simply translate them into [`http`] types and it will work.
 //!
-//! See the source of this module for the implementation of [`Client`] for [surf](https://crates.io/crates/surf) and [reqwest](https://crates.io/crates/reqwest) if you need inspiration.
+//! See the source of this module for the implementation of [`Client`] for [reqwest](https://crates.io/crates/reqwest) if you need inspiration.
 
 use std::error::Error;
 use std::future::Future;
@@ -66,11 +66,6 @@ pub use hyper::body::Bytes;
 mod ureq_impl;
 #[cfg(feature = "ureq")]
 pub use ureq_impl::UreqError;
-
-#[cfg(feature = "surf")]
-mod surf_impl;
-#[cfg(feature = "surf")]
-pub use surf_impl::SurfError;
 
 #[cfg(feature = "reqwest")]
 mod reqwest_impl;
