@@ -2,7 +2,6 @@
 #![allow(clippy::needless_raw_string_hashes)]
 #![cfg_attr(test, allow(deprecated))] // for pubsub tests
 #![cfg_attr(nightly, feature(doc_cfg))]
-#![allow(clippy::needless_raw_string_hashes)]
 #![doc(html_root_url = "https://docs.rs/twitch_api/0.7.2")]
 //! [![github]](https://github.com/twitch-rs/twitch_api)&ensp;[![crates-io]](https://crates.io/crates/twitch_api)&ensp;[![docs-rs-big]](https://docs.rs/twitch_api/0.7.2/twitch_api)
 //!

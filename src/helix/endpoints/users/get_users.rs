@@ -96,6 +96,11 @@ impl<'a> GetUsersRequest<'a> {
     }
 }
 
+impl<'a> Default for GetUsersRequest<'a> {
+    /// Returns an empty [`GetUsersRequest`]
+    fn default() -> Self { Self::new() }
+}
+
 /// Return Values for [Get Users](super::get_users)
 ///
 /// [`get-users`](https://dev.twitch.tv/docs/api/reference#get-users)
