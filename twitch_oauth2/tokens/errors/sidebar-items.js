@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["AppAccessTokenError","DeviceUserTokenExchangeError","ImplicitUserTokenExchangeError","RefreshTokenError","RevokeTokenError","UserTokenExchangeError","ValidationError"]};
+window.SIDEBAR_ITEMS = {"enum":["AppAccessTokenError","DeviceUserTokenExchangeError","ImplicitUserTokenExchangeError","RefreshTokenError","RetrieveTokenError","RevokeTokenError","UserTokenExchangeError","ValidationError"],"struct":["CreationError"]};

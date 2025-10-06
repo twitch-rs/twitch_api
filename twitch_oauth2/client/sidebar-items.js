@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["SurfError"],"static":["TWITCH_OAUTH2_USER_AGENT"],"trait":["Client"]};
+window.SIDEBAR_ITEMS = {"static":["TWITCH_OAUTH2_USER_AGENT"],"trait":["Client"]};

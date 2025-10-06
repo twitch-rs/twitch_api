@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="A validator is a way to check if a slice of scopes matches a predicate."><title>validator in twitch_oauth2 - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../static.files/rustdoc-069232aa.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="twitch_oauth2" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (425a9c0a0 2025-08-17)" data-channel="nightly" data-search-js="search-b069538f.js" data-settings-js="settings-5514c975.js" ><script src="../static.files/storage-68b7e25d.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-eebb9057.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-044be391.svg"></head><body class="rustdoc macro"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../twitch_oauth2/index.html">twitch_<wbr>oauth2</a><span class="version">0.15.1</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">validator</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#supported-operators" title="Supported operators">Supported operators</a></li><li><a href="#examples" title="Examples">Examples</a><ul><li><a href="#multiple-scopes" title="Multiple scopes">Multiple scopes</a></li><li><a href="#multiple-scopes-with-explicit-all" title="Multiple scopes with explicit all(…)">Multiple scopes with explicit all(…)</a></li><li><a href="#multiple-scopes-with-nested-any" title="Multiple scopes with nested any(…)">Multiple scopes with nested any(…)</a></li><li><a href="#not" title="Not">Not</a></li><li><a href="#combining-other-validators" title="Combining other validators">Combining other validators</a></li><li><a href="#empty" title="Empty">Empty</a></li><li><a href="#invalid-examples" title="Invalid examples">Invalid examples</a></li></ul></li></ul></section><div id="rustdoc-modnav"><h2 class="in-crate"><a href="index.html">In crate twitch_<wbr>oauth2</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="index.html">twitch_oauth2</a></div><h1>Macro <span class="macro">validator</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/twitch_oauth2/scopes/validator.rs.html#230-243">Source</a> </span></div><pre class="rust item-decl"><code>macro_rules! validator {
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="A validator is a way to check if a slice of scopes matches a predicate."><title>validator in twitch_oauth2 - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../static.files/rustdoc-e56847b5.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="twitch_oauth2" data-themes="" data-resource-suffix="" data-rustdoc-version="1.92.0-nightly (839222065 2025-10-05)" data-channel="nightly" data-search-js="search-de4c8920.js" data-stringdex-js="stringdex-828709d0.js" data-settings-js="settings-c38705f0.js" ><script src="../static.files/storage-e2aeef58.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-ce535bd0.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-044be391.svg"></head><body class="rustdoc macro"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><rustdoc-topbar><h2><a href="#">validator</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../twitch_oauth2/index.html">twitch_<wbr>oauth2</a><span class="version">0.16.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">validator</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#supported-operators" title="Supported operators">Supported operators</a></li><li><a href="#examples" title="Examples">Examples</a><ul><li><a href="#multiple-scopes" title="Multiple scopes">Multiple scopes</a></li><li><a href="#multiple-scopes-with-explicit-all" title="Multiple scopes with explicit all(…)">Multiple scopes with explicit all(…)</a></li><li><a href="#multiple-scopes-with-nested-any" title="Multiple scopes with nested any(…)">Multiple scopes with nested any(…)</a></li><li><a href="#not" title="Not">Not</a></li><li><a href="#combining-other-validators" title="Combining other validators">Combining other validators</a></li><li><a href="#empty" title="Empty">Empty</a></li><li><a href="#invalid-examples" title="Invalid examples">Invalid examples</a></li></ul></li></ul></section><div id="rustdoc-modnav"><h2 class="in-crate"><a href="index.html">In crate twitch_<wbr>oauth2</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="index.html">twitch_oauth2</a></div><h1>Macro <span class="macro">validator</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/twitch_oauth2/scopes/validator.rs.html#378-391">Source</a> </span></div><pre class="rust item-decl"><code>macro_rules! validator {
     ($operator:ident($($scopes:tt)+)) =&gt; { ... };
     ($scope:expr $(,)?) =&gt; { ... };
     ($($all:tt)+) =&gt; { ... };
@@ -24,27 +24,24 @@
 </li>
 </ul>
 <h2 id="examples"><a class="doc-anchor" href="#examples">§</a>Examples</h2>
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>twitch_oauth2::{validator, AppAccessToken, Scope, TwitchToken <span class="kw">as _</span>};
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>twitch_oauth2::{validator, Scope, TwitchToken <span class="kw">as _</span>, UserToken};
 
-<span class="kw">let </span>token: AppAccessToken = token();
+<span class="kw">let </span>token: UserToken = token();
 <span class="kw">let </span>validator = <span class="macro">validator!</span>(Scope::ChatEdit, Scope::ChatRead);
 <span class="macro">assert!</span>(validator.matches(token.scopes()));
-</code></pre></div>
-<h3 id="multiple-scopes"><a class="doc-anchor" href="#multiple-scopes">§</a>Multiple scopes</h3>
+</code></pre></div><h3 id="multiple-scopes"><a class="doc-anchor" href="#multiple-scopes">§</a>Multiple scopes</h3>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>twitch_oauth2::{validator, Scope};
 
 <span class="kw">let </span>scopes: <span class="kw-2">&amp;</span>[Scope] = <span class="kw-2">&amp;</span>[Scope::ChatEdit, Scope::ChatRead];
 <span class="kw">let </span>validator = <span class="macro">validator!</span>(Scope::ChatEdit, Scope::ChatRead);
 <span class="macro">assert!</span>(validator.matches(scopes));
-<span class="macro">assert!</span>(!validator.matches(<span class="kw-2">&amp;</span>scopes[..<span class="number">1</span>]));</code></pre></div>
-<h3 id="multiple-scopes-with-explicit-all"><a class="doc-anchor" href="#multiple-scopes-with-explicit-all">§</a>Multiple scopes with explicit all(…)</h3>
+<span class="macro">assert!</span>(!validator.matches(<span class="kw-2">&amp;</span>scopes[..<span class="number">1</span>]));</code></pre></div><h3 id="multiple-scopes-with-explicit-all"><a class="doc-anchor" href="#multiple-scopes-with-explicit-all">§</a>Multiple scopes with explicit all(…)</h3>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>twitch_oauth2::{validator, Scope};
 
 <span class="kw">let </span>scopes: <span class="kw-2">&amp;</span>[Scope] = <span class="kw-2">&amp;</span>[Scope::ChatEdit, Scope::ChatRead];
 <span class="kw">let </span>validator = <span class="macro">validator!</span>(all(Scope::ChatEdit, Scope::ChatRead));
 <span class="macro">assert!</span>(validator.matches(scopes));
-<span class="macro">assert!</span>(!validator.matches(<span class="kw-2">&amp;</span>scopes[..<span class="number">1</span>]));</code></pre></div>
-<h3 id="multiple-scopes-with-nested-any"><a class="doc-anchor" href="#multiple-scopes-with-nested-any">§</a>Multiple scopes with nested any(…)</h3>
+<span class="macro">assert!</span>(!validator.matches(<span class="kw-2">&amp;</span>scopes[..<span class="number">1</span>]));</code></pre></div><h3 id="multiple-scopes-with-nested-any"><a class="doc-anchor" href="#multiple-scopes-with-nested-any">§</a>Multiple scopes with nested any(…)</h3>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>twitch_oauth2::{validator, Scope};
 
 <span class="kw">let </span>scopes: <span class="kw-2">&amp;</span>[Scope] = <span class="kw-2">&amp;</span>[Scope::ChatEdit, Scope::ChatRead];
@@ -53,14 +50,12 @@
     any(Scope::ChatRead, Scope::ChannelReadSubscriptions)
 );
 <span class="macro">assert!</span>(validator.matches(scopes));
-<span class="macro">assert!</span>(!validator.matches(<span class="kw-2">&amp;</span>scopes[<span class="number">1</span>..]));</code></pre></div>
-<h3 id="not"><a class="doc-anchor" href="#not">§</a>Not</h3>
+<span class="macro">assert!</span>(!validator.matches(<span class="kw-2">&amp;</span>scopes[<span class="number">1</span>..]));</code></pre></div><h3 id="not"><a class="doc-anchor" href="#not">§</a>Not</h3>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>twitch_oauth2::{validator, Scope};
 
 <span class="kw">let </span>scopes: <span class="kw-2">&amp;</span>[Scope] = <span class="kw-2">&amp;</span>[Scope::ChatRead];
 <span class="kw">let </span>validator = <span class="macro">validator!</span>(not(Scope::ChatEdit));
-<span class="macro">assert!</span>(validator.matches(scopes));</code></pre></div>
-<h3 id="combining-other-validators"><a class="doc-anchor" href="#combining-other-validators">§</a>Combining other validators</h3>
+<span class="macro">assert!</span>(validator.matches(scopes));</code></pre></div><h3 id="combining-other-validators"><a class="doc-anchor" href="#combining-other-validators">§</a>Combining other validators</h3>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>twitch_oauth2::{validator, Scope, Validator};
 
 <span class="kw">let </span>scopes: <span class="kw-2">&amp;</span>[Scope] = <span class="kw-2">&amp;</span>[
@@ -74,23 +69,19 @@
     <span class="macro">validator!</span>(Scope::ModerationRead, Scope::ModeratorManageAutoMod);
 <span class="kw">const </span>COMBINED: Validator = <span class="macro">validator!</span>(CHAT_SCOPES, MODERATOR_SCOPES);
 <span class="macro">assert!</span>(COMBINED.matches(scopes));
-<span class="macro">assert!</span>(!COMBINED.matches(<span class="kw-2">&amp;</span>scopes[<span class="number">1</span>..]));</code></pre></div>
-<h3 id="empty"><a class="doc-anchor" href="#empty">§</a>Empty</h3>
+<span class="macro">assert!</span>(!COMBINED.matches(<span class="kw-2">&amp;</span>scopes[<span class="number">1</span>..]));</code></pre></div><h3 id="empty"><a class="doc-anchor" href="#empty">§</a>Empty</h3>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>twitch_oauth2::{validator, Scope};
 
 <span class="kw">let </span>scopes: <span class="kw-2">&amp;</span>[Scope] = <span class="kw-2">&amp;</span>[Scope::ChatRead];
 <span class="kw">let </span>validator = <span class="macro">validator!</span>();
-<span class="macro">assert!</span>(validator.matches(scopes));</code></pre></div>
-<h3 id="invalid-examples"><a class="doc-anchor" href="#invalid-examples">§</a>Invalid examples</h3><h4 id="invalid-usage-of-not"><a class="doc-anchor" href="#invalid-usage-of-not">§</a>Invalid usage of not(…)</h4>
+<span class="macro">assert!</span>(validator.matches(scopes));</code></pre></div><h3 id="invalid-examples"><a class="doc-anchor" href="#invalid-examples">§</a>Invalid examples</h3><h4 id="invalid-usage-of-not"><a class="doc-anchor" href="#invalid-usage-of-not">§</a>Invalid usage of not(…)</h4>
 <div class="example-wrap compile_fail"><a href="#" class="tooltip" title="This example deliberately fails to compile">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">use </span>twitch_oauth2::{Scope, validator};
 
 <span class="kw">let </span>scopes: <span class="kw-2">&amp;</span>[Scope] = <span class="kw-2">&amp;</span>[Scope::ChatEdit, Scope::ChatRead];
 <span class="kw">let </span>validator = <span class="macro">validator!</span>(not(Scope::ChatEdit, Scope::ChatRead));
-<span class="macro">assert!</span>(validator.matches(scopes));</code></pre></div>
-<h4 id="invalid-operator"><a class="doc-anchor" href="#invalid-operator">§</a>Invalid operator</h4>
+<span class="macro">assert!</span>(validator.matches(scopes));</code></pre></div><h4 id="invalid-operator"><a class="doc-anchor" href="#invalid-operator">§</a>Invalid operator</h4>
 <div class="example-wrap compile_fail"><a href="#" class="tooltip" title="This example deliberately fails to compile">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">use </span>twitch_oauth2::{Scope, validator};
 
 <span class="kw">let </span>scopes: <span class="kw-2">&amp;</span>[Scope] = <span class="kw-2">&amp;</span>[Scope::ChatEdit, Scope::ChatRead];
 <span class="kw">let </span>validator = <span class="macro">validator!</span>(xor(Scope::ChatEdit, Scope::ChatRead));
-<span class="macro">assert!</span>(validator.matches(scopes));</code></pre></div>
-</div></details></section></div></main></body></html>
+<span class="macro">assert!</span>(validator.matches(scopes));</code></pre></div></div></details></section></div></main></body></html>
