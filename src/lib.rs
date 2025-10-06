@@ -2,7 +2,6 @@
 #![allow(clippy::needless_raw_string_hashes)]
 #![cfg_attr(test, allow(deprecated))] // for pubsub tests
 #![cfg_attr(nightly, feature(doc_cfg))]
-#![cfg_attr(nightly, feature(doc_auto_cfg))]
 #![allow(clippy::needless_raw_string_hashes)]
 #![doc(html_root_url = "https://docs.rs/twitch_api/0.7.2")]
 //! [![github]](https://github.com/twitch-rs/twitch_api)&ensp;[![crates-io]](https://crates.io/crates/twitch_api)&ensp;[![docs-rs-big]](https://docs.rs/twitch_api/0.7.2/twitch_api)
@@ -105,7 +104,6 @@
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>time</code></span> | Enable time utilities on [Timestamp](types::Timestamp) |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>all</code></span> | Enables all above features. Do not use this in production, it's better if you specify exactly what you need |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>ureq</code></span> | Enables ureq for [`HttpClient`]. |
-//! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>surf</code></span> | Enables surf for [`HttpClient`]. Note that this does not enable any default client backend, if you get a compile error, specify `surf` in your `Cargo.toml`. By default, `surf` uses feature `curl-client` |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>reqwest</code></span> | Enables reqwest for [`HttpClient`]. Note that this does not enable any default TLS backend, if you get `invalid URL, scheme is not http`, specify `reqwest` in your Cargo.toml. By default, `reqwest` uses feature `default-tls` |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>tower</code></span> | Enables using [tower services](client::TowerService) for [`HttpClient`]. |
 //! | <span class="module-item stab portability" style="display: inline; border-radius: 3px; padding: 2px; font-size: 80%; line-height: 1.2;"><code>beta</code></span> | Enables beta endpoints, topics or features. Breakage may occur, semver compatibility not guaranteed. |

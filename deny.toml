@@ -12,29 +12,6 @@ ignore = [
   # serde_cbor is unmaintained
   # Dependent on as a dev-dependency (TODO: use ciborium/minicbor)
   "RUSTSEC-2021-0127",
-  # https://rustsec.org/advisories/RUSTSEC-2020-0056
-  # The author of the `stdweb` crate is unresponsive
-  # Dependent on via surf (and http-types)
-  "RUSTSEC-2020-0056",
-  # https://rustsec.org/advisories/RUSTSEC-2021-0064
-  # There will be no further releases of `cpuid-bool`
-  # Dependent on via surf (and http-types)
-  "RUSTSEC-2021-0064",
-  # https://rustsec.org/advisories/RUSTSEC-2021-0059
-  # `aesni` has been merged into the `aes` crate
-  # Dependent on via surf (and http-types)
-  "RUSTSEC-2021-0059",
-  # https://rustsec.org/advisories/RUSTSEC-2021-0060
-  # `aes-soft` has been merged into the `aes` crate
-  # Dependent on via surf (and http-types)
-  "RUSTSEC-2021-0060",
-  # https://rustsec.org/advisories/RUSTSEC-2024-0384
-  # `instant` is unmaintained
-  # Dependent on via surf (and http-types)
-  "RUSTSEC-2024-0384",
-  # https://rustsec.org/advisories/RUSTSEC-2025-0036
-  # `surf` is unmaintained
-  "RUSTSEC-2025-0036",
 ]
 
 # This section is considered when running `cargo deny check licenses`

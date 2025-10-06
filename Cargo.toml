@@ -28,8 +28,8 @@ exclude = ["twitch_types", "twitch_oauth2"]
 
 [workspace.dependencies]
 twitch_api = { version = "0.7.2", path = "." }
-twitch_oauth2 = { version = "0.15.1", path = "twitch_oauth2/" }
-twitch_types = { version = "0.4.8", features = [
+twitch_oauth2 = { version = "0.16.0", path = "twitch_oauth2/" }
+twitch_types = { version = "0.4.9", features = [
     "serde",
 ], path = "./twitch_types" }
 ureq = { version = "2.10.1", default-features = false, features = [
@@ -54,10 +54,6 @@ serde_ignored = { version = "0.1.9", optional = true }
 tracing = { version = "0.1.40", optional = true }
 ureq = { workspace = true, optional = true }
 reqwest = { version = "0.12.5", optional = true, default-features = false }
-surf = { version = "2.3.2", optional = true, default-features = false }
-http-types = { version = "2.12.0", optional = true, features = [
-    "hyperium_http",
-] }
 sha2 = { version = "0.10.8", optional = true }
 crypto_hmac = { package = "hmac", version = "0.12.1", optional = true }
 aliri_braid = "0.4.0"
@@ -95,13 +91,6 @@ helix = [
 ]
 
 deser_borrow = []
-
-surf = [
-    "dep:surf",
-    "dep:http-types",
-    "client",
-    "twitch_oauth2/surf",
-]
 
 ureq = ["dep:ureq", "client"]
 
@@ -151,10 +140,8 @@ all = [
 _all = [
     "all",
     "typed-builder",
-    "surf",
     "reqwest",
     "ureq",
-    "twitch_oauth2/surf_client_curl",
     "mock_api",
     "tower",
 ]

@@ -127,12 +127,13 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer">Clips 🟢 2/2</summary>
+//! <details><summary style="cursor: pointer">Clips 🟡 2/3</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
 //! | [Create Clip](https://dev.twitch.tv/docs/api/reference#create-clip) | - | [`clips::create_clip`] |
 //! | [Get Clips](https://dev.twitch.tv/docs/api/reference#get-clips) | - | [`clips::get_clips`] |
+//! | [Get Clips Download](https://dev.twitch.tv/docs/api/reference#get-clips-download) | - | - |
 //!
 //! </details>
 //!
