@@ -7,6 +7,7 @@
 ### Breaking
 
 - Removed surf dependency and related feature flags
+- Removed http-types dependency
 
 [Commits](https://github.com/twitch-rs/twitch_api/compare/v0.7.2...Unreleased)
 
