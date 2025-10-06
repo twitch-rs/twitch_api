@@ -28,8 +28,8 @@ exclude = ["twitch_types", "twitch_oauth2"]
 
 [workspace.dependencies]
 twitch_api = { version = "0.7.2", path = "." }
-twitch_oauth2 = { version = "0.15.1", path = "twitch_oauth2/" }
-twitch_types = { version = "0.4.8", features = [
+twitch_oauth2 = { version = "0.16.0", path = "twitch_oauth2/" }
+twitch_types = { version = "0.4.9", features = [
     "serde",
 ], path = "./twitch_types" }
 ureq = { version = "2.10.1", default-features = false, features = [
@@ -100,7 +100,6 @@ surf = [
     "dep:surf",
     "dep:http-types",
     "client",
-    "twitch_oauth2/surf",
 ]
 
 ureq = ["dep:ureq", "client"]
@@ -154,7 +153,6 @@ _all = [
     "surf",
     "reqwest",
     "ureq",
-    "twitch_oauth2/surf_client_curl",
     "mock_api",
     "tower",
 ]
