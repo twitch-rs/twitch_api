@@ -36,7 +36,6 @@ use std::collections::HashMap;
 
 use super::*;
 use helix::RequestGet;
-use serde::{Deserialize, Serialize};
 
 /// Query Parameters for [Get User Active Extensions](super::get_user_active_extensions)
 ///

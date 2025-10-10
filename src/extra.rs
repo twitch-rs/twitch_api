@@ -20,6 +20,7 @@ pub struct DonationAmount {
 #[derive(PartialEq, Eq, serde_derive::Deserialize, serde_derive::Serialize, Debug, Clone)]
 #[serde(rename_all = "lowercase")]
 #[non_exhaustive]
+#[derive(Default)]
 pub enum AnnouncementColor {
     /// The color blue
     #[serde(alias = "BLUE")]
@@ -35,12 +36,8 @@ pub enum AnnouncementColor {
     Purple,
     /// The primary color for the broadcaster
     #[serde(alias = "PRIMARY")]
+    #[default]
     Primary,
-}
-
-#[cfg(any(feature = "eventsub", feature = "helix"))]
-impl Default for AnnouncementColor {
-    fn default() -> Self { Self::Primary }
 }
 
 /// An error for an invalid [AnnouncementColor]
