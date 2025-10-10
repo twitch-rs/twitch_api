@@ -74,6 +74,7 @@ pub enum DeleteVideo {
 }
 
 impl Request for DeleteVideosRequest<'_> {
+    type PaginationData = ();
     type Response = DeleteVideo;
 
     const PATH: &'static str = "videos";

@@ -150,6 +150,7 @@ pub enum EndPrediction {
 }
 
 impl Request for EndPredictionRequest<'_> {
+    type PaginationData = ();
     type Response = EndPrediction;
 
     const PATH: &'static str = "predictions";

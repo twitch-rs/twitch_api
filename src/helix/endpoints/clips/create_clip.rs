@@ -86,6 +86,7 @@ pub struct CreatedClip {
 }
 
 impl Request for CreateClipRequest<'_> {
+    type PaginationData = ();
     type Response = CreatedClip;
 
     const PATH: &'static str = "clips";

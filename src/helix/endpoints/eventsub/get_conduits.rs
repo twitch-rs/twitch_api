@@ -15,6 +15,7 @@ use helix::RequestGet;
 pub struct GetConduitsRequest {}
 
 impl Request for GetConduitsRequest {
+    type PaginationData = ();
     type Response = Vec<eventsub::Conduit>;
 
     const PATH: &'static str = "eventsub/conduits";

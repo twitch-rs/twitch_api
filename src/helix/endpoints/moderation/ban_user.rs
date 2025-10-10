@@ -156,6 +156,7 @@ pub struct BanUser {
 }
 
 impl Request for BanUserRequest<'_> {
+    type PaginationData = ();
     type Response = BanUser;
 
     const PATH: &'static str = "moderation/bans";

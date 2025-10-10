@@ -25,6 +25,7 @@ impl<'a> DeleteEventSubSubscriptionRequest<'a> {
 }
 
 impl Request for DeleteEventSubSubscriptionRequest<'_> {
+    type PaginationData = ();
     type Response = DeleteEventSubSubscription;
 
     const PATH: &'static str = "eventsub/subscriptions";

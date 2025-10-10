@@ -94,6 +94,7 @@ impl<'a> GetGamesRequest<'a> {
 pub type Game = types::TwitchCategory;
 
 impl Request for GetGamesRequest<'_> {
+    type PaginationData = ();
     type Response = Vec<Game>;
 
     const PATH: &'static str = "games";

@@ -172,6 +172,7 @@ impl helix::private::SealedSerialize for UpdateChatSettingsBody {}
 pub type UpdateChatSettingsResponse = ChatSettings;
 
 impl Request for UpdateChatSettingsRequest<'_> {
+    type PaginationData = ();
     type Response = ChatSettings;
 
     const PATH: &'static str = "chat/settings";

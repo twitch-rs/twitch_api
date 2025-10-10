@@ -35,7 +35,7 @@
 //! and parse the [`http::Response`] with [`GetAllStreamTagsRequest::parse_response(None, &request.get_uri(), response)`](GetAllStreamTagsRequest::parse_response)
 #![allow(deprecated)]
 use super::*;
-use helix::RequestGet;
+use helix::{PaginationState, RequestGet};
 
 /// Query Parameters for [Get All Stream Tags](super::get_all_stream_tags)
 ///
@@ -83,6 +83,7 @@ impl<'a> GetAllStreamTagsRequest<'a> {
 pub type Tag = helix::tags::TwitchTag;
 
 impl Request for GetAllStreamTagsRequest<'_> {
+    type PaginationData = PaginationState<Self>;
     type Response = Vec<Tag>;
 
     const PATH: &'static str = "tags/streams";

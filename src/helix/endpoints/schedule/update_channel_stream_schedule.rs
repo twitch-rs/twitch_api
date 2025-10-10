@@ -97,6 +97,7 @@ pub enum UpdateChannelStreamSchedule {
 }
 
 impl Request for UpdateChannelStreamScheduleRequest<'_> {
+    type PaginationData = ();
     type Response = UpdateChannelStreamSchedule;
 
     const PATH: &'static str = "schedule/settings";

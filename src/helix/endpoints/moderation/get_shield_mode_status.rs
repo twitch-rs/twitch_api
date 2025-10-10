@@ -143,6 +143,7 @@ pub struct LastShieldMode {
 
 impl LastShieldMode {}
 impl Request for GetShieldModeStatusRequest<'_> {
+    type PaginationData = ();
     type Response = ShieldModeStatus;
 
     const PATH: &'static str = "moderation/shield_mode";
@@ -155,7 +156,7 @@ impl Request for GetShieldModeStatusRequest<'_> {
 
 impl RequestGet for GetShieldModeStatusRequest<'_> {
     fn parse_inner_response(
-        request: Option<Self>,
+        _request: Option<Self>,
         uri: &http::Uri,
         response: &str,
         status: http::StatusCode,
@@ -181,9 +182,7 @@ impl RequestGet for GetShieldModeStatusRequest<'_> {
                     uri: uri.clone(),
                 },
             )?,
-            inner_response.pagination.cursor,
-            request,
-            inner_response.total,
+            (),
             inner_response.other,
         ))
     }

@@ -154,6 +154,7 @@ impl<'a> NewPredictionOutcome<'a> {
 pub type CreatePredictionResponse = super::Prediction;
 
 impl Request for CreatePredictionRequest<'_> {
+    type PaginationData = ();
     type Response = CreatePredictionResponse;
 
     const PATH: &'static str = "predictions";
@@ -166,7 +167,7 @@ impl<'a> RequestPost for CreatePredictionRequest<'a> {
     type Body = CreatePredictionBody<'a>;
 
     fn parse_inner_response(
-        request: Option<Self>,
+        _request: Option<Self>,
         uri: &http::Uri,
         response_str: &str,
         status: http::StatusCode,
@@ -193,9 +194,7 @@ impl<'a> RequestPost for CreatePredictionRequest<'a> {
         })?;
         Ok(helix::Response {
             data,
-            pagination: response.pagination.cursor,
-            request,
-            total: None,
+            pagination_data: (),
             other: None,
         })
     }

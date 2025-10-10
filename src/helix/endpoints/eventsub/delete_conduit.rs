@@ -38,6 +38,7 @@ pub enum DeleteConduitResponse {
 }
 
 impl Request for DeleteConduitRequest<'_> {
+    type PaginationData = ();
     type Response = DeleteConduitResponse;
 
     const PATH: &'static str = "eventsub/conduits";

@@ -67,6 +67,7 @@ impl<'a> GetChannelEmotesRequest<'a> {
 pub type GetChannelEmotesResponse = ChannelEmote;
 
 impl Request for GetChannelEmotesRequest<'_> {
+    type PaginationData = ();
     type Response = Vec<GetChannelEmotesResponse>;
 
     const PATH: &'static str = "chat/emotes";

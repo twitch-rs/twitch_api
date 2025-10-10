@@ -152,6 +152,7 @@ pub enum SendChatAnnouncementResponse {
 }
 
 impl Request for SendChatAnnouncementRequest<'_> {
+    type PaginationData = ();
     // FIXME: this is a single entry
     type Response = SendChatAnnouncementResponse;
 

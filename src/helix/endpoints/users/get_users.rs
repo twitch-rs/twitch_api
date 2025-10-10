@@ -139,6 +139,7 @@ pub struct User {
 }
 
 impl Request for GetUsersRequest<'_> {
+    type PaginationData = ();
     type Response = Vec<User>;
 
     #[cfg(feature = "twitch_oauth2")]

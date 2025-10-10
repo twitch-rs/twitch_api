@@ -251,6 +251,7 @@ pub enum ModifyChannelInformation {
 }
 
 impl Request for ModifyChannelInformationRequest<'_> {
+    type PaginationData = ();
     type Response = ModifyChannelInformation;
 
     const PATH: &'static str = "channels";

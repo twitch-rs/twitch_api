@@ -86,6 +86,7 @@ pub enum RemoveBlockedTerm {
 }
 
 impl Request for RemoveBlockedTermRequest<'_> {
+    type PaginationData = ();
     type Response = RemoveBlockedTerm;
 
     #[cfg(feature = "twitch_oauth2")]

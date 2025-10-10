@@ -38,7 +38,7 @@
 //! and parse the [`http::Response`] with [`GetChattersRequest::parse_response(None, &request.get_uri(), response)`](GetChattersRequest::parse_response)
 
 use super::*;
-use helix::RequestGet;
+use helix::{PaginationState, RequestGet};
 
 /// Query Parameters for [Get Chatters](super::get_chatters)
 ///
@@ -114,6 +114,7 @@ pub struct Chatter {
 }
 
 impl Request for GetChattersRequest<'_> {
+    type PaginationData = PaginationState<Self>;
     type Response = Vec<Chatter>;
 
     const PATH: &'static str = "chat/chatters";

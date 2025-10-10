@@ -108,6 +108,7 @@ pub struct CreatorGoal {
 }
 
 impl Request for GetCreatorGoalsRequest<'_> {
+    type PaginationData = ();
     type Response = Vec<CreatorGoal>;
 
     const PATH: &'static str = "goals";

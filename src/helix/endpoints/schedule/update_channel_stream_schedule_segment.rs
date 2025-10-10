@@ -134,6 +134,7 @@ impl helix::private::SealedSerialize for UpdateChannelStreamScheduleSegmentBody<
 pub type UpdateChannelStreamScheduleSegmentResponse = ScheduledBroadcasts;
 
 impl Request for UpdateChannelStreamScheduleSegmentRequest<'_> {
+    type PaginationData = ();
     type Response = UpdateChannelStreamScheduleSegmentResponse;
 
     const PATH: &'static str = "schedule/segment";
@@ -146,7 +147,7 @@ impl<'a> RequestPatch for UpdateChannelStreamScheduleSegmentRequest<'a> {
     type Body = UpdateChannelStreamScheduleSegmentBody<'a>;
 
     fn parse_inner_response(
-        request: Option<Self>,
+        _request: Option<Self>,
         uri: &http::Uri,
         response: &str,
         status: http::StatusCode,
@@ -163,13 +164,7 @@ impl<'a> RequestPatch for UpdateChannelStreamScheduleSegmentRequest<'a> {
                     status,
                 )
             })?;
-        Ok(helix::Response::new(
-            response.data,
-            response.pagination.cursor,
-            request,
-            response.total,
-            response.other,
-        ))
+        Ok(helix::Response::new(response.data, (), response.other))
     }
 }
 

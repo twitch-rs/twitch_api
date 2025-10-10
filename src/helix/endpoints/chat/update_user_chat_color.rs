@@ -87,6 +87,7 @@ pub enum UpdateUserChatColorResponse {
 }
 
 impl Request for UpdateUserChatColorRequest<'_> {
+    type PaginationData = ();
     type Response = UpdateUserChatColorResponse;
 
     const PATH: &'static str = "chat/color";

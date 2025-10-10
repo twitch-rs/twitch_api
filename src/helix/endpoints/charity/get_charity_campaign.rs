@@ -94,6 +94,7 @@ pub struct CharityCampaign {
 }
 
 impl Request for GetCharityCampaignRequest<'_> {
+    type PaginationData = ();
     type Response = Option<CharityCampaign>;
 
     const PATH: &'static str = "charity/campaigns";
@@ -104,7 +105,7 @@ impl Request for GetCharityCampaignRequest<'_> {
 
 impl RequestGet for GetCharityCampaignRequest<'_> {
     fn parse_inner_response(
-        request: Option<Self>,
+        _request: Option<Self>,
         uri: &http::Uri,
         response: &str,
         status: http::StatusCode,
@@ -123,9 +124,7 @@ impl RequestGet for GetCharityCampaignRequest<'_> {
             })?;
         Ok(helix::Response::new(
             response.data.into_iter().next(),
-            response.pagination.cursor,
-            request,
-            response.total,
+            (),
             response.other,
         ))
     }

@@ -99,6 +99,7 @@ pub struct UserChatColor {
 }
 
 impl Request for GetUserChatColorRequest<'_> {
+    type PaginationData = ();
     type Response = Vec<UserChatColor>;
 
     const PATH: &'static str = "chat/color";

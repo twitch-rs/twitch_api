@@ -137,6 +137,7 @@ pub enum UpdateRedemptionStatusInformation {
 }
 
 impl Request for UpdateRedemptionStatusRequest<'_> {
+    type PaginationData = ();
     type Response = UpdateRedemptionStatusInformation;
 
     const PATH: &'static str = "channel_points/custom_rewards/redemptions";

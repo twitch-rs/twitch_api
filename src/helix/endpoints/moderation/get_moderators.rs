@@ -33,7 +33,7 @@
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
 //! and parse the [`http::Response`] with [`GetModeratorsRequest::parse_response(None, &request.get_uri(), response)`](GetModeratorsRequest::parse_response)
 use super::*;
-use helix::RequestGet;
+use helix::{PaginationState, RequestGet};
 
 // Format: Repeated Query Parameter, eg. /moderation/banned?broadcaster_id=1&user_id=2&user_id=3
 // Maximum: 100
@@ -104,6 +104,7 @@ pub struct Moderator {
 }
 
 impl Request for GetModeratorsRequest<'_> {
+    type PaginationData = PaginationState<Self>;
     type Response = Vec<Moderator>;
 
     const PATH: &'static str = "moderation/moderators";

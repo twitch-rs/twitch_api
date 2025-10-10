@@ -41,7 +41,7 @@
 //! and parse the [`http::Response`] with [`GetStreamMarkersRequest::parse_response(None, &request.get_uri(), response)`](GetStreamMarkersRequest::parse_response)
 
 use super::*;
-use helix::RequestGet;
+use helix::{PaginationState, RequestGet};
 
 /// Query Parameters for [Get Stream Markers](super::get_stream_markers)
 ///
@@ -152,6 +152,7 @@ pub struct StreamMarker {
 }
 
 impl Request for GetStreamMarkersRequest<'_> {
+    type PaginationData = PaginationState<Self>;
     type Response = Vec<StreamMarkerGroup>;
 
     const PATH: &'static str = "streams/markers";

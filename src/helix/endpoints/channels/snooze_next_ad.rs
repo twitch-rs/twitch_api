@@ -85,6 +85,7 @@ pub struct SnoozedAdSchedule {
 }
 
 impl Request for SnoozeNextAdRequest<'_> {
+    type PaginationData = ();
     type Response = SnoozedAdSchedule;
 
     const PATH: &'static str = "channels/ads/schedule/snooze";
@@ -97,7 +98,7 @@ impl RequestPost for SnoozeNextAdRequest<'_> {
     type Body = helix::EmptyBody;
 
     fn parse_inner_response(
-        request: Option<Self>,
+        _request: Option<Self>,
         uri: &http::Uri,
         response: &str,
         status: http::StatusCode,
@@ -124,9 +125,7 @@ impl RequestPost for SnoozeNextAdRequest<'_> {
                     status,
                     uri: uri.clone(),
                 })?,
-            resp.pagination.cursor,
-            request,
-            resp.total,
+            (),
             resp.other,
         ))
     }

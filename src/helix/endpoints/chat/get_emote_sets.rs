@@ -117,6 +117,7 @@ impl Emote {
 }
 
 impl Request for GetEmoteSetsRequest<'_> {
+    type PaginationData = ();
     type Response = Vec<Emote>;
 
     const PATH: &'static str = "chat/emotes/set";

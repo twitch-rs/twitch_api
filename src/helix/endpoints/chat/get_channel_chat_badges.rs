@@ -69,6 +69,7 @@ impl<'a> GetChannelChatBadgesRequest<'a> {
 pub type GetChannelChatBadgesResponse = BadgeSet;
 
 impl Request for GetChannelChatBadgesRequest<'_> {
+    type PaginationData = ();
     type Response = Vec<GetChannelChatBadgesResponse>;
 
     const PATH: &'static str = "chat/badges";

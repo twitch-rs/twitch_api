@@ -22,6 +22,7 @@ pub struct UpdateConduitRequest<'a> {
 }
 
 impl Request for UpdateConduitRequest<'_> {
+    type PaginationData = ();
     type Response = eventsub::Conduit;
 
     const PATH: &'static str = "eventsub/conduits";

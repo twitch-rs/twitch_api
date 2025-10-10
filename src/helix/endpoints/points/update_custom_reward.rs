@@ -171,6 +171,7 @@ pub enum UpdateCustomReward {
 }
 
 impl Request for UpdateCustomRewardRequest<'_> {
+    type PaginationData = ();
     type Response = UpdateCustomReward;
 
     const PATH: &'static str = "channel_points/custom_rewards";

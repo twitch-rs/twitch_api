@@ -85,6 +85,7 @@ pub enum AddChannelVipResponse {
 }
 
 impl Request for AddChannelVipRequest<'_> {
+    type PaginationData = ();
     type Response = AddChannelVipResponse;
 
     const PATH: &'static str = "channels/vips";

@@ -36,7 +36,7 @@
 //! and parse the [`http::Response`] with [`GetBroadcasterSubscriptionsRequest::parse_response(None, &request.get_uri(), response)`](GetBroadcasterSubscriptionsRequest::parse_response)
 
 use super::*;
-use helix::RequestGet;
+use helix::{PaginationState, RequestGet};
 
 /// Query Parameters for [Get Broadcaster Subscriptions](super::get_broadcaster_subscriptions)
 ///
@@ -135,6 +135,7 @@ pub struct BroadcasterSubscription {
 }
 
 impl Request for GetBroadcasterSubscriptionsRequest<'_> {
+    type PaginationData = PaginationState<Self>;
     type Response = Vec<BroadcasterSubscription>;
 
     const PATH: &'static str = "subscriptions";
@@ -222,6 +223,6 @@ fn test_request() {
             GetBroadcasterSubscriptionsRequest::parse_response(Some(req), &uri, http_response)
                 .unwrap()
         );
-    assert_eq!(resp.total, Some(13));
+    assert_eq!(resp.pagination_data.total, Some(13));
     assert_eq!(resp.points().unwrap(), 13);
 }

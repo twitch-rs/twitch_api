@@ -81,6 +81,7 @@ pub struct StartARaidResponse {
     is_mature: bool,
 }
 impl Request for StartARaidRequest<'_> {
+    type PaginationData = ();
     type Response = StartARaidResponse;
 
     const PATH: &'static str = "raids";
@@ -93,7 +94,7 @@ impl RequestPost for StartARaidRequest<'_> {
     type Body = helix::EmptyBody;
 
     fn parse_inner_response(
-        request: Option<Self>,
+        _request: Option<Self>,
         uri: &http::Uri,
         response_str: &str,
         status: http::StatusCode,
@@ -120,9 +121,7 @@ impl RequestPost for StartARaidRequest<'_> {
         })?;
         Ok(helix::Response {
             data,
-            pagination: response.pagination.cursor,
-            request,
-            total: None,
+            pagination_data: (),
             other: None,
         })
     }

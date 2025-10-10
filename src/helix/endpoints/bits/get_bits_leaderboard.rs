@@ -176,6 +176,7 @@ pub struct LeaderboardUser {
 }
 
 impl Request for GetBitsLeaderboardRequest<'_> {
+    type PaginationData = ();
     type Response = BitsLeaderboard;
 
     const PATH: &'static str = "bits/leaderboard";
@@ -186,7 +187,7 @@ impl Request for GetBitsLeaderboardRequest<'_> {
 
 impl RequestGet for GetBitsLeaderboardRequest<'_> {
     fn parse_inner_response(
-        request: Option<Self>,
+        _request: Option<Self>,
         uri: &http::Uri,
         response: &str,
         status: http::StatusCode,
@@ -215,9 +216,7 @@ impl RequestGet for GetBitsLeaderboardRequest<'_> {
                 date_range: response.date_range,
                 total: response.total,
             },
-            None,
-            request,
-            Some(response.total),
+            (),
             None,
         ))
     }

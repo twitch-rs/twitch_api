@@ -87,6 +87,7 @@ pub enum RemoveChannelVipResponse {
 }
 
 impl Request for RemoveChannelVipRequest<'_> {
+    type PaginationData = ();
     type Response = RemoveChannelVipResponse;
 
     const PATH: &'static str = "channels/vips";

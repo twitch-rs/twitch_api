@@ -138,6 +138,7 @@ impl<'a> ResolveUnbanRequest<'a> {
 }
 
 impl Request for ResolveUnbanRequest<'_> {
+    type PaginationData = ();
     type Response = super::UnbanRequest;
 
     const PATH: &'static str = "moderation/unban_requests";

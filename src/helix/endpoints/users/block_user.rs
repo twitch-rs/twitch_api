@@ -118,6 +118,7 @@ pub enum BlockUser {
 }
 
 impl Request for BlockUserRequest<'_> {
+    type PaginationData = ();
     type Response = BlockUser;
 
     #[cfg(feature = "twitch_oauth2")]

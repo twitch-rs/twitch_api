@@ -34,7 +34,7 @@
 //! and parse the [`http::Response`] with [`GetClipsRequest::parse_response(None, &request.get_uri(), response)`](GetClipsRequest::parse_response)
 
 use super::*;
-use helix::RequestGet;
+use helix::{PaginationState, RequestGet};
 
 /// Query Parameters for [Get Clips](super::get_clips)
 ///
@@ -199,6 +199,7 @@ pub struct Clip {
 }
 
 impl Request for GetClipsRequest<'_> {
+    type PaginationData = PaginationState<Self>;
     type Response = Vec<Clip>;
 
     const PATH: &'static str = "clips";

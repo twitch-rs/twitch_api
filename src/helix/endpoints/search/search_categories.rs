@@ -33,7 +33,7 @@
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
 //! and parse the [`http::Response`] with [`SearchCategoriesRequest::parse_response(None, &request.get_uri(), response)`](SearchCategoriesRequest::parse_response)
 use super::*;
-use helix::RequestGet;
+use helix::{pagination::PaginationData, PaginationState, RequestGet};
 
 // FIXME: One of id, user_id or game_id needs to be specified. typed_builder should have enums. id can not be used with other params
 /// Query Parameters for [Search Categories](super::search_categories)
@@ -85,6 +85,7 @@ impl<'a> SearchCategoriesRequest<'a> {
 pub type Category = types::TwitchCategory;
 
 impl Request for SearchCategoriesRequest<'_> {
+    type PaginationData = PaginationState<Self>;
     type Response = Vec<Category>;
 
     const PATH: &'static str = "search/categories";
@@ -113,9 +114,7 @@ impl RequestGet for SearchCategoriesRequest<'_> {
             })?;
         Ok(helix::Response::new(
             response.data.unwrap_or_default(),
-            response.pagination.cursor,
-            request,
-            response.total,
+            PaginationState::new(response.pagination.cursor, request, response.total),
             response.other,
         ))
     }

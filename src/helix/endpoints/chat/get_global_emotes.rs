@@ -56,6 +56,7 @@ impl GetGlobalEmotesRequest {
 pub type GetChannelEmotesResponse = GlobalEmote;
 
 impl Request for GetGlobalEmotesRequest {
+    type PaginationData = ();
     type Response = Vec<GetChannelEmotesResponse>;
 
     const PATH: &'static str = "chat/emotes/global";

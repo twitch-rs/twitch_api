@@ -19,6 +19,7 @@ pub struct UpdateConduitShardsRequest<'a> {
 }
 
 impl Request for UpdateConduitShardsRequest<'_> {
+    type PaginationData = ();
     type Response = UpdateConduitShardsResponse;
 
     const PATH: &'static str = "eventsub/conduits/shards";
@@ -75,7 +76,7 @@ impl<'a> RequestPatch for UpdateConduitShardsRequest<'a> {
     type Body = UpdateConduitShardsBody<'a>;
 
     fn parse_inner_response(
-        request: Option<Self>,
+        _request: Option<Self>,
         uri: &http::Uri,
         response: &str,
         status: http::StatusCode,
@@ -104,9 +105,7 @@ impl<'a> RequestPatch for UpdateConduitShardsRequest<'a> {
                 shards: inner_response.data,
                 errors: inner_response.errors,
             },
-            None,
-            request,
-            None,
+            (),
             None,
         ))
     }

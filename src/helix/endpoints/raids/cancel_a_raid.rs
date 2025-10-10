@@ -69,6 +69,7 @@ pub enum CancelARaidResponse {
 }
 
 impl Request for CancelARaidRequest<'_> {
+    type PaginationData = ();
     type Response = CancelARaidResponse;
 
     #[cfg(feature = "twitch_oauth2")]

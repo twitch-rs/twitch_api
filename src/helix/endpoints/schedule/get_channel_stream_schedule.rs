@@ -38,7 +38,7 @@
 //! and parse the [`http::Response`] with [`GetChannelStreamScheduleRequest::parse_response(None, &request.get_uri(), response)`](GetChannelStreamScheduleRequest::parse_response)
 
 use super::*;
-use helix::RequestGet;
+use helix::{PaginationState, RequestGet};
 
 /// Query Parameters for [Get Channel Stream Schedule](super::get_channel_stream_schedule)
 ///
@@ -120,6 +120,7 @@ impl<'a> GetChannelStreamScheduleRequest<'a> {
 pub type GetChannelStreamScheduleResponse = ScheduledBroadcasts;
 
 impl Request for GetChannelStreamScheduleRequest<'_> {
+    type PaginationData = PaginationState<Self>;
     type Response = ScheduledBroadcasts;
 
     const PATH: &'static str = "schedule";

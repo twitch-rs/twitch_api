@@ -83,6 +83,7 @@ pub enum DeleteCustomReward {
 }
 
 impl Request for DeleteCustomRewardRequest<'_> {
+    type PaginationData = ();
     type Response = DeleteCustomReward;
 
     const PATH: &'static str = "channel_points/custom_rewards";
