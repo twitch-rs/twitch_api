@@ -5,14 +5,32 @@ pub mod websocket;
 
 use clap::Parser;
 pub use opts::Secret;
+use reqwest::Client;
+use tokio::sync::Mutex;
 
-use std::sync::Arc;
+use std::{
+    collections::HashSet,
+    sync::{Arc, LazyLock},
+};
 
 use opts::Opts;
 
 use eyre::Context;
 
 use twitch_api::{client::ClientDefault, HelixClient};
+
+static HELIX_CLIENT: LazyLock<HelixClient<'_, Client>> = LazyLock::new(|| {
+    HelixClient::with_client(
+        <reqwest::Client>::default_client_with_name(Some(
+            "twitch-rs/eventsub"
+                .parse()
+                .wrap_err_with(|| "when creating header name")
+                .unwrap(),
+        ))
+        .wrap_err_with(|| "when creating client")
+        .unwrap(),
+    )
+});
 
 #[tokio::main]
 async fn main() -> Result<(), eyre::Report> {
@@ -39,15 +57,7 @@ async fn main() -> Result<(), eyre::Report> {
 /// Run the application
 pub async fn run(opts: Arc<Opts>) -> eyre::Result<()> {
     // Create the HelixClient, which is used to make requests to the Twitch API
-    let client: HelixClient<_> = twitch_api::HelixClient::with_client(
-        <reqwest::Client>::default_client_with_name(Some(
-            "twitch-rs/eventsub"
-                .parse()
-                .wrap_err_with(|| "when creating header name")
-                .unwrap(),
-        ))
-        .wrap_err_with(|| "when creating client")?,
-    );
+    let client: &'static HelixClient<_> = LazyLock::force(&HELIX_CLIENT);
 
     // Get the access token from the cli, dotenv or an oauth service
     let token: twitch_oauth2::UserToken =
@@ -67,27 +77,8 @@ pub async fn run(opts: Arc<Opts>) -> eyre::Result<()> {
         token.user_id.clone()
     };
 
-    let websocket_client = websocket::WebsocketClient {
-        session_id: None,
-        token,
-        client,
-        user_id,
-        connect_url: twitch_api::TWITCH_EVENTSUB_WEBSOCKET_URL.clone(),
-        opts,
-    };
+    // maybe the example can be generalized to handle a collection of ids
+    let channel_ids = Arc::new(HashSet::from([user_id]));
 
-    let websocket_client = tokio::spawn(async move { websocket_client.run().await });
-
-    tokio::try_join!(flatten(websocket_client))?;
-    Ok(())
-}
-
-async fn flatten<T>(
-    handle: tokio::task::JoinHandle<Result<T, eyre::Report>>,
-) -> Result<T, eyre::Report> {
-    match handle.await {
-        Ok(Ok(result)) => Ok(result),
-        Ok(Err(err)) => Err(err),
-        Err(e) => Err(e).wrap_err_with(|| "handling failed"),
-    }
+    websocket::run(client, Arc::new(Mutex::new(token)), opts, channel_ids).await
 }

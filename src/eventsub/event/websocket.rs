@@ -56,7 +56,7 @@ pub struct SessionData<'a> {
     pub status: Cow<'a, str>,
     /// The maximum number of seconds that you should expect silence before receiving a keepalive message. For a welcome message, this is the number of seconds that you have to subscribe to an event after receiving the welcome message. If you don’t subscribe to an event within this window, the socket is disconnected.
     pub keepalive_timeout_seconds: Option<i64>,
-    /// The URL to reconnect to if you get a Reconnect message. Is set to null.
+    /// The URL to reconnect to if you get a Reconnect message.
     #[serde(borrow = "'a")]
     pub reconnect_url: Option<Cow<'a, str>>,
     /// The UTC date and time that the connection was created.

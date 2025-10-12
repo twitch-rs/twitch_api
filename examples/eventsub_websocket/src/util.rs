@@ -63,7 +63,6 @@ pub async fn make_token<'a>(
     UserToken::from_token(client, token.into())
         .await
         .context("could not get/make access token")
-        .map_err(Into::into)
 }
 
 /// Get an access token from either the cli, dotenv (via [clap::Arg::env]) or an oauth service
