@@ -2,7 +2,7 @@
 //! A user sends a resubscription chat message in a specific channel
 
 use super::*;
-/// [`channel.subscription.message`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelsubscriptionmessage): a subscription to the specified channel expires.
+/// [`channel.subscription.message`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelsubscriptionmessage): a user sends a resubscription chat message in a specific channel.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]

@@ -2,7 +2,7 @@
 //! A user gives one or more gifted subscriptions in a channel.
 
 use super::*;
-/// [`channel.subscription.gift`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelsubscriptiongift): a subscription to the specified channel expires.
+/// [`channel.subscription.gift`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelsubscriptiongift): a user gives one or more gifted subscriptions in a channel.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
