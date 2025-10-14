@@ -56,6 +56,7 @@ impl GetGlobalChatBadgesRequest {
 pub type GetGlobalChatBadgesResponse = BadgeSet;
 
 impl Request for GetGlobalChatBadgesRequest {
+    type PaginationData = ();
     type Response = Vec<GetGlobalChatBadgesResponse>;
 
     const PATH: &'static str = "chat/badges/global";

@@ -98,6 +98,7 @@ pub struct AdSchedule {
 }
 
 impl Request for GetAdScheduleRequest<'_> {
+    type PaginationData = ();
     type Response = Option<AdSchedule>;
 
     const PATH: &'static str = "channels/ads";
@@ -110,7 +111,7 @@ impl Request for GetAdScheduleRequest<'_> {
 
 impl RequestGet for GetAdScheduleRequest<'_> {
     fn parse_inner_response(
-        request: Option<Self>,
+        _request: Option<Self>,
         uri: &http::Uri,
         str_response: &str,
         status: http::StatusCode,
@@ -159,9 +160,7 @@ impl RequestGet for GetAdScheduleRequest<'_> {
         };
         Ok(helix::Response::new(
             response.data.into_iter().next(),
-            response.pagination.cursor,
-            request,
-            response.total,
+            (),
             response.other,
         ))
     }

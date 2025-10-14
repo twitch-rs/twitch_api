@@ -165,6 +165,7 @@ impl helix::private::SealedSerialize for CreateCustomRewardBody<'_> {}
 pub type CreateCustomRewardResponse = super::CustomReward;
 
 impl Request for CreateCustomRewardRequest<'_> {
+    type PaginationData = ();
     type Response = CreateCustomRewardResponse;
 
     const PATH: &'static str = "channel_points/custom_rewards";
@@ -177,7 +178,7 @@ impl<'a> RequestPost for CreateCustomRewardRequest<'a> {
     type Body = CreateCustomRewardBody<'a>;
 
     fn parse_inner_response(
-        request: Option<Self>,
+        _request: Option<Self>,
         uri: &http::Uri,
         response_str: &str,
         status: http::StatusCode,
@@ -204,9 +205,7 @@ impl<'a> RequestPost for CreateCustomRewardRequest<'a> {
         })?;
         Ok(helix::Response {
             data,
-            pagination: response.pagination.cursor,
-            request,
-            total: response.total,
+            pagination_data: (),
             other: None,
         })
     }

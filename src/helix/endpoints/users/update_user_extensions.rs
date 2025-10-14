@@ -84,6 +84,7 @@ impl UpdateUserExtensionsRequest<'_> {
 }
 
 impl Request for UpdateUserExtensionsRequest<'_> {
+    type PaginationData = ();
     type Response = ExtensionConfiguration;
 
     const PATH: &'static str = "users/extensions";
@@ -223,7 +224,7 @@ impl<'a> RequestPut for UpdateUserExtensionsRequest<'a> {
     type Body = UpdateUserExtensionsBody<'a>;
 
     fn parse_inner_response(
-        request: Option<Self>,
+        _request: Option<Self>,
         uri: &http::Uri,
         response: &str,
         status: http::StatusCode,
@@ -242,9 +243,7 @@ impl<'a> RequestPut for UpdateUserExtensionsRequest<'a> {
             })?;
         Ok(helix::Response::new(
             inner_response.data,
-            inner_response.pagination.cursor,
-            request,
-            inner_response.total,
+            (),
             inner_response.other,
         ))
     }

@@ -152,6 +152,7 @@ pub enum ManageHeldAutoModMessages {
 }
 
 impl Request for ManageHeldAutoModMessagesRequest<'_> {
+    type PaginationData = ();
     type Response = ManageHeldAutoModMessages;
 
     const PATH: &'static str = "moderation/automod/message";

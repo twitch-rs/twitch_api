@@ -121,6 +121,7 @@ pub struct ActivePositionedExtension {
 }
 
 impl Request for GetUserActiveExtensionsRequest<'_> {
+    type PaginationData = ();
     type Response = ExtensionConfiguration;
 
     #[cfg(feature = "twitch_oauth2")]

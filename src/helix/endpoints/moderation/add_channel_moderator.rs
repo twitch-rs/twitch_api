@@ -82,6 +82,7 @@ pub enum AddChannelModeratorResponse {
 }
 
 impl Request for AddChannelModeratorRequest<'_> {
+    type PaginationData = ();
     type Response = AddChannelModeratorResponse;
 
     const PATH: &'static str = "moderation/moderators";

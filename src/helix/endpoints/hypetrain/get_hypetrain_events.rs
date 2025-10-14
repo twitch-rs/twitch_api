@@ -36,7 +36,7 @@
 //! and parse the [`http::Response`] with [`GetHypeTrainEventsRequest::parse_response(None, &request.get_uri(), response)`](GetHypeTrainEventsRequest::parse_response)
 
 use super::*;
-use helix::RequestGet;
+use helix::{PaginationState, RequestGet};
 
 /// Query Parameters for [Get Hype Train Events](super::get_hypetrain_events)
 ///
@@ -135,6 +135,7 @@ pub struct HypeTrainEventData {
 }
 
 impl Request for GetHypeTrainEventsRequest<'_> {
+    type PaginationData = PaginationState<Self>;
     type Response = Vec<HypeTrainEvent>;
 
     const PATH: &'static str = "hypetrain/events";

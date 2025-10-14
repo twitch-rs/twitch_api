@@ -135,6 +135,7 @@ pub struct CustomReward {
 }
 
 impl Request for GetCustomRewardRequest<'_> {
+    type PaginationData = ();
     type Response = Vec<CustomReward>;
 
     const PATH: &'static str = "channel_points/custom_rewards";

@@ -82,6 +82,7 @@ pub struct ContentClassificationLabel {
 }
 
 impl Request for GetContentClassificationLabelsRequest<'_> {
+    type PaginationData = ();
     type Response = Vec<ContentClassificationLabel>;
 
     const PATH: &'static str = "content_classification_labels";

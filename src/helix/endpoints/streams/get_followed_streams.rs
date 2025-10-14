@@ -39,7 +39,7 @@
 //! and parse the [`http::Response`] with [`GetFollowedStreamsRequest::parse_response(None, &request.get_uri(), response)`](GetFollowedStreamsRequest::parse_response)
 
 use super::*;
-use helix::RequestGet;
+use helix::{PaginationState, RequestGet};
 
 /// Query Parameters for [Get Followed Streams](super::get_followed_streams)
 ///
@@ -94,6 +94,7 @@ impl<'a> GetFollowedStreamsRequest<'a> {
 pub type GetFollowedStreamsResponse = Stream;
 
 impl Request for GetFollowedStreamsRequest<'_> {
+    type PaginationData = PaginationState<Self>;
     type Response = Vec<GetFollowedStreamsResponse>;
 
     const PATH: &'static str = "streams/followed";

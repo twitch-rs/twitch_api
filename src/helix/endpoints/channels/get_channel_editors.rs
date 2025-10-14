@@ -84,6 +84,7 @@ pub struct Editor {
 }
 
 impl Request for GetChannelEditorsRequest<'_> {
+    type PaginationData = ();
     type Response = Vec<Editor>;
 
     const PATH: &'static str = "channels/editors";

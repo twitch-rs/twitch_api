@@ -174,6 +174,7 @@ impl<'a> NewPollChoice<'a> {
 pub type CreatePollResponse = super::Poll;
 
 impl Request for CreatePollRequest<'_> {
+    type PaginationData = ();
     type Response = CreatePollResponse;
 
     const PATH: &'static str = "polls";
@@ -186,7 +187,7 @@ impl<'a> RequestPost for CreatePollRequest<'a> {
     type Body = CreatePollBody<'a>;
 
     fn parse_inner_response(
-        request: Option<Self>,
+        _request: Option<Self>,
         uri: &http::Uri,
         response_str: &str,
         status: http::StatusCode,
@@ -213,9 +214,7 @@ impl<'a> RequestPost for CreatePollRequest<'a> {
         })?;
         Ok(helix::Response {
             data,
-            pagination: response.pagination.cursor,
-            request,
-            total: None,
+            pagination_data: (),
             other: None,
         })
     }

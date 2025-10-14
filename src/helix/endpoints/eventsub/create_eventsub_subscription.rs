@@ -31,6 +31,7 @@ impl<E: EventSubscription> Default for CreateEventSubSubscriptionRequest<E> {
 }
 
 impl<E: EventSubscription> helix::Request for CreateEventSubSubscriptionRequest<E> {
+    type PaginationData = ();
     type Response = CreateEventSubSubscription<E>;
 
     #[cfg(feature = "twitch_oauth2")]

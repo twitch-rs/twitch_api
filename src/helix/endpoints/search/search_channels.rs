@@ -35,7 +35,7 @@
 //! and parse the [`http::Response`] with [`SearchChannelsRequest::parse_response(None, &request.get_uri(), response)`](SearchChannelsRequest::parse_response)
 
 use super::*;
-use helix::RequestGet;
+use helix::{PaginationState, RequestGet};
 
 /// Query Parameters for [Search Channels](super::search_channels)
 ///
@@ -125,6 +125,7 @@ pub struct Channel {
 }
 
 impl Request for SearchChannelsRequest<'_> {
+    type PaginationData = PaginationState<Self>;
     type Response = Vec<Channel>;
 
     const PATH: &'static str = "search/channels";

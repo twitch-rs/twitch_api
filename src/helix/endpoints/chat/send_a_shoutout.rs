@@ -85,6 +85,7 @@ pub enum SendAShoutoutResponse {
     Success,
 }
 impl Request for SendAShoutoutRequest<'_> {
+    type PaginationData = ();
     type Response = SendAShoutoutResponse;
 
     const PATH: &'static str = "chat/shoutouts";

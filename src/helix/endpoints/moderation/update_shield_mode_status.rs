@@ -115,6 +115,7 @@ impl UpdateShieldModeStatusBody<'_> {
 }
 
 impl Request for UpdateShieldModeStatusRequest<'_> {
+    type PaginationData = ();
     type Response = super::ShieldModeStatus;
 
     const PATH: &'static str = "moderation/shield_mode";
@@ -127,7 +128,7 @@ impl<'a> RequestPut for UpdateShieldModeStatusRequest<'a> {
     type Body = UpdateShieldModeStatusBody<'a>;
 
     fn parse_inner_response(
-        request: Option<Self>,
+        _request: Option<Self>,
         uri: &http::Uri,
         response: &str,
         status: http::StatusCode,
@@ -153,9 +154,7 @@ impl<'a> RequestPut for UpdateShieldModeStatusRequest<'a> {
                     uri: uri.clone(),
                 },
             )?,
-            inner_response.pagination.cursor,
-            request,
-            inner_response.total,
+            (),
             inner_response.other,
         ))
     }

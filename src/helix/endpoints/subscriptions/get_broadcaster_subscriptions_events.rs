@@ -42,7 +42,7 @@
 // FIXME: Twitch docs sucks... This entire endpoint is removed from docs
 
 use super::*;
-use helix::RequestGet;
+use helix::{PaginationState, RequestGet};
 
 /// Query Parameters for [Get Broadcaster Subscriptions Events](super::get_broadcaster_subscriptions_events)
 ///
@@ -179,6 +179,7 @@ where D: serde::de::Deserializer<'de> {
 }
 
 impl Request for GetBroadcasterSubscriptionsEventsRequest<'_> {
+    type PaginationData = PaginationState<Self>;
     type Response = Vec<BroadcasterSubscriptionEvent>;
 
     const PATH: &'static str = "subscriptions/events";

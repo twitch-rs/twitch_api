@@ -35,7 +35,7 @@
 //! and parse the [`http::Response`] with [`GetBannedUsersRequest::parse_response(None, &request.get_uri(), response)`](GetBannedUsersRequest::parse_response)
 
 use super::*;
-use helix::RequestGet;
+use helix::{PaginationState, RequestGet};
 
 /// Query Parameters for [Get Banned Users](super::get_banned_users)
 ///
@@ -123,6 +123,7 @@ pub struct BannedUser {
 }
 
 impl Request for GetBannedUsersRequest<'_> {
+    type PaginationData = PaginationState<Self>;
     type Response = Vec<BannedUser>;
 
     const PATH: &'static str = "moderation/banned";

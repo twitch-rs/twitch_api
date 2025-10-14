@@ -268,6 +268,7 @@ pub struct SendChatMessageResponse {
 }
 
 impl Request for SendChatMessageRequest<'_> {
+    type PaginationData = ();
     type Response = SendChatMessageResponse;
 
     const PATH: &'static str = "chat/messages";

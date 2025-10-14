@@ -187,6 +187,7 @@ impl UpdateAutoModSettingsIndividual {
 }
 
 impl Request for UpdateAutoModSettingsRequest<'_> {
+    type PaginationData = ();
     type Response = super::AutoModSettings;
 
     const PATH: &'static str = "moderation/automod/settings";

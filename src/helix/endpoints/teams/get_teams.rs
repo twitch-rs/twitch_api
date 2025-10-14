@@ -85,6 +85,7 @@ pub struct Team {
 }
 
 impl Request for GetTeamsRequest<'_> {
+    type PaginationData = ();
     type Response = Vec<Team>;
 
     #[cfg(feature = "twitch_oauth2")]

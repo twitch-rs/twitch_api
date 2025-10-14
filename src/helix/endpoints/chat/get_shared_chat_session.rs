@@ -90,6 +90,7 @@ pub struct SharedChatParticipant {
 }
 
 impl Request for GetSharedChatSessionRequest<'_> {
+    type PaginationData = ();
     type Response = Option<SharedChatSession>;
 
     const PATH: &'static str = "shared_chat/session";

@@ -137,6 +137,7 @@ pub struct CreatedStreamMarker {
 }
 
 impl Request for CreateStreamMarkerRequest<'_> {
+    type PaginationData = ();
     type Response = CreatedStreamMarker;
 
     const PATH: &'static str = "streams/markers";

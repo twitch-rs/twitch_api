@@ -1,14 +1,16 @@
 //! Requests for driving the API
 pub mod errors;
-use std::{convert::TryInto, marker::PhantomData, str::FromStr};
+use std::{convert::TryInto, fmt::Debug, marker::PhantomData, str::FromStr};
 
 use crate::parse_json;
 
-use super::{ser, HelixRequestBody, HelixRequestError, InnerResponse, Response};
+use super::{
+    pagination::PaginationData, ser, HelixRequestBody, HelixRequestError, InnerResponse, Response,
+};
 use errors::*;
 /// A request is a Twitch endpoint, see [New Twitch API](https://dev.twitch.tv/docs/api/reference) reference
 #[async_trait::async_trait]
-pub trait Request: serde::Serialize {
+pub trait Request: serde::Serialize + Sized {
     /// The path to the endpoint relative to the helix root. eg. `channels` for [Get Channel Information](https://dev.twitch.tv/docs/api/reference#get-channel-information)
     const PATH: &'static str;
     /// Scopes needed for this endpoint
@@ -17,8 +19,15 @@ pub trait Request: serde::Serialize {
     /// Optional scopes needed by this endpoint
     #[cfg(feature = "twitch_oauth2")]
     const OPT_SCOPE: &'static [twitch_oauth2::Scope] = &[];
+
     /// Response type. twitch's response will  deserialize to this.
     type Response: serde::de::DeserializeOwned + PartialEq;
+
+    /// Data to keep track of the pagination state.
+    ///
+    /// If the request isn't paginated, this should be `()`.
+    type PaginationData: PartialEq + Debug + PaginationData<Self>;
+
     /// Defines layout of the url parameters.
     fn query(&self) -> Result<String, errors::SerializeError> { ser::to_string(self) }
     /// Returns full URI for the request, including query parameters.
@@ -126,9 +135,7 @@ pub trait RequestPost: Request {
             })?;
         Ok(Response::new(
             response.data,
-            response.pagination.cursor,
-            request,
-            response.total,
+            Self::PaginationData::new(response.pagination.cursor, request, response.total),
             response.other,
         ))
     }
@@ -429,9 +436,7 @@ pub trait RequestGet: Request {
         })?;
         Ok(Response::new(
             response.data,
-            response.pagination.cursor,
-            request,
-            response.total,
+            Self::PaginationData::new(response.pagination.cursor, request, response.total),
             response.other,
         ))
     }

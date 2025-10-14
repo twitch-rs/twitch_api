@@ -34,7 +34,7 @@
 //! and parse the [`http::Response`] with [`GetUserBlockListRequest::parse_response(None, &request.get_uri(), response)`](GetUserBlockListRequest::parse_response)
 
 use super::*;
-use helix::RequestGet;
+use helix::{PaginationState, RequestGet};
 
 /// Query Parameters for [Get Users Block List](super::get_user_block_list)
 ///
@@ -84,6 +84,7 @@ pub struct UserBlock {
 }
 
 impl Request for GetUserBlockListRequest<'_> {
+    type PaginationData = PaginationState<Self>;
     type Response = Vec<UserBlock>;
 
     #[cfg(feature = "twitch_oauth2")]

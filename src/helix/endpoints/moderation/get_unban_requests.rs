@@ -39,7 +39,7 @@
 //! and parse the [`http::Response`] with [`GetUnbanRequestsRequest::parse_response(None, &request.get_uri(), response)`](GetUnbanRequestsRequest::parse_response)
 
 use super::*;
-use helix::RequestGet;
+use helix::{PaginationState, RequestGet};
 
 /// The status of an unban request
 #[derive(PartialEq, Eq, Debug, Clone, Serialize, Deserialize)]
@@ -159,6 +159,7 @@ pub struct UnbanRequest {
 }
 
 impl Request for GetUnbanRequestsRequest<'_> {
+    type PaginationData = PaginationState<Self>;
     type Response = Vec<UnbanRequest>;
 
     const PATH: &'static str = "moderation/unban_requests";

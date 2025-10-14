@@ -98,6 +98,7 @@ pub struct UserSubscription {
 }
 
 impl Request for CheckUserSubscriptionRequest<'_> {
+    type PaginationData = ();
     type Response = UserSubscription;
 
     const PATH: &'static str = "subscriptions/user";
@@ -108,7 +109,7 @@ impl Request for CheckUserSubscriptionRequest<'_> {
 
 impl RequestGet for CheckUserSubscriptionRequest<'_> {
     fn parse_inner_response(
-        request: Option<Self>,
+        _request: Option<Self>,
         uri: &http::Uri,
         text: &str,
         status: http::StatusCode,
@@ -134,9 +135,7 @@ impl RequestGet for CheckUserSubscriptionRequest<'_> {
                     uri: uri.clone(),
                 },
             )?,
-            inner_response.pagination.cursor,
-            request,
-            inner_response.total,
+            (),
             inner_response.other,
         ))
     }

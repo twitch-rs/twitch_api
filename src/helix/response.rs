@@ -1,8 +1,8 @@
 //! Responses contains the return values of a [request](super::Request).
-use super::{Cursor, Request};
+use super::{pagination::PaginationData, Request};
 
 /// Response retrieved from endpoint. Data is the type in [`Request::Response`]
-#[derive(PartialEq, Eq, Debug)]
+#[derive(PartialEq, Debug)]
 #[non_exhaustive]
 pub struct Response<R, D>
 where
@@ -10,16 +10,20 @@ where
     D: serde::de::DeserializeOwned + PartialEq, {
     /// Twitch's response field for `data`.
     pub data: D,
-    /// A cursor value, to be used in a subsequent request to specify the starting point of the next set of results.
-    pub pagination: Option<Cursor>,
-    /// The request that was sent, used for [pagination](super::Paginated).
-    pub request: Option<R>,
-    /// Response would return this many results if fully paginated. Sometimes this is not emmitted or correct for this purpose, in those cases, this value will be `None`.
-    pub total: Option<i64>,
+    /// Data used when paginating
+    pub pagination_data: <R as Request>::PaginationData,
     /// Fields which are not part of the data response, but are returned by the endpoint.
     ///
     /// See for example [Get Broadcaster Subscriptions](https://dev.twitch.tv/docs/api/reference#get-broadcaster-subscriptions) which returns this.
     pub other: Option<serde_json::Map<String, serde_json::Value>>,
+}
+
+impl<R, D> Eq for Response<R, D>
+where
+    R: Request + Eq,
+    R::PaginationData: Eq,
+    D: serde::de::DeserializeOwned + PartialEq + Eq,
+{
 }
 
 impl<R, D> Response<R, D>
@@ -43,6 +47,7 @@ where
     /// }
     ///
     /// impl Request for MyTwitchRequest {
+    ///     type PaginationData = ();
     ///     type Response = MyTwitchResponse;
     ///
     ///     const PATH: &'static str = "my/request";
@@ -68,9 +73,7 @@ where
     ///         match status {
     ///             http::StatusCode::NO_CONTENT => Ok(helix::Response::new(
     ///                 MyTwitchResponse::Success,
-    ///                 None,
-    ///                 request,
-    ///                 None,
+    ///                 (),
     ///                 None,
     ///             )),
     ///             _ => Err(helix::HelixRequestPostError::InvalidResponse {
@@ -85,16 +88,12 @@ where
     /// ```
     pub const fn new(
         data: D,
-        pagination: Option<Cursor>,
-        request: Option<R>,
-        total: Option<i64>,
+        pagination_data: <R as Request>::PaginationData,
         other: Option<serde_json::Map<String, serde_json::Value>>,
     ) -> Self {
         Self {
             data,
-            pagination,
-            request,
-            total,
+            pagination_data,
             other,
         }
     }
@@ -115,6 +114,7 @@ where
     /// }
     ///
     /// impl Request for MyTwitchRequest {
+    ///     type PaginationData = ();
     ///     type Response = MyTwitchResponse;
     ///
     ///     const PATH: &'static str = "my/request";
@@ -152,8 +152,12 @@ where
     ///     }
     /// }
     /// ```
-    pub const fn with_data(data: D, request: Option<R>) -> Self {
-        Self::new(data, None, request, None, None)
+    pub fn with_data(data: D, request: Option<R>) -> Self {
+        Self::new(
+            data,
+            <R as Request>::PaginationData::new(None, request, None),
+            None,
+        )
     }
 
     /// Get a field from the response that is not part of `data`.
@@ -165,7 +169,7 @@ where
         use std::borrow::Borrow as _;
         match &key {
             total if &String::from("total").borrow() == total => {
-                if let Some(total) = self.total {
+                if let Some(total) = self.pagination_data.total() {
                     let total = serde_json::json!(total);
                     Some(serde_json::from_value(total)).transpose()
                 } else {
@@ -212,9 +216,9 @@ where
         client: &'a super::HelixClient<'a, C>,
         token: &(impl super::TwitchToken + ?Sized),
     ) -> Result<Option<Self>, super::ClientRequestError<<C as crate::HttpClient>::Error>> {
-        if let Some(mut req) = self.request.clone() {
-            if self.pagination.is_some() {
-                req.set_pagination(self.pagination);
+        if let Some(mut req) = self.pagination_data.request.clone() {
+            if self.pagination_data.cursor.is_some() {
+                req.set_pagination(self.pagination_data.cursor);
                 let res = client.req_get(req, token).await.map(Some);
                 if let Ok(Some(r)) = res {
                     // FIXME: Workaround for https://github.com/twitchdev/issues/issues/18

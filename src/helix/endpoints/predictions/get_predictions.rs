@@ -36,7 +36,7 @@
 //! and parse the [`http::Response`] with [`GetPredictionsRequest::parse_response(None, &request.get_uri(), response)`](GetPredictionsRequest::parse_response)
 
 use super::*;
-use helix::RequestGet;
+use helix::{PaginationState, RequestGet};
 pub use types::{PredictionOutcome, PredictionOutcomeId, PredictionStatus};
 
 /// Query Parameters for [Get predictions](super::get_predictions)
@@ -121,6 +121,7 @@ pub struct Prediction {
 }
 
 impl Request for GetPredictionsRequest<'_> {
+    type PaginationData = PaginationState<Self>;
     type Response = Vec<Prediction>;
 
     const PATH: &'static str = "predictions";

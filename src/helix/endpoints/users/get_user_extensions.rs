@@ -91,6 +91,7 @@ pub enum ExtensionType {
 }
 
 impl Request for GetUserExtensionsRequest {
+    type PaginationData = ();
     type Response = Vec<Extension>;
 
     #[cfg(feature = "twitch_oauth2")]

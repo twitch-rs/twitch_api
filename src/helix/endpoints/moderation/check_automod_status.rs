@@ -144,6 +144,7 @@ pub struct CheckAutoModStatus {
 }
 
 impl Request for CheckAutoModStatusRequest<'_> {
+    type PaginationData = ();
     type Response = Vec<CheckAutoModStatus>;
 
     const PATH: &'static str = "moderation/enforcements/status";

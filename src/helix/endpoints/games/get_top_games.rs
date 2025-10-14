@@ -34,7 +34,7 @@
 //! and parse the [`http::Response`] with [`GetTopGamesRequest::parse_response(None, &request.get_uri(), response)`](GetTopGamesRequest::parse_response)
 
 use super::*;
-use helix::RequestGet;
+use helix::{PaginationState, RequestGet};
 
 /// Query Parameters for [Get Top Games](super::get_games)
 ///
@@ -71,6 +71,7 @@ impl GetTopGamesRequest<'_> {
 pub type Game = types::TwitchCategory;
 
 impl Request for GetTopGamesRequest<'_> {
+    type PaginationData = PaginationState<Self>;
     type Response = Vec<Game>;
 
     const PATH: &'static str = "games/top";

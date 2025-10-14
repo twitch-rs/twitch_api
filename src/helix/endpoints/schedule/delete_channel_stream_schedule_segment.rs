@@ -87,6 +87,7 @@ pub enum DeleteChannelStreamScheduleSegment {
 }
 
 impl Request for DeleteChannelStreamScheduleSegmentRequest<'_> {
+    type PaginationData = ();
     type Response = DeleteChannelStreamScheduleSegment;
 
     const PATH: &'static str = "schedule/segment";

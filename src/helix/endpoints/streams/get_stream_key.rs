@@ -70,6 +70,7 @@ pub struct GetStreamKeyResponse {
 }
 
 impl Request for GetStreamKeyRequest<'_> {
+    type PaginationData = ();
     type Response = GetStreamKeyResponse;
 
     const PATH: &'static str = "streams/key";

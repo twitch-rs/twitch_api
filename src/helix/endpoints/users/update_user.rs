@@ -71,6 +71,7 @@ impl<'a> UpdateUserRequest<'a> {
 }
 
 impl Request for UpdateUserRequest<'_> {
+    type PaginationData = ();
     type Response = User;
 
     const PATH: &'static str = "users";

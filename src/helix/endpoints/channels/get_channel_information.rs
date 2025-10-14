@@ -119,6 +119,7 @@ pub struct ChannelInformation {
 }
 
 impl Request for GetChannelInformationRequest<'_> {
+    type PaginationData = ();
     type Response = Vec<ChannelInformation>;
 
     const PATH: &'static str = "channels";

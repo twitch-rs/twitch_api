@@ -130,6 +130,7 @@ pub enum ReplaceStreamTags {
 impl helix::private::SealedSerialize for ReplaceStreamTagsBody<'_> {}
 
 impl Request for ReplaceStreamTagsRequest<'_> {
+    type PaginationData = ();
     type Response = ReplaceStreamTags;
 
     const PATH: &'static str = "streams/tags";
@@ -142,7 +143,7 @@ impl<'a> RequestPut for ReplaceStreamTagsRequest<'a> {
     type Body = ReplaceStreamTagsBody<'a>;
 
     fn parse_inner_response(
-        request: Option<Self>,
+        _request: Option<Self>,
         uri: &http::Uri,
         response: &str,
         status: http::StatusCode,
@@ -153,9 +154,7 @@ impl<'a> RequestPut for ReplaceStreamTagsRequest<'a> {
         match status {
             http::StatusCode::NO_CONTENT | http::StatusCode::OK => Ok(helix::Response::new(
                 ReplaceStreamTags::Success,
-                None,
-                request,
-                None,
+                (),
                 <_>::default(),
             )),
             _ => Err(helix::HelixRequestPutError::InvalidResponse {

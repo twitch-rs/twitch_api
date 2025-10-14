@@ -397,6 +397,7 @@ use twitch_oauth2::TwitchToken;
 #[cfg(feature = "client")]
 pub mod client;
 mod endpoints;
+pub mod pagination;
 pub mod request;
 pub mod response;
 
@@ -416,6 +417,9 @@ pub use request::errors::{
 pub use request::{Request, RequestDelete, RequestGet, RequestPatch, RequestPost, RequestPut};
 #[doc(inline)]
 pub use response::Response;
+
+#[doc(inline)]
+pub use pagination::PaginationState;
 
 pub(crate) mod ser;
 pub(crate) use crate::deserialize_default_from_null;
@@ -520,7 +524,8 @@ where
 }
 
 /// A request that can be paginated.
-pub trait Paginated: Request {
+pub trait Paginated: Request<PaginationData = PaginationState<Self>>
+where Self: Sized {
     /// Should returns the current pagination cursor.
     ///
     /// # Notes

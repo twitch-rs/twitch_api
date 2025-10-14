@@ -3,7 +3,7 @@
 
 use super::*;
 use crate::eventsub;
-use helix::RequestGet;
+use helix::{PaginationState, RequestGet};
 
 /// Query Parameters for [Get Conduit Shards](super::get_conduit_shards)
 ///
@@ -63,6 +63,7 @@ pub struct ConduitShards {
 }
 
 impl Request for GetConduitShardsRequest<'_> {
+    type PaginationData = PaginationState<Self>;
     type Response = Vec<eventsub::ShardResponse>;
 
     const PATH: &'static str = "eventsub/conduits/shards";

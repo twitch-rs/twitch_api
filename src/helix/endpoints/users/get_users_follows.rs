@@ -32,7 +32,7 @@
 //! and parse the [`http::Response`] with [`GetUsersFollowsRequest::parse_response(None, &request.get_uri(), response)`](GetUsersFollowsRequest::parse_response)
 
 use super::*;
-use helix::RequestGet;
+use helix::{pagination::PaginationData, PaginationState, RequestGet};
 /// Query Parameters for [Get Users Follows](super::get_users_follows)
 ///
 /// [`get-users-follows`](https://dev.twitch.tv/docs/api/reference#get-users-follows)
@@ -147,6 +147,7 @@ pub struct FollowRelationship {
 }
 
 impl Request for GetUsersFollowsRequest<'_> {
+    type PaginationData = PaginationState<Self>;
     type Response = UsersFollows;
 
     #[cfg(feature = "twitch_oauth2")]
@@ -187,9 +188,7 @@ impl RequestGet for GetUsersFollowsRequest<'_> {
                 total: response.total,
                 follow_relationships: response.data,
             },
-            response.pagination.cursor,
-            request,
-            Some(response.total),
+            PaginationState::new(response.pagination.cursor, request, Some(response.total)),
             None,
         ))
     }

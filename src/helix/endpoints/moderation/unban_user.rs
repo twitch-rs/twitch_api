@@ -86,6 +86,7 @@ pub enum UnbanUserResponse {
 }
 
 impl Request for UnbanUserRequest<'_> {
+    type PaginationData = ();
     type Response = UnbanUserResponse;
 
     const PATH: &'static str = "moderation/bans";

@@ -15,6 +15,7 @@ use helix::RequestPost;
 pub struct CreateConduitRequest {}
 
 impl Request for CreateConduitRequest {
+    type PaginationData = ();
     type Response = eventsub::Conduit;
 
     const PATH: &'static str = "eventsub/conduits";
@@ -44,7 +45,7 @@ impl RequestPost for CreateConduitRequest {
     type Body = CreateConduitBody;
 
     fn parse_inner_response(
-        request: Option<Self>,
+        _request: Option<Self>,
         uri: &http::Uri,
         response: &str,
         status: http::StatusCode,
@@ -69,7 +70,7 @@ impl RequestPost for CreateConduitRequest {
 
         let [conduit] = inner_response.data;
 
-        Ok(helix::Response::new(conduit, None, request, None, None))
+        Ok(helix::Response::new(conduit, (), None))
     }
 }
 

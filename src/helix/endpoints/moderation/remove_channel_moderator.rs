@@ -83,6 +83,7 @@ pub enum RemoveChannelModeratorResponse {
 }
 
 impl Request for RemoveChannelModeratorRequest<'_> {
+    type PaginationData = ();
     type Response = RemoveChannelModeratorResponse;
 
     const PATH: &'static str = "moderation/moderators";

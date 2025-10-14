@@ -135,6 +135,7 @@ pub enum EndPoll {
 }
 
 impl Request for EndPollRequest<'_> {
+    type PaginationData = ();
     type Response = EndPoll;
 
     const PATH: &'static str = "polls";

@@ -153,6 +153,7 @@ impl helix::private::SealedSerialize for CreateChannelStreamScheduleSegmentBody<
 pub type CreateChannelStreamScheduleSegmentResponse = ScheduledBroadcasts;
 
 impl Request for CreateChannelStreamScheduleSegmentRequest<'_> {
+    type PaginationData = ();
     type Response = CreateChannelStreamScheduleSegmentResponse;
 
     const PATH: &'static str = "schedule/segment";

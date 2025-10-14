@@ -103,6 +103,7 @@ pub enum DeleteChatMessagesResponse {
 }
 
 impl Request for DeleteChatMessagesRequest<'_> {
+    type PaginationData = ();
     type Response = DeleteChatMessagesResponse;
 
     #[cfg(feature = "twitch_oauth2")]

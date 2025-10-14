@@ -123,6 +123,7 @@ impl helix::HelixRequestBody for [AddBlockedTermBody<'_>] {
 pub type AddBlockedTermResponse = BlockedTerm;
 
 impl Request for AddBlockedTermRequest<'_> {
+    type PaginationData = ();
     // FIXME: this is a single entry
     type Response = Vec<BlockedTerm>;
 

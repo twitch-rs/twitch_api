@@ -43,7 +43,7 @@
 //! and parse the [`http::Response`] with [`GetCustomRewardRedemptionRequest::parse_response(None, &request.get_uri(), response)`](GetCustomRewardRedemptionRequest::parse_response)
 
 use super::*;
-use helix::RequestGet;
+use helix::{PaginationState, RequestGet};
 
 /// Query Parameters for [Get Custom Reward Redemption](super::get_custom_reward_redemption)
 ///
@@ -201,6 +201,7 @@ pub struct Reward {
 }
 
 impl Request for GetCustomRewardRedemptionRequest<'_> {
+    type PaginationData = PaginationState<Self>;
     type Response = Vec<CustomRewardRedemption>;
 
     const PATH: &'static str = "channel_points/custom_rewards/redemptions";

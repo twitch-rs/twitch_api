@@ -186,6 +186,7 @@ pub struct CheermoteImageArray {
 pub struct Level(pub String);
 
 impl Request for GetCheermotesRequest<'_> {
+    type PaginationData = ();
     type Response = Vec<Cheermote>;
 
     const PATH: &'static str = "bits/cheermotes";

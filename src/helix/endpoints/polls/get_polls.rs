@@ -34,7 +34,7 @@
 //! and parse the [`http::Response`] with [`GetPollsRequest::parse_response(None, &request.get_uri(), response)`](GetPollsRequest::parse_response)
 
 use super::*;
-use helix::RequestGet;
+use helix::{PaginationState, RequestGet};
 pub use types::{PollChoice, PollStatus};
 
 /// Query Parameters for [Get polls](super::get_polls)
@@ -116,6 +116,7 @@ pub struct Poll {
 }
 
 impl Request for GetPollsRequest<'_> {
+    type PaginationData = PaginationState<Self>;
     type Response = Vec<Poll>;
 
     const PATH: &'static str = "polls";

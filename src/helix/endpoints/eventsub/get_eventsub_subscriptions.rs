@@ -2,7 +2,7 @@
 
 use super::*;
 use crate::eventsub;
-use helix::RequestGet;
+use helix::{pagination::PaginationData, PaginationState, RequestGet};
 
 /// Query Parameters for [Get EventSub Subscriptions](super::get_eventsub_subscriptions)
 ///
@@ -55,6 +55,7 @@ impl GetEventSubSubscriptionsRequest<'_> {
 }
 
 impl Request for GetEventSubSubscriptionsRequest<'_> {
+    type PaginationData = PaginationState<Self>;
     type Response = EventSubSubscriptions;
 
     const PATH: &'static str = "eventsub/subscriptions";
@@ -117,9 +118,7 @@ impl RequestGet for GetEventSubSubscriptionsRequest<'_> {
                 max_total_cost: response.max_total_cost,
                 subscriptions: response.data,
             },
-            response.pagination.cursor,
-            request,
-            Some(response.total),
+            PaginationState::new(response.pagination.cursor, request, Some(response.total)),
             None,
         ))
     }

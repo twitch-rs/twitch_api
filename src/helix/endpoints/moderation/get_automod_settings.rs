@@ -100,6 +100,7 @@ pub struct AutoModSettings {
 }
 
 impl Request for GetAutoModSettingsRequest<'_> {
+    type PaginationData = ();
     type Response = AutoModSettings;
 
     const PATH: &'static str = "moderation/automod/settings";

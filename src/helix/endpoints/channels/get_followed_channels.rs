@@ -35,8 +35,9 @@
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestGet::create_request)
 //! and parse the [`http::Response`] with [`GetFollowedChannels::parse_response(None, &request.get_uri(), response)`](GetFollowedChannels::parse_response)
+
 use super::*;
-use helix::RequestGet;
+use helix::{PaginationState, RequestGet};
 
 /// Query Parameters for [Get Followed Channels](super::get_followed_channels)
 ///
@@ -132,6 +133,7 @@ pub struct FollowedBroadcaster {
 }
 
 impl Request for GetFollowedChannels<'_> {
+    type PaginationData = PaginationState<Self>;
     type Response = Vec<FollowedBroadcaster>;
 
     const PATH: &'static str = "channels/followed";

@@ -123,6 +123,7 @@ pub enum SendWhisperResponse {
 }
 
 impl Request for SendWhisperRequest<'_> {
+    type PaginationData = ();
     type Response = SendWhisperResponse;
 
     const PATH: &'static str = "whispers";

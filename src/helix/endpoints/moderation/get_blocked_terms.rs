@@ -36,7 +36,7 @@
 //! and parse the [`http::Response`] with [`GetBlockedTermsRequest::parse_response(None, &request.get_uri(), response)`](GetBlockedTermsRequest::parse_response)
 
 use super::*;
-use helix::RequestGet;
+use helix::{PaginationState, RequestGet};
 
 /// Query Parameters for [Get Blocked Terms](super::get_blocked_terms)
 ///
@@ -91,6 +91,7 @@ impl<'a> GetBlockedTermsRequest<'a> {
 pub type GetBlockedTermsResponse = BlockedTerm;
 
 impl Request for GetBlockedTermsRequest<'_> {
+    type PaginationData = PaginationState<Self>;
     type Response = Vec<BlockedTerm>;
 
     const PATH: &'static str = "moderation/blocked_terms";

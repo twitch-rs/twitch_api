@@ -34,7 +34,7 @@
 //! and parse the [`http::Response`] with [`GetVideosRequest::parse_response(None, &request.get_uri(), response)`](GetVideosRequest::parse_response)
 
 use super::*;
-use helix::RequestGet;
+use helix::{PaginationState, RequestGet};
 
 // FIXME: One of id, user_id or game_id needs to be specified. typed_builder should have enums. id can not be used with other params
 /// Query Parameters for [Get Videos](super::get_videos)
@@ -172,6 +172,7 @@ pub struct MutedSegment {
 }
 
 impl Request for GetVideosRequest<'_> {
+    type PaginationData = PaginationState<Self>;
     type Response = Vec<Video>;
 
     const PATH: &'static str = "videos";

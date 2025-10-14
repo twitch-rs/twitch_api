@@ -103,6 +103,7 @@ impl<'a> GetChatSettingsRequest<'a> {
 }
 
 impl Request for GetChatSettingsRequest<'_> {
+    type PaginationData = ();
     type Response = ChatSettings;
 
     #[cfg(feature = "twitch_oauth2")]

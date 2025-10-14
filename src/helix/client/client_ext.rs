@@ -782,7 +782,7 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
             )
             .await?;
 
-        Ok(resp.total.unwrap_or(0))
+        Ok(resp.pagination_data.total.unwrap_or(0))
     }
 
     /// Get users followed channels

@@ -34,7 +34,7 @@
 //! and parse the [`http::Response`] with [`GetUserEmotesRequest::parse_response(None, &request.get_uri(), response)`](GetUserEmotesRequest::parse_response)
 
 use super::*;
-use helix::RequestGet;
+use helix::{PaginationState, RequestGet};
 
 /// Query Parameters for [Get User Emotes](super::get_user_emotes)
 ///
@@ -125,6 +125,7 @@ impl UserEmote {
 }
 
 impl Request for GetUserEmotesRequest<'_> {
+    type PaginationData = PaginationState<Self>;
     type Response = Vec<UserEmote>;
 
     const PATH: &'static str = "chat/emotes/user";

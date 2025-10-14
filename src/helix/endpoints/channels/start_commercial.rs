@@ -119,6 +119,7 @@ pub struct StartCommercial {
 }
 
 impl Request for StartCommercialRequest<'_> {
+    type PaginationData = ();
     /// FIXME: Make non-vec
     type Response = Vec<StartCommercial>;
 

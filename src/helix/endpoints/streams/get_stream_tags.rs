@@ -67,6 +67,7 @@ impl<'a> GetStreamTagsRequest<'a> {
 pub type Tag = helix::tags::TwitchTag;
 
 impl Request for GetStreamTagsRequest<'_> {
+    type PaginationData = ();
     type Response = Vec<Tag>;
 
     const PATH: &'static str = "streams/tags";

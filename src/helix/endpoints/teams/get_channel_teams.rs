@@ -77,6 +77,7 @@ pub struct BroadcasterTeam {
 }
 
 impl Request for GetChannelTeamsRequest<'_> {
+    type PaginationData = ();
     type Response = Vec<BroadcasterTeam>;
 
     #[cfg(feature = "twitch_oauth2")]
@@ -88,7 +89,7 @@ impl Request for GetChannelTeamsRequest<'_> {
 
 impl RequestGet for GetChannelTeamsRequest<'_> {
     fn parse_inner_response(
-        request: Option<Self>,
+        _request: Option<Self>,
         uri: &http::Uri,
         response: &str,
         status: http::StatusCode,
@@ -107,9 +108,7 @@ impl RequestGet for GetChannelTeamsRequest<'_> {
             })?;
         Ok(helix::Response::new(
             response.data.unwrap_or_default(),
-            response.pagination.cursor,
-            request,
-            response.total,
+            (),
             response.other,
         ))
     }

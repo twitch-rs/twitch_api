@@ -147,6 +147,7 @@ pub struct WarnChatUser {
 }
 
 impl Request for WarnChatUserRequest<'_> {
+    type PaginationData = ();
     type Response = WarnChatUser;
 
     const PATH: &'static str = "moderation/warnings";

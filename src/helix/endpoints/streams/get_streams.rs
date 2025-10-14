@@ -41,7 +41,7 @@
 //! and parse the [`http::Response`] with [`GetStreamsRequest::parse_response(None, &request.get_uri(), response)`](GetStreamsRequest::parse_response)
 
 use super::*;
-use helix::RequestGet;
+use helix::{PaginationState, RequestGet};
 
 /// Query Parameters for [Get Streams](super::get_streams)
 ///
@@ -183,6 +183,7 @@ pub struct Stream {
 }
 
 impl Request for GetStreamsRequest<'_> {
+    type PaginationData = PaginationState<Self>;
     type Response = Vec<Stream>;
 
     const PATH: &'static str = "streams";

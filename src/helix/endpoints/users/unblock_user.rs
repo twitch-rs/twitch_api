@@ -69,6 +69,7 @@ pub enum UnblockUser {
 }
 
 impl Request for UnblockUserRequest<'_> {
+    type PaginationData = ();
     type Response = UnblockUser;
 
     #[cfg(feature = "twitch_oauth2")]
