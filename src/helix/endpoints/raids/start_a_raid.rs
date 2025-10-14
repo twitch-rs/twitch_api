@@ -102,28 +102,7 @@ impl RequestPost for StartARaidRequest<'_> {
     where
         Self: Sized,
     {
-        let response: helix::InnerResponse<Vec<Self::Response>> =
-            helix::parse_json(response_str, true).map_err(|e| {
-                helix::HelixRequestPostError::DeserializeError(
-                    response_str.to_string(),
-                    e,
-                    uri.clone(),
-                    status,
-                )
-            })?;
-        let data = response.data.into_iter().next().ok_or_else(|| {
-            helix::HelixRequestPostError::InvalidResponse {
-                reason: "response included no data",
-                response: response_str.to_string(),
-                status,
-                uri: uri.clone(),
-            }
-        })?;
-        Ok(helix::Response {
-            data,
-            pagination_data: (),
-            other: None,
-        })
+        helix::parse_single_return(_request, uri, response_str, status)
     }
 }
 

@@ -164,27 +164,7 @@ impl RequestGet for GetShieldModeStatusRequest<'_> {
     where
         Self: Sized,
     {
-        let inner_response: helix::InnerResponse<Vec<_>> = crate::parse_json(response, true)
-            .map_err(|e| {
-                helix::HelixRequestGetError::DeserializeError(
-                    response.to_string(),
-                    e,
-                    uri.clone(),
-                    status,
-                )
-            })?;
-        Ok(helix::Response::new(
-            inner_response.data.into_iter().next().ok_or(
-                helix::HelixRequestGetError::InvalidResponse {
-                    reason: "expected an entry in `data`",
-                    response: response.to_string(),
-                    status,
-                    uri: uri.clone(),
-                },
-            )?,
-            (),
-            inner_response.other,
-        ))
+        helix::parse_single_return(_request, uri, response, status)
     }
 }
 

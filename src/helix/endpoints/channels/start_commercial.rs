@@ -38,7 +38,7 @@
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = start_commercial::StartCommercialRequest::new();
 //! let body = start_commercial::StartCommercialBody::new("1234", twitch_api::types::CommercialLength::Length90);
-//! let response: Vec<start_commercial::StartCommercial> = client.req_post(request, body, &token).await?.data;
+//! let response: start_commercial::StartCommercial = client.req_post(request, body, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
@@ -120,8 +120,7 @@ pub struct StartCommercial {
 
 impl Request for StartCommercialRequest<'_> {
     type PaginationData = ();
-    /// FIXME: Make non-vec
-    type Response = Vec<StartCommercial>;
+    type Response = StartCommercial;
 
     const PATH: &'static str = "channels/commercial";
     #[cfg(feature = "twitch_oauth2")]
@@ -131,6 +130,18 @@ impl Request for StartCommercialRequest<'_> {
 
 impl<'a> RequestPost for StartCommercialRequest<'a> {
     type Body = StartCommercialBody<'a>;
+
+    fn parse_inner_response(
+        request: Option<Self>,
+        uri: &http::Uri,
+        response: &str,
+        status: http::StatusCode,
+    ) -> Result<helix::Response<Self, <Self as Request>::Response>, helix::HelixRequestPostError>
+    where
+        Self: Sized,
+    {
+        helix::parse_single_return(request, uri, response, status)
+    }
 }
 
 impl helix::private::SealedSerialize for StartCommercialBody<'_> {}

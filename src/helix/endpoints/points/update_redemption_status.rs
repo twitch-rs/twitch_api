@@ -160,7 +160,7 @@ impl RequestPatch for UpdateRedemptionStatusRequest<'_> {
     {
         let resp = match status {
             http::StatusCode::OK => {
-                let resp: helix::InnerResponse<Vec<CustomRewardRedemption>> =
+                let resp: helix::InnerResponse<[CustomRewardRedemption; 1]> =
                     parse_json(response, true).map_err(|e| {
                         HelixRequestPatchError::DeserializeError(
                             response.to_string(),
@@ -169,14 +169,8 @@ impl RequestPatch for UpdateRedemptionStatusRequest<'_> {
                             status,
                         )
                     })?;
-                UpdateRedemptionStatusInformation::Success(resp.data.into_iter().next().ok_or(
-                    helix::HelixRequestPatchError::InvalidResponse {
-                        reason: "expected at least one element in data",
-                        response: response.to_string(),
-                        status,
-                        uri: uri.clone(),
-                    },
-                )?)
+                let [data] = resp.data;
+                UpdateRedemptionStatusInformation::Success(data)
             }
             _ => {
                 return Err(helix::HelixRequestPatchError::InvalidResponse {

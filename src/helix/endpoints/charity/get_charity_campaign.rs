@@ -113,20 +113,7 @@ impl RequestGet for GetCharityCampaignRequest<'_> {
     where
         Self: Sized,
     {
-        let response: helix::InnerResponse<Vec<_>> =
-            crate::parse_json(response, true).map_err(|e| {
-                helix::HelixRequestGetError::DeserializeError(
-                    response.to_string(),
-                    e,
-                    uri.clone(),
-                    status,
-                )
-            })?;
-        Ok(helix::Response::new(
-            response.data.into_iter().next(),
-            (),
-            response.other,
-        ))
+        helix::parse_single_return(_request, uri, response, status)
     }
 }
 

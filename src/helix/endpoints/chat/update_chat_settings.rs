@@ -50,8 +50,6 @@
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestPost::create_request)
 //! and parse the [`http::Response`] with [`UpdateChatSettingsRequest::parse_response(None, &request.get_uri(), response)`](UpdateChatSettingsRequest::parse_response)
 
-use crate::helix::{parse_json, HelixRequestPatchError};
-
 use super::*;
 use helix::RequestPatch;
 /// Query Parameters for [Update Chat Settings](super::update_chat_settings)
@@ -193,36 +191,7 @@ impl RequestPatch for UpdateChatSettingsRequest<'_> {
     where
         Self: Sized,
     {
-        let resp = match status {
-            http::StatusCode::OK => {
-                let resp: helix::InnerResponse<Vec<ChatSettings>> = parse_json(response, true)
-                    .map_err(|e| {
-                        HelixRequestPatchError::DeserializeError(
-                            response.to_string(),
-                            e,
-                            uri.clone(),
-                            status,
-                        )
-                    })?;
-                resp.data.into_iter().next().ok_or(
-                    helix::HelixRequestPatchError::InvalidResponse {
-                        reason: "expected at least one element in data",
-                        response: response.to_string(),
-                        status,
-                        uri: uri.clone(),
-                    },
-                )?
-            }
-            _ => {
-                return Err(helix::HelixRequestPatchError::InvalidResponse {
-                    reason: "unexpected status code",
-                    response: response.to_string(),
-                    status,
-                    uri: uri.clone(),
-                })
-            }
-        };
-        Ok(helix::Response::with_data(resp, request))
+        helix::parse_single_return(request, uri, response, status)
     }
 }
 

@@ -194,7 +194,7 @@ impl<'a> RequestPatch for UpdateCustomRewardRequest<'a> {
     {
         let resp = match status {
             http::StatusCode::OK => {
-                let resp: helix::InnerResponse<Vec<CustomReward>> = parse_json(response, true)
+                let resp: helix::InnerResponse<[CustomReward; 1]> = parse_json(response, true)
                     .map_err(|e| {
                         HelixRequestPatchError::DeserializeError(
                             response.to_string(),
@@ -203,14 +203,8 @@ impl<'a> RequestPatch for UpdateCustomRewardRequest<'a> {
                             status,
                         )
                     })?;
-                UpdateCustomReward::Success(resp.data.into_iter().next().ok_or(
-                    helix::HelixRequestPatchError::InvalidResponse {
-                        reason: "expected at least one element in data",
-                        response: response.to_string(),
-                        status,
-                        uri: uri.clone(),
-                    },
-                )?)
+                let [data] = resp.data;
+                UpdateCustomReward::Success(data)
             }
             _ => {
                 return Err(helix::HelixRequestPatchError::InvalidResponse {
