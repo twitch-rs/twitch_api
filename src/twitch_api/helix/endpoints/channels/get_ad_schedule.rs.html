@@ -98,143 +98,142 @@
 <a href=#98 id=98 data-nosnippet>98</a>}
 <a href=#99 id=99 data-nosnippet>99</a>
 <a href=#100 id=100 data-nosnippet>100</a><span class="kw">impl </span>Request <span class="kw">for </span>GetAdScheduleRequest&lt;<span class="lifetime">'_</span>&gt; {
-<a href=#101 id=101 data-nosnippet>101</a>    <span class="kw">type </span>Response = <span class="prelude-ty">Option</span>&lt;AdSchedule&gt;;
-<a href=#102 id=102 data-nosnippet>102</a>
-<a href=#103 id=103 data-nosnippet>103</a>    <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"channels/ads"</span>;
-<a href=#104 id=104 data-nosnippet>104</a>    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
-<a href=#105 id=105 data-nosnippet>105</a>    </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator = <span class="macro">twitch_oauth2::validator!</span>[any(
-<a href=#106 id=106 data-nosnippet>106</a>        twitch_oauth2::Scope::ChannelReadAds,
-<a href=#107 id=107 data-nosnippet>107</a>        twitch_oauth2::Scope::ChannelManageAds
-<a href=#108 id=108 data-nosnippet>108</a>    )];
-<a href=#109 id=109 data-nosnippet>109</a>}
-<a href=#110 id=110 data-nosnippet>110</a>
-<a href=#111 id=111 data-nosnippet>111</a><span class="kw">impl </span>RequestGet <span class="kw">for </span>GetAdScheduleRequest&lt;<span class="lifetime">'_</span>&gt; {
-<a href=#112 id=112 data-nosnippet>112</a>    <span class="kw">fn </span>parse_inner_response(
-<a href=#113 id=113 data-nosnippet>113</a>        request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
-<a href=#114 id=114 data-nosnippet>114</a>        uri: <span class="kw-2">&amp;</span>http::Uri,
-<a href=#115 id=115 data-nosnippet>115</a>        str_response: <span class="kw-2">&amp;</span>str,
-<a href=#116 id=116 data-nosnippet>116</a>        status: http::StatusCode,
-<a href=#117 id=117 data-nosnippet>117</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::Response&lt;<span class="self">Self</span>, &lt;<span class="self">Self </span><span class="kw">as </span>Request&gt;::Response&gt;, helix::HelixRequestGetError&gt;
-<a href=#118 id=118 data-nosnippet>118</a>    <span class="kw">where
-<a href=#119 id=119 data-nosnippet>119</a>        </span><span class="self">Self</span>: Sized,
-<a href=#120 id=120 data-nosnippet>120</a>    {
-<a href=#121 id=121 data-nosnippet>121</a>        <span class="kw">let </span>response: <span class="prelude-ty">Result</span>&lt;helix::InnerResponse&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;, <span class="kw">_</span>&gt; =
-<a href=#122 id=122 data-nosnippet>122</a>            <span class="kw">crate</span>::parse_json(str_response, <span class="bool-val">true</span>).map_err(|e| {
-<a href=#123 id=123 data-nosnippet>123</a>                helix::HelixRequestGetError::DeserializeError(
-<a href=#124 id=124 data-nosnippet>124</a>                    str_response.to_string(),
-<a href=#125 id=125 data-nosnippet>125</a>                    e,
-<a href=#126 id=126 data-nosnippet>126</a>                    uri.clone(),
-<a href=#127 id=127 data-nosnippet>127</a>                    status,
-<a href=#128 id=128 data-nosnippet>128</a>                )
-<a href=#129 id=129 data-nosnippet>129</a>            });
-<a href=#130 id=130 data-nosnippet>130</a>        <span class="kw">let </span>response = <span class="kw">match </span>response {
-<a href=#131 id=131 data-nosnippet>131</a>            <span class="prelude-val">Ok</span>(resp) =&gt; resp,
-<a href=#132 id=132 data-nosnippet>132</a>            <span class="prelude-val">Err</span>(error) =&gt; {
-<a href=#133 id=133 data-nosnippet>133</a>                <span class="attr">#[derive(PartialEq, Eq, Deserialize, Default)]
-<a href=#134 id=134 data-nosnippet>134</a>                </span><span class="kw">struct </span>IsWrong {
-<a href=#135 id=135 data-nosnippet>135</a>                    snooze_count: i32,
-<a href=#136 id=136 data-nosnippet>136</a>                    snooze_refresh_at: i32,
-<a href=#137 id=137 data-nosnippet>137</a>                    next_ad_at: i32,
-<a href=#138 id=138 data-nosnippet>138</a>                    duration: i32,
-<a href=#139 id=139 data-nosnippet>139</a>                    last_ad_at: i32,
-<a href=#140 id=140 data-nosnippet>140</a>                    preroll_free_time: i32,
-<a href=#141 id=141 data-nosnippet>141</a>                }
-<a href=#142 id=142 data-nosnippet>142</a>                <span class="kw">let </span>fake: <span class="prelude-ty">Result</span>&lt;helix::InnerResponse&lt;Vec&lt;IsWrong&gt;&gt;, <span class="kw">_</span>&gt; =
-<a href=#143 id=143 data-nosnippet>143</a>                    <span class="kw">crate</span>::parse_json(str_response, <span class="bool-val">true</span>);
-<a href=#144 id=144 data-nosnippet>144</a>                <span class="comment">// if all fields are 0 or we couldn't parse it
-<a href=#145 id=145 data-nosnippet>145</a>                </span><span class="kw">let </span>empty = <span class="kw">match </span>fake {
-<a href=#146 id=146 data-nosnippet>146</a>                    <span class="prelude-val">Ok</span>(fake) <span class="kw">if </span>fake.data.first() == <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>IsWrong::default()) =&gt; fake,
-<a href=#147 id=147 data-nosnippet>147</a>                    <span class="kw">_ </span>=&gt; {
-<a href=#148 id=148 data-nosnippet>148</a>                        <span class="comment">// return the original error
-<a href=#149 id=149 data-nosnippet>149</a>                        </span><span class="kw">return </span><span class="prelude-val">Err</span>(error);
-<a href=#150 id=150 data-nosnippet>150</a>                    }
-<a href=#151 id=151 data-nosnippet>151</a>                };
-<a href=#152 id=152 data-nosnippet>152</a>                helix::InnerResponse {
-<a href=#153 id=153 data-nosnippet>153</a>                    data: <span class="macro">vec!</span>[],
-<a href=#154 id=154 data-nosnippet>154</a>                    pagination: empty.pagination,
-<a href=#155 id=155 data-nosnippet>155</a>                    total: empty.total,
-<a href=#156 id=156 data-nosnippet>156</a>                    other: empty.other,
-<a href=#157 id=157 data-nosnippet>157</a>                }
-<a href=#158 id=158 data-nosnippet>158</a>            }
-<a href=#159 id=159 data-nosnippet>159</a>        };
-<a href=#160 id=160 data-nosnippet>160</a>        <span class="prelude-val">Ok</span>(helix::Response::new(
-<a href=#161 id=161 data-nosnippet>161</a>            response.data.into_iter().next(),
-<a href=#162 id=162 data-nosnippet>162</a>            response.pagination.cursor,
-<a href=#163 id=163 data-nosnippet>163</a>            request,
-<a href=#164 id=164 data-nosnippet>164</a>            response.total,
-<a href=#165 id=165 data-nosnippet>165</a>            response.other,
-<a href=#166 id=166 data-nosnippet>166</a>        ))
-<a href=#167 id=167 data-nosnippet>167</a>    }
-<a href=#168 id=168 data-nosnippet>168</a>}
-<a href=#169 id=169 data-nosnippet>169</a>
-<a href=#170 id=170 data-nosnippet>170</a><span class="attr">#[cfg(test)]
-<a href=#171 id=171 data-nosnippet>171</a>#[test]
-<a href=#172 id=172 data-nosnippet>172</a></span><span class="kw">fn </span>test_request() {
-<a href=#173 id=173 data-nosnippet>173</a>    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-<a href=#174 id=174 data-nosnippet>174</a>    <span class="kw">let </span>req = GetAdScheduleRequest::broadcaster_id(<span class="string">"123"</span>);
-<a href=#175 id=175 data-nosnippet>175</a>
-<a href=#176 id=176 data-nosnippet>176</a>    <span class="comment">// From twitch docs
-<a href=#177 id=177 data-nosnippet>177</a>    // FIXME: twitch docs sucks https://github.com/twitchdev/issues/issues/857, also trailing comma
-<a href=#178 id=178 data-nosnippet>178</a>    </span><span class="kw">let </span>data = <span class="string">br#"
-<a href=#179 id=179 data-nosnippet>179</a>    {
-<a href=#180 id=180 data-nosnippet>180</a>        "data": [
-<a href=#181 id=181 data-nosnippet>181</a>          {
-<a href=#182 id=182 data-nosnippet>182</a>            "next_ad_at" : "2023-08-01T23:08:18+00:00",
-<a href=#183 id=183 data-nosnippet>183</a>            "last_ad_at" : "2023-08-01T23:08:18+00:00",
-<a href=#184 id=184 data-nosnippet>184</a>            "duration" : 60,
-<a href=#185 id=185 data-nosnippet>185</a>            "preroll_free_time" : 90,
-<a href=#186 id=186 data-nosnippet>186</a>            "snooze_count" : 1,
-<a href=#187 id=187 data-nosnippet>187</a>            "snooze_refresh_at" : "2023-08-01T23:08:18+00:00"
-<a href=#188 id=188 data-nosnippet>188</a>          }
-<a href=#189 id=189 data-nosnippet>189</a>        ]
-<a href=#190 id=190 data-nosnippet>190</a>      }
-<a href=#191 id=191 data-nosnippet>191</a>        "#
-<a href=#192 id=192 data-nosnippet>192</a>    </span>.to_vec();
-<a href=#193 id=193 data-nosnippet>193</a>
-<a href=#194 id=194 data-nosnippet>194</a>    <span class="kw">let </span>http_response = http::Response::builder().body(data).unwrap();
-<a href=#195 id=195 data-nosnippet>195</a>
-<a href=#196 id=196 data-nosnippet>196</a>    <span class="kw">let </span>uri = req.get_uri().unwrap();
-<a href=#197 id=197 data-nosnippet>197</a>    <span class="macro">assert_eq!</span>(
-<a href=#198 id=198 data-nosnippet>198</a>        uri.to_string(),
-<a href=#199 id=199 data-nosnippet>199</a>        <span class="string">"https://api.twitch.tv/helix/channels/ads?broadcaster_id=123"
-<a href=#200 id=200 data-nosnippet>200</a>    </span>);
-<a href=#201 id=201 data-nosnippet>201</a>
-<a href=#202 id=202 data-nosnippet>202</a>    <span class="macro">dbg!</span>(GetAdScheduleRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
-<a href=#203 id=203 data-nosnippet>203</a>}
-<a href=#204 id=204 data-nosnippet>204</a>
-<a href=#205 id=205 data-nosnippet>205</a><span class="attr">#[cfg(test)]
-<a href=#206 id=206 data-nosnippet>206</a>#[test]
-<a href=#207 id=207 data-nosnippet>207</a></span><span class="kw">fn </span>test_request_empty_wrong() {
-<a href=#208 id=208 data-nosnippet>208</a>    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-<a href=#209 id=209 data-nosnippet>209</a>    <span class="kw">let </span>req = GetAdScheduleRequest::broadcaster_id(<span class="string">"123"</span>);
-<a href=#210 id=210 data-nosnippet>210</a>
-<a href=#211 id=211 data-nosnippet>211</a>    <span class="comment">// From twitch docs
-<a href=#212 id=212 data-nosnippet>212</a>    </span><span class="kw">let </span>data = <span class="string">br#"{
-<a href=#213 id=213 data-nosnippet>213</a>        "data": [
-<a href=#214 id=214 data-nosnippet>214</a>          {
-<a href=#215 id=215 data-nosnippet>215</a>            "duration": 0,
-<a href=#216 id=216 data-nosnippet>216</a>            "last_ad_at": 0,
-<a href=#217 id=217 data-nosnippet>217</a>            "next_ad_at": 0,
-<a href=#218 id=218 data-nosnippet>218</a>            "preroll_free_time": 0,
-<a href=#219 id=219 data-nosnippet>219</a>            "snooze_count": 0,
-<a href=#220 id=220 data-nosnippet>220</a>            "snooze_refresh_at": 0
-<a href=#221 id=221 data-nosnippet>221</a>          }
-<a href=#222 id=222 data-nosnippet>222</a>        ]
-<a href=#223 id=223 data-nosnippet>223</a>      }"#
-<a href=#224 id=224 data-nosnippet>224</a>    </span>.to_vec();
-<a href=#225 id=225 data-nosnippet>225</a>
-<a href=#226 id=226 data-nosnippet>226</a>    <span class="kw">let </span>http_response = http::Response::builder().body(data).unwrap();
-<a href=#227 id=227 data-nosnippet>227</a>
-<a href=#228 id=228 data-nosnippet>228</a>    <span class="kw">let </span>uri = req.get_uri().unwrap();
-<a href=#229 id=229 data-nosnippet>229</a>    <span class="macro">assert_eq!</span>(
-<a href=#230 id=230 data-nosnippet>230</a>        uri.to_string(),
-<a href=#231 id=231 data-nosnippet>231</a>        <span class="string">"https://api.twitch.tv/helix/channels/ads?broadcaster_id=123"
-<a href=#232 id=232 data-nosnippet>232</a>    </span>);
-<a href=#233 id=233 data-nosnippet>233</a>
-<a href=#234 id=234 data-nosnippet>234</a>    <span class="macro">assert_eq!</span>(
-<a href=#235 id=235 data-nosnippet>235</a>        GetAdScheduleRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response)
-<a href=#236 id=236 data-nosnippet>236</a>            .unwrap()
-<a href=#237 id=237 data-nosnippet>237</a>            .data,
-<a href=#238 id=238 data-nosnippet>238</a>        <span class="prelude-val">None
-<a href=#239 id=239 data-nosnippet>239</a>    </span>);
-<a href=#240 id=240 data-nosnippet>240</a>}</code></pre></div></section></main></body></html>
+<a href=#101 id=101 data-nosnippet>101</a>    <span class="kw">type </span>PaginationData = ();
+<a href=#102 id=102 data-nosnippet>102</a>    <span class="kw">type </span>Response = <span class="prelude-ty">Option</span>&lt;AdSchedule&gt;;
+<a href=#103 id=103 data-nosnippet>103</a>
+<a href=#104 id=104 data-nosnippet>104</a>    <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"channels/ads"</span>;
+<a href=#105 id=105 data-nosnippet>105</a>    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
+<a href=#106 id=106 data-nosnippet>106</a>    </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator = <span class="macro">twitch_oauth2::validator!</span>[any(
+<a href=#107 id=107 data-nosnippet>107</a>        twitch_oauth2::Scope::ChannelReadAds,
+<a href=#108 id=108 data-nosnippet>108</a>        twitch_oauth2::Scope::ChannelManageAds
+<a href=#109 id=109 data-nosnippet>109</a>    )];
+<a href=#110 id=110 data-nosnippet>110</a>}
+<a href=#111 id=111 data-nosnippet>111</a>
+<a href=#112 id=112 data-nosnippet>112</a><span class="kw">impl </span>RequestGet <span class="kw">for </span>GetAdScheduleRequest&lt;<span class="lifetime">'_</span>&gt; {
+<a href=#113 id=113 data-nosnippet>113</a>    <span class="kw">fn </span>parse_inner_response(
+<a href=#114 id=114 data-nosnippet>114</a>        _request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
+<a href=#115 id=115 data-nosnippet>115</a>        uri: <span class="kw-2">&amp;</span>http::Uri,
+<a href=#116 id=116 data-nosnippet>116</a>        str_response: <span class="kw-2">&amp;</span>str,
+<a href=#117 id=117 data-nosnippet>117</a>        status: http::StatusCode,
+<a href=#118 id=118 data-nosnippet>118</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::Response&lt;<span class="self">Self</span>, &lt;<span class="self">Self </span><span class="kw">as </span>Request&gt;::Response&gt;, helix::HelixRequestGetError&gt;
+<a href=#119 id=119 data-nosnippet>119</a>    <span class="kw">where
+<a href=#120 id=120 data-nosnippet>120</a>        </span><span class="self">Self</span>: Sized,
+<a href=#121 id=121 data-nosnippet>121</a>    {
+<a href=#122 id=122 data-nosnippet>122</a>        <span class="kw">let </span>response: <span class="prelude-ty">Result</span>&lt;helix::InnerResponse&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;, <span class="kw">_</span>&gt; =
+<a href=#123 id=123 data-nosnippet>123</a>            <span class="kw">crate</span>::parse_json(str_response, <span class="bool-val">true</span>).map_err(|e| {
+<a href=#124 id=124 data-nosnippet>124</a>                helix::HelixRequestGetError::DeserializeError(
+<a href=#125 id=125 data-nosnippet>125</a>                    str_response.to_string(),
+<a href=#126 id=126 data-nosnippet>126</a>                    e,
+<a href=#127 id=127 data-nosnippet>127</a>                    uri.clone(),
+<a href=#128 id=128 data-nosnippet>128</a>                    status,
+<a href=#129 id=129 data-nosnippet>129</a>                )
+<a href=#130 id=130 data-nosnippet>130</a>            });
+<a href=#131 id=131 data-nosnippet>131</a>        <span class="kw">let </span>response = <span class="kw">match </span>response {
+<a href=#132 id=132 data-nosnippet>132</a>            <span class="prelude-val">Ok</span>(resp) =&gt; resp,
+<a href=#133 id=133 data-nosnippet>133</a>            <span class="prelude-val">Err</span>(error) =&gt; {
+<a href=#134 id=134 data-nosnippet>134</a>                <span class="attr">#[derive(PartialEq, Eq, Deserialize, Default)]
+<a href=#135 id=135 data-nosnippet>135</a>                </span><span class="kw">struct </span>IsWrong {
+<a href=#136 id=136 data-nosnippet>136</a>                    snooze_count: i32,
+<a href=#137 id=137 data-nosnippet>137</a>                    snooze_refresh_at: i32,
+<a href=#138 id=138 data-nosnippet>138</a>                    next_ad_at: i32,
+<a href=#139 id=139 data-nosnippet>139</a>                    duration: i32,
+<a href=#140 id=140 data-nosnippet>140</a>                    last_ad_at: i32,
+<a href=#141 id=141 data-nosnippet>141</a>                    preroll_free_time: i32,
+<a href=#142 id=142 data-nosnippet>142</a>                }
+<a href=#143 id=143 data-nosnippet>143</a>                <span class="kw">let </span>fake: <span class="prelude-ty">Result</span>&lt;helix::InnerResponse&lt;Vec&lt;IsWrong&gt;&gt;, <span class="kw">_</span>&gt; =
+<a href=#144 id=144 data-nosnippet>144</a>                    <span class="kw">crate</span>::parse_json(str_response, <span class="bool-val">true</span>);
+<a href=#145 id=145 data-nosnippet>145</a>                <span class="comment">// if all fields are 0 or we couldn't parse it
+<a href=#146 id=146 data-nosnippet>146</a>                </span><span class="kw">let </span>empty = <span class="kw">match </span>fake {
+<a href=#147 id=147 data-nosnippet>147</a>                    <span class="prelude-val">Ok</span>(fake) <span class="kw">if </span>fake.data.first() == <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>IsWrong::default()) =&gt; fake,
+<a href=#148 id=148 data-nosnippet>148</a>                    <span class="kw">_ </span>=&gt; {
+<a href=#149 id=149 data-nosnippet>149</a>                        <span class="comment">// return the original error
+<a href=#150 id=150 data-nosnippet>150</a>                        </span><span class="kw">return </span><span class="prelude-val">Err</span>(error);
+<a href=#151 id=151 data-nosnippet>151</a>                    }
+<a href=#152 id=152 data-nosnippet>152</a>                };
+<a href=#153 id=153 data-nosnippet>153</a>                helix::InnerResponse {
+<a href=#154 id=154 data-nosnippet>154</a>                    data: <span class="macro">vec!</span>[],
+<a href=#155 id=155 data-nosnippet>155</a>                    pagination: empty.pagination,
+<a href=#156 id=156 data-nosnippet>156</a>                    total: empty.total,
+<a href=#157 id=157 data-nosnippet>157</a>                    other: empty.other,
+<a href=#158 id=158 data-nosnippet>158</a>                }
+<a href=#159 id=159 data-nosnippet>159</a>            }
+<a href=#160 id=160 data-nosnippet>160</a>        };
+<a href=#161 id=161 data-nosnippet>161</a>        <span class="prelude-val">Ok</span>(helix::Response::new(
+<a href=#162 id=162 data-nosnippet>162</a>            response.data.into_iter().next(),
+<a href=#163 id=163 data-nosnippet>163</a>            (),
+<a href=#164 id=164 data-nosnippet>164</a>            response.other,
+<a href=#165 id=165 data-nosnippet>165</a>        ))
+<a href=#166 id=166 data-nosnippet>166</a>    }
+<a href=#167 id=167 data-nosnippet>167</a>}
+<a href=#168 id=168 data-nosnippet>168</a>
+<a href=#169 id=169 data-nosnippet>169</a><span class="attr">#[cfg(test)]
+<a href=#170 id=170 data-nosnippet>170</a>#[test]
+<a href=#171 id=171 data-nosnippet>171</a></span><span class="kw">fn </span>test_request() {
+<a href=#172 id=172 data-nosnippet>172</a>    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
+<a href=#173 id=173 data-nosnippet>173</a>    <span class="kw">let </span>req = GetAdScheduleRequest::broadcaster_id(<span class="string">"123"</span>);
+<a href=#174 id=174 data-nosnippet>174</a>
+<a href=#175 id=175 data-nosnippet>175</a>    <span class="comment">// From twitch docs
+<a href=#176 id=176 data-nosnippet>176</a>    // FIXME: twitch docs sucks https://github.com/twitchdev/issues/issues/857, also trailing comma
+<a href=#177 id=177 data-nosnippet>177</a>    </span><span class="kw">let </span>data = <span class="string">br#"
+<a href=#178 id=178 data-nosnippet>178</a>    {
+<a href=#179 id=179 data-nosnippet>179</a>        "data": [
+<a href=#180 id=180 data-nosnippet>180</a>          {
+<a href=#181 id=181 data-nosnippet>181</a>            "next_ad_at" : "2023-08-01T23:08:18+00:00",
+<a href=#182 id=182 data-nosnippet>182</a>            "last_ad_at" : "2023-08-01T23:08:18+00:00",
+<a href=#183 id=183 data-nosnippet>183</a>            "duration" : 60,
+<a href=#184 id=184 data-nosnippet>184</a>            "preroll_free_time" : 90,
+<a href=#185 id=185 data-nosnippet>185</a>            "snooze_count" : 1,
+<a href=#186 id=186 data-nosnippet>186</a>            "snooze_refresh_at" : "2023-08-01T23:08:18+00:00"
+<a href=#187 id=187 data-nosnippet>187</a>          }
+<a href=#188 id=188 data-nosnippet>188</a>        ]
+<a href=#189 id=189 data-nosnippet>189</a>      }
+<a href=#190 id=190 data-nosnippet>190</a>        "#
+<a href=#191 id=191 data-nosnippet>191</a>    </span>.to_vec();
+<a href=#192 id=192 data-nosnippet>192</a>
+<a href=#193 id=193 data-nosnippet>193</a>    <span class="kw">let </span>http_response = http::Response::builder().body(data).unwrap();
+<a href=#194 id=194 data-nosnippet>194</a>
+<a href=#195 id=195 data-nosnippet>195</a>    <span class="kw">let </span>uri = req.get_uri().unwrap();
+<a href=#196 id=196 data-nosnippet>196</a>    <span class="macro">assert_eq!</span>(
+<a href=#197 id=197 data-nosnippet>197</a>        uri.to_string(),
+<a href=#198 id=198 data-nosnippet>198</a>        <span class="string">"https://api.twitch.tv/helix/channels/ads?broadcaster_id=123"
+<a href=#199 id=199 data-nosnippet>199</a>    </span>);
+<a href=#200 id=200 data-nosnippet>200</a>
+<a href=#201 id=201 data-nosnippet>201</a>    <span class="macro">dbg!</span>(GetAdScheduleRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
+<a href=#202 id=202 data-nosnippet>202</a>}
+<a href=#203 id=203 data-nosnippet>203</a>
+<a href=#204 id=204 data-nosnippet>204</a><span class="attr">#[cfg(test)]
+<a href=#205 id=205 data-nosnippet>205</a>#[test]
+<a href=#206 id=206 data-nosnippet>206</a></span><span class="kw">fn </span>test_request_empty_wrong() {
+<a href=#207 id=207 data-nosnippet>207</a>    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
+<a href=#208 id=208 data-nosnippet>208</a>    <span class="kw">let </span>req = GetAdScheduleRequest::broadcaster_id(<span class="string">"123"</span>);
+<a href=#209 id=209 data-nosnippet>209</a>
+<a href=#210 id=210 data-nosnippet>210</a>    <span class="comment">// From twitch docs
+<a href=#211 id=211 data-nosnippet>211</a>    </span><span class="kw">let </span>data = <span class="string">br#"{
+<a href=#212 id=212 data-nosnippet>212</a>        "data": [
+<a href=#213 id=213 data-nosnippet>213</a>          {
+<a href=#214 id=214 data-nosnippet>214</a>            "duration": 0,
+<a href=#215 id=215 data-nosnippet>215</a>            "last_ad_at": 0,
+<a href=#216 id=216 data-nosnippet>216</a>            "next_ad_at": 0,
+<a href=#217 id=217 data-nosnippet>217</a>            "preroll_free_time": 0,
+<a href=#218 id=218 data-nosnippet>218</a>            "snooze_count": 0,
+<a href=#219 id=219 data-nosnippet>219</a>            "snooze_refresh_at": 0
+<a href=#220 id=220 data-nosnippet>220</a>          }
+<a href=#221 id=221 data-nosnippet>221</a>        ]
+<a href=#222 id=222 data-nosnippet>222</a>      }"#
+<a href=#223 id=223 data-nosnippet>223</a>    </span>.to_vec();
+<a href=#224 id=224 data-nosnippet>224</a>
+<a href=#225 id=225 data-nosnippet>225</a>    <span class="kw">let </span>http_response = http::Response::builder().body(data).unwrap();
+<a href=#226 id=226 data-nosnippet>226</a>
+<a href=#227 id=227 data-nosnippet>227</a>    <span class="kw">let </span>uri = req.get_uri().unwrap();
+<a href=#228 id=228 data-nosnippet>228</a>    <span class="macro">assert_eq!</span>(
+<a href=#229 id=229 data-nosnippet>229</a>        uri.to_string(),
+<a href=#230 id=230 data-nosnippet>230</a>        <span class="string">"https://api.twitch.tv/helix/channels/ads?broadcaster_id=123"
+<a href=#231 id=231 data-nosnippet>231</a>    </span>);
+<a href=#232 id=232 data-nosnippet>232</a>
+<a href=#233 id=233 data-nosnippet>233</a>    <span class="macro">assert_eq!</span>(
+<a href=#234 id=234 data-nosnippet>234</a>        GetAdScheduleRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response)
+<a href=#235 id=235 data-nosnippet>235</a>            .unwrap()
+<a href=#236 id=236 data-nosnippet>236</a>            .data,
+<a href=#237 id=237 data-nosnippet>237</a>        <span class="prelude-val">None
+<a href=#238 id=238 data-nosnippet>238</a>    </span>);
+<a href=#239 id=239 data-nosnippet>239</a>}</code></pre></div></section></main></body></html>

@@ -34,7 +34,7 @@
 <a href=#34 id=34 data-nosnippet>34</a>//! and parse the [`http::Response`] with [`GetVideosRequest::parse_response(None, &amp;request.get_uri(), response)`](GetVideosRequest::parse_response)
 <a href=#35 id=35 data-nosnippet>35</a>
 <a href=#36 id=36 data-nosnippet>36</a></span><span class="kw">use super</span>::<span class="kw-2">*</span>;
-<a href=#37 id=37 data-nosnippet>37</a><span class="kw">use </span>helix::RequestGet;
+<a href=#37 id=37 data-nosnippet>37</a><span class="kw">use </span>helix::{PaginationState, RequestGet};
 <a href=#38 id=38 data-nosnippet>38</a>
 <a href=#39 id=39 data-nosnippet>39</a><span class="comment">// FIXME: One of id, user_id or game_id needs to be specified. typed_builder should have enums. id can not be used with other params
 <a href=#40 id=40 data-nosnippet>40</a></span><span class="doccomment">/// Query Parameters for [Get Videos](super::get_videos)
@@ -172,68 +172,69 @@
 <a href=#172 id=172 data-nosnippet>172</a>}
 <a href=#173 id=173 data-nosnippet>173</a>
 <a href=#174 id=174 data-nosnippet>174</a><span class="kw">impl </span>Request <span class="kw">for </span>GetVideosRequest&lt;<span class="lifetime">'_</span>&gt; {
-<a href=#175 id=175 data-nosnippet>175</a>    <span class="kw">type </span>Response = Vec&lt;Video&gt;;
-<a href=#176 id=176 data-nosnippet>176</a>
-<a href=#177 id=177 data-nosnippet>177</a>    <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"videos"</span>;
-<a href=#178 id=178 data-nosnippet>178</a>    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
-<a href=#179 id=179 data-nosnippet>179</a>    </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator = <span class="macro">twitch_oauth2::validator!</span>[];
-<a href=#180 id=180 data-nosnippet>180</a>}
-<a href=#181 id=181 data-nosnippet>181</a>
-<a href=#182 id=182 data-nosnippet>182</a><span class="kw">impl </span>RequestGet <span class="kw">for </span>GetVideosRequest&lt;<span class="lifetime">'_</span>&gt; {}
-<a href=#183 id=183 data-nosnippet>183</a>
-<a href=#184 id=184 data-nosnippet>184</a><span class="kw">impl </span>helix::Paginated <span class="kw">for </span>GetVideosRequest&lt;<span class="lifetime">'_</span>&gt; {
-<a href=#185 id=185 data-nosnippet>185</a>    <span class="kw">fn </span>set_pagination(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cursor: <span class="prelude-ty">Option</span>&lt;helix::Cursor&gt;) {
-<a href=#186 id=186 data-nosnippet>186</a>        <span class="self">self</span>.after = cursor.map(|c| c.into_cow())
-<a href=#187 id=187 data-nosnippet>187</a>    }
-<a href=#188 id=188 data-nosnippet>188</a>}
-<a href=#189 id=189 data-nosnippet>189</a>
-<a href=#190 id=190 data-nosnippet>190</a><span class="attr">#[cfg(test)]
-<a href=#191 id=191 data-nosnippet>191</a>#[test]
-<a href=#192 id=192 data-nosnippet>192</a></span><span class="kw">fn </span>test_request() {
-<a href=#193 id=193 data-nosnippet>193</a>    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-<a href=#194 id=194 data-nosnippet>194</a>    <span class="kw">let </span>req = GetVideosRequest::ids(<span class="macro">vec!</span>[<span class="string">"234482848"</span>]);
-<a href=#195 id=195 data-nosnippet>195</a>
-<a href=#196 id=196 data-nosnippet>196</a>    <span class="comment">// From twitch docs
-<a href=#197 id=197 data-nosnippet>197</a>    </span><span class="kw">let </span>data = <span class="string">br#"
-<a href=#198 id=198 data-nosnippet>198</a>{
-<a href=#199 id=199 data-nosnippet>199</a>  "data": [
-<a href=#200 id=200 data-nosnippet>200</a>    {
-<a href=#201 id=201 data-nosnippet>201</a>      "id": "335921245",
-<a href=#202 id=202 data-nosnippet>202</a>      "stream_id": null,
-<a href=#203 id=203 data-nosnippet>203</a>      "user_id": "141981764",
-<a href=#204 id=204 data-nosnippet>204</a>      "user_login": "twitchdev",
-<a href=#205 id=205 data-nosnippet>205</a>      "user_name": "TwitchDev",
-<a href=#206 id=206 data-nosnippet>206</a>      "title": "Twitch Developers 101",
-<a href=#207 id=207 data-nosnippet>207</a>      "description": "Welcome to Twitch development! Here is a quick overview of our products and information to help you get started.",
-<a href=#208 id=208 data-nosnippet>208</a>      "created_at": "2018-11-14T21:30:18Z",
-<a href=#209 id=209 data-nosnippet>209</a>      "published_at": "2018-11-14T22:04:30Z",
-<a href=#210 id=210 data-nosnippet>210</a>      "url": "https://www.twitch.tv/videos/335921245",
-<a href=#211 id=211 data-nosnippet>211</a>      "thumbnail_url": "https://static-cdn.jtvnw.net/cf_vods/d2nvs31859zcd8/twitchdev/335921245/ce0f3a7f-57a3-4152-bc06-0c6610189fb3/thumb/index-0000000000-%{width}x%{height}.jpg",
-<a href=#212 id=212 data-nosnippet>212</a>      "viewable": "public",
-<a href=#213 id=213 data-nosnippet>213</a>      "view_count": 1863062,
-<a href=#214 id=214 data-nosnippet>214</a>      "language": "en",
-<a href=#215 id=215 data-nosnippet>215</a>      "type": "upload",
-<a href=#216 id=216 data-nosnippet>216</a>      "duration": "3m21s",
-<a href=#217 id=217 data-nosnippet>217</a>      "muted_segments": [
-<a href=#218 id=218 data-nosnippet>218</a>        {
-<a href=#219 id=219 data-nosnippet>219</a>          "duration": 30,
-<a href=#220 id=220 data-nosnippet>220</a>          "offset": 120
-<a href=#221 id=221 data-nosnippet>221</a>        }
-<a href=#222 id=222 data-nosnippet>222</a>      ]
-<a href=#223 id=223 data-nosnippet>223</a>    }
-<a href=#224 id=224 data-nosnippet>224</a>  ],
-<a href=#225 id=225 data-nosnippet>225</a>  "pagination": {}
-<a href=#226 id=226 data-nosnippet>226</a>}
-<a href=#227 id=227 data-nosnippet>227</a>"#
-<a href=#228 id=228 data-nosnippet>228</a>        </span>.to_vec();
-<a href=#229 id=229 data-nosnippet>229</a>
-<a href=#230 id=230 data-nosnippet>230</a>    <span class="kw">let </span>http_response = http::Response::builder().body(data).unwrap();
-<a href=#231 id=231 data-nosnippet>231</a>
-<a href=#232 id=232 data-nosnippet>232</a>    <span class="kw">let </span>uri = req.get_uri().unwrap();
-<a href=#233 id=233 data-nosnippet>233</a>    <span class="macro">assert_eq!</span>(
-<a href=#234 id=234 data-nosnippet>234</a>        uri.to_string(),
-<a href=#235 id=235 data-nosnippet>235</a>        <span class="string">"https://api.twitch.tv/helix/videos?id=234482848"
-<a href=#236 id=236 data-nosnippet>236</a>    </span>);
-<a href=#237 id=237 data-nosnippet>237</a>
-<a href=#238 id=238 data-nosnippet>238</a>    <span class="macro">dbg!</span>(GetVideosRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
-<a href=#239 id=239 data-nosnippet>239</a>}</code></pre></div></section></main></body></html>
+<a href=#175 id=175 data-nosnippet>175</a>    <span class="kw">type </span>PaginationData = PaginationState&lt;<span class="self">Self</span>&gt;;
+<a href=#176 id=176 data-nosnippet>176</a>    <span class="kw">type </span>Response = Vec&lt;Video&gt;;
+<a href=#177 id=177 data-nosnippet>177</a>
+<a href=#178 id=178 data-nosnippet>178</a>    <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"videos"</span>;
+<a href=#179 id=179 data-nosnippet>179</a>    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
+<a href=#180 id=180 data-nosnippet>180</a>    </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator = <span class="macro">twitch_oauth2::validator!</span>[];
+<a href=#181 id=181 data-nosnippet>181</a>}
+<a href=#182 id=182 data-nosnippet>182</a>
+<a href=#183 id=183 data-nosnippet>183</a><span class="kw">impl </span>RequestGet <span class="kw">for </span>GetVideosRequest&lt;<span class="lifetime">'_</span>&gt; {}
+<a href=#184 id=184 data-nosnippet>184</a>
+<a href=#185 id=185 data-nosnippet>185</a><span class="kw">impl </span>helix::Paginated <span class="kw">for </span>GetVideosRequest&lt;<span class="lifetime">'_</span>&gt; {
+<a href=#186 id=186 data-nosnippet>186</a>    <span class="kw">fn </span>set_pagination(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cursor: <span class="prelude-ty">Option</span>&lt;helix::Cursor&gt;) {
+<a href=#187 id=187 data-nosnippet>187</a>        <span class="self">self</span>.after = cursor.map(|c| c.into_cow())
+<a href=#188 id=188 data-nosnippet>188</a>    }
+<a href=#189 id=189 data-nosnippet>189</a>}
+<a href=#190 id=190 data-nosnippet>190</a>
+<a href=#191 id=191 data-nosnippet>191</a><span class="attr">#[cfg(test)]
+<a href=#192 id=192 data-nosnippet>192</a>#[test]
+<a href=#193 id=193 data-nosnippet>193</a></span><span class="kw">fn </span>test_request() {
+<a href=#194 id=194 data-nosnippet>194</a>    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
+<a href=#195 id=195 data-nosnippet>195</a>    <span class="kw">let </span>req = GetVideosRequest::ids(<span class="macro">vec!</span>[<span class="string">"234482848"</span>]);
+<a href=#196 id=196 data-nosnippet>196</a>
+<a href=#197 id=197 data-nosnippet>197</a>    <span class="comment">// From twitch docs
+<a href=#198 id=198 data-nosnippet>198</a>    </span><span class="kw">let </span>data = <span class="string">br#"
+<a href=#199 id=199 data-nosnippet>199</a>{
+<a href=#200 id=200 data-nosnippet>200</a>  "data": [
+<a href=#201 id=201 data-nosnippet>201</a>    {
+<a href=#202 id=202 data-nosnippet>202</a>      "id": "335921245",
+<a href=#203 id=203 data-nosnippet>203</a>      "stream_id": null,
+<a href=#204 id=204 data-nosnippet>204</a>      "user_id": "141981764",
+<a href=#205 id=205 data-nosnippet>205</a>      "user_login": "twitchdev",
+<a href=#206 id=206 data-nosnippet>206</a>      "user_name": "TwitchDev",
+<a href=#207 id=207 data-nosnippet>207</a>      "title": "Twitch Developers 101",
+<a href=#208 id=208 data-nosnippet>208</a>      "description": "Welcome to Twitch development! Here is a quick overview of our products and information to help you get started.",
+<a href=#209 id=209 data-nosnippet>209</a>      "created_at": "2018-11-14T21:30:18Z",
+<a href=#210 id=210 data-nosnippet>210</a>      "published_at": "2018-11-14T22:04:30Z",
+<a href=#211 id=211 data-nosnippet>211</a>      "url": "https://www.twitch.tv/videos/335921245",
+<a href=#212 id=212 data-nosnippet>212</a>      "thumbnail_url": "https://static-cdn.jtvnw.net/cf_vods/d2nvs31859zcd8/twitchdev/335921245/ce0f3a7f-57a3-4152-bc06-0c6610189fb3/thumb/index-0000000000-%{width}x%{height}.jpg",
+<a href=#213 id=213 data-nosnippet>213</a>      "viewable": "public",
+<a href=#214 id=214 data-nosnippet>214</a>      "view_count": 1863062,
+<a href=#215 id=215 data-nosnippet>215</a>      "language": "en",
+<a href=#216 id=216 data-nosnippet>216</a>      "type": "upload",
+<a href=#217 id=217 data-nosnippet>217</a>      "duration": "3m21s",
+<a href=#218 id=218 data-nosnippet>218</a>      "muted_segments": [
+<a href=#219 id=219 data-nosnippet>219</a>        {
+<a href=#220 id=220 data-nosnippet>220</a>          "duration": 30,
+<a href=#221 id=221 data-nosnippet>221</a>          "offset": 120
+<a href=#222 id=222 data-nosnippet>222</a>        }
+<a href=#223 id=223 data-nosnippet>223</a>      ]
+<a href=#224 id=224 data-nosnippet>224</a>    }
+<a href=#225 id=225 data-nosnippet>225</a>  ],
+<a href=#226 id=226 data-nosnippet>226</a>  "pagination": {}
+<a href=#227 id=227 data-nosnippet>227</a>}
+<a href=#228 id=228 data-nosnippet>228</a>"#
+<a href=#229 id=229 data-nosnippet>229</a>        </span>.to_vec();
+<a href=#230 id=230 data-nosnippet>230</a>
+<a href=#231 id=231 data-nosnippet>231</a>    <span class="kw">let </span>http_response = http::Response::builder().body(data).unwrap();
+<a href=#232 id=232 data-nosnippet>232</a>
+<a href=#233 id=233 data-nosnippet>233</a>    <span class="kw">let </span>uri = req.get_uri().unwrap();
+<a href=#234 id=234 data-nosnippet>234</a>    <span class="macro">assert_eq!</span>(
+<a href=#235 id=235 data-nosnippet>235</a>        uri.to_string(),
+<a href=#236 id=236 data-nosnippet>236</a>        <span class="string">"https://api.twitch.tv/helix/videos?id=234482848"
+<a href=#237 id=237 data-nosnippet>237</a>    </span>);
+<a href=#238 id=238 data-nosnippet>238</a>
+<a href=#239 id=239 data-nosnippet>239</a>    <span class="macro">dbg!</span>(GetVideosRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
+<a href=#240 id=240 data-nosnippet>240</a>}</code></pre></div></section></main></body></html>

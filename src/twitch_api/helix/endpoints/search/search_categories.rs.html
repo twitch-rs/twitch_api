@@ -33,7 +33,7 @@
 <a href=#33 id=33 data-nosnippet>33</a>//! You can also get the [`http::Request`] with [`request.create_request(&amp;token, &amp;client_id)`](helix::RequestGet::create_request)
 <a href=#34 id=34 data-nosnippet>34</a>//! and parse the [`http::Response`] with [`SearchCategoriesRequest::parse_response(None, &amp;request.get_uri(), response)`](SearchCategoriesRequest::parse_response)
 <a href=#35 id=35 data-nosnippet>35</a></span><span class="kw">use super</span>::<span class="kw-2">*</span>;
-<a href=#36 id=36 data-nosnippet>36</a><span class="kw">use </span>helix::RequestGet;
+<a href=#36 id=36 data-nosnippet>36</a><span class="kw">use </span>helix::{pagination::PaginationData, PaginationState, RequestGet};
 <a href=#37 id=37 data-nosnippet>37</a>
 <a href=#38 id=38 data-nosnippet>38</a><span class="comment">// FIXME: One of id, user_id or game_id needs to be specified. typed_builder should have enums. id can not be used with other params
 <a href=#39 id=39 data-nosnippet>39</a></span><span class="doccomment">/// Query Parameters for [Search Categories](super::search_categories)
@@ -85,109 +85,108 @@
 <a href=#85 id=85 data-nosnippet>85</a></span><span class="kw">pub type </span>Category = types::TwitchCategory;
 <a href=#86 id=86 data-nosnippet>86</a>
 <a href=#87 id=87 data-nosnippet>87</a><span class="kw">impl </span>Request <span class="kw">for </span>SearchCategoriesRequest&lt;<span class="lifetime">'_</span>&gt; {
-<a href=#88 id=88 data-nosnippet>88</a>    <span class="kw">type </span>Response = Vec&lt;Category&gt;;
-<a href=#89 id=89 data-nosnippet>89</a>
-<a href=#90 id=90 data-nosnippet>90</a>    <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"search/categories"</span>;
-<a href=#91 id=91 data-nosnippet>91</a>    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
-<a href=#92 id=92 data-nosnippet>92</a>    </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator = <span class="macro">twitch_oauth2::validator!</span>[];
-<a href=#93 id=93 data-nosnippet>93</a>}
-<a href=#94 id=94 data-nosnippet>94</a>
-<a href=#95 id=95 data-nosnippet>95</a><span class="kw">impl </span>RequestGet <span class="kw">for </span>SearchCategoriesRequest&lt;<span class="lifetime">'_</span>&gt; {
-<a href=#96 id=96 data-nosnippet>96</a>    <span class="kw">fn </span>parse_inner_response(
-<a href=#97 id=97 data-nosnippet>97</a>        request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
-<a href=#98 id=98 data-nosnippet>98</a>        uri: <span class="kw-2">&amp;</span>http::Uri,
-<a href=#99 id=99 data-nosnippet>99</a>        response: <span class="kw-2">&amp;</span>str,
-<a href=#100 id=100 data-nosnippet>100</a>        status: http::StatusCode,
-<a href=#101 id=101 data-nosnippet>101</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::Response&lt;<span class="self">Self</span>, <span class="self">Self</span>::Response&gt;, helix::HelixRequestGetError&gt;
-<a href=#102 id=102 data-nosnippet>102</a>    <span class="kw">where
-<a href=#103 id=103 data-nosnippet>103</a>        </span><span class="self">Self</span>: Sized,
-<a href=#104 id=104 data-nosnippet>104</a>    {
-<a href=#105 id=105 data-nosnippet>105</a>        <span class="kw">let </span>response: helix::InnerResponse&lt;<span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Response&gt;&gt; =
-<a href=#106 id=106 data-nosnippet>106</a>            helix::parse_json(response, <span class="bool-val">true</span>).map_err(|e| {
-<a href=#107 id=107 data-nosnippet>107</a>                helix::HelixRequestGetError::DeserializeError(
-<a href=#108 id=108 data-nosnippet>108</a>                    response.to_string(),
-<a href=#109 id=109 data-nosnippet>109</a>                    e,
-<a href=#110 id=110 data-nosnippet>110</a>                    uri.clone(),
-<a href=#111 id=111 data-nosnippet>111</a>                    status,
-<a href=#112 id=112 data-nosnippet>112</a>                )
-<a href=#113 id=113 data-nosnippet>113</a>            })<span class="question-mark">?</span>;
-<a href=#114 id=114 data-nosnippet>114</a>        <span class="prelude-val">Ok</span>(helix::Response::new(
-<a href=#115 id=115 data-nosnippet>115</a>            response.data.unwrap_or_default(),
-<a href=#116 id=116 data-nosnippet>116</a>            response.pagination.cursor,
-<a href=#117 id=117 data-nosnippet>117</a>            request,
-<a href=#118 id=118 data-nosnippet>118</a>            response.total,
-<a href=#119 id=119 data-nosnippet>119</a>            response.other,
-<a href=#120 id=120 data-nosnippet>120</a>        ))
-<a href=#121 id=121 data-nosnippet>121</a>    }
-<a href=#122 id=122 data-nosnippet>122</a>}
-<a href=#123 id=123 data-nosnippet>123</a>
-<a href=#124 id=124 data-nosnippet>124</a><span class="kw">impl </span>helix::Paginated <span class="kw">for </span>SearchCategoriesRequest&lt;<span class="lifetime">'_</span>&gt; {
-<a href=#125 id=125 data-nosnippet>125</a>    <span class="kw">fn </span>set_pagination(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cursor: <span class="prelude-ty">Option</span>&lt;helix::Cursor&gt;) {
-<a href=#126 id=126 data-nosnippet>126</a>        <span class="self">self</span>.after = cursor.map(|c| c.into_cow())
-<a href=#127 id=127 data-nosnippet>127</a>    }
-<a href=#128 id=128 data-nosnippet>128</a>}
-<a href=#129 id=129 data-nosnippet>129</a>
-<a href=#130 id=130 data-nosnippet>130</a><span class="attr">#[cfg(test)]
-<a href=#131 id=131 data-nosnippet>131</a>#[test]
-<a href=#132 id=132 data-nosnippet>132</a></span><span class="kw">fn </span>test_request() {
-<a href=#133 id=133 data-nosnippet>133</a>    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-<a href=#134 id=134 data-nosnippet>134</a>    <span class="kw">let </span>req = SearchCategoriesRequest::query(<span class="string">"fort"</span>);
-<a href=#135 id=135 data-nosnippet>135</a>
-<a href=#136 id=136 data-nosnippet>136</a>    <span class="comment">// From twitch docs
-<a href=#137 id=137 data-nosnippet>137</a>    </span><span class="kw">let </span>data = <span class="string">br#"
-<a href=#138 id=138 data-nosnippet>138</a>{
-<a href=#139 id=139 data-nosnippet>139</a>    "data": [
-<a href=#140 id=140 data-nosnippet>140</a>        {
-<a href=#141 id=141 data-nosnippet>141</a>            "id": "33214",
-<a href=#142 id=142 data-nosnippet>142</a>            "name": "Fortnite",
-<a href=#143 id=143 data-nosnippet>143</a>            "box_art_url": "https://static-cdn.jtvnw.net/ttv-boxart/Fortnite-{width}x{height}.jpg"
-<a href=#144 id=144 data-nosnippet>144</a>        },
-<a href=#145 id=145 data-nosnippet>145</a>        {
-<a href=#146 id=146 data-nosnippet>146</a>            "id": "33214",
-<a href=#147 id=147 data-nosnippet>147</a>            "name": "Fortnite",
-<a href=#148 id=148 data-nosnippet>148</a>            "box_art_url": "https://static-cdn.jtvnw.net/ttv-boxart/Fortnite-{width}x{height}.jpg"
-<a href=#149 id=149 data-nosnippet>149</a>        }
-<a href=#150 id=150 data-nosnippet>150</a>    ],
-<a href=#151 id=151 data-nosnippet>151</a>    "pagination": {
-<a href=#152 id=152 data-nosnippet>152</a>        "cursor": "eyJiIjpudWxsLCJhIjp7IkN"
-<a href=#153 id=153 data-nosnippet>153</a>    }
-<a href=#154 id=154 data-nosnippet>154</a>}
-<a href=#155 id=155 data-nosnippet>155</a>"#
-<a href=#156 id=156 data-nosnippet>156</a>    </span>.to_vec();
-<a href=#157 id=157 data-nosnippet>157</a>
-<a href=#158 id=158 data-nosnippet>158</a>    <span class="kw">let </span>http_response = http::Response::builder().body(data).unwrap();
-<a href=#159 id=159 data-nosnippet>159</a>
-<a href=#160 id=160 data-nosnippet>160</a>    <span class="kw">let </span>uri = req.get_uri().unwrap();
-<a href=#161 id=161 data-nosnippet>161</a>    <span class="macro">assert_eq!</span>(
-<a href=#162 id=162 data-nosnippet>162</a>        uri.to_string(),
-<a href=#163 id=163 data-nosnippet>163</a>        <span class="string">"https://api.twitch.tv/helix/search/categories?query=fort"
-<a href=#164 id=164 data-nosnippet>164</a>    </span>);
-<a href=#165 id=165 data-nosnippet>165</a>
-<a href=#166 id=166 data-nosnippet>166</a>    <span class="macro">dbg!</span>(SearchCategoriesRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
-<a href=#167 id=167 data-nosnippet>167</a>}
-<a href=#168 id=168 data-nosnippet>168</a>
-<a href=#169 id=169 data-nosnippet>169</a><span class="attr">#[cfg(test)]
-<a href=#170 id=170 data-nosnippet>170</a>#[test]
-<a href=#171 id=171 data-nosnippet>171</a></span><span class="kw">fn </span>test_request_null() {
-<a href=#172 id=172 data-nosnippet>172</a>    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-<a href=#173 id=173 data-nosnippet>173</a>    <span class="kw">let </span>req = SearchCategoriesRequest::query(<span class="string">"aaaaaaaaaaaaaaaaaaaaaaaaaaa"</span>);
-<a href=#174 id=174 data-nosnippet>174</a>
-<a href=#175 id=175 data-nosnippet>175</a>    <span class="comment">// From twitch docs
-<a href=#176 id=176 data-nosnippet>176</a>    </span><span class="kw">let </span>data = <span class="string">br#"
-<a href=#177 id=177 data-nosnippet>177</a>{
-<a href=#178 id=178 data-nosnippet>178</a>    "data": null,
-<a href=#179 id=179 data-nosnippet>179</a>    "pagination": {}
-<a href=#180 id=180 data-nosnippet>180</a>}
-<a href=#181 id=181 data-nosnippet>181</a>"#
-<a href=#182 id=182 data-nosnippet>182</a>    </span>.to_vec();
-<a href=#183 id=183 data-nosnippet>183</a>
-<a href=#184 id=184 data-nosnippet>184</a>    <span class="kw">let </span>http_response = http::Response::builder().body(data).unwrap();
-<a href=#185 id=185 data-nosnippet>185</a>
-<a href=#186 id=186 data-nosnippet>186</a>    <span class="kw">let </span>uri = req.get_uri().unwrap();
-<a href=#187 id=187 data-nosnippet>187</a>    <span class="macro">assert_eq!</span>(
-<a href=#188 id=188 data-nosnippet>188</a>        uri.to_string(),
-<a href=#189 id=189 data-nosnippet>189</a>        <span class="string">"https://api.twitch.tv/helix/search/categories?query=aaaaaaaaaaaaaaaaaaaaaaaaaaa"
-<a href=#190 id=190 data-nosnippet>190</a>    </span>);
-<a href=#191 id=191 data-nosnippet>191</a>
-<a href=#192 id=192 data-nosnippet>192</a>    <span class="macro">dbg!</span>(SearchCategoriesRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
-<a href=#193 id=193 data-nosnippet>193</a>}</code></pre></div></section></main></body></html>
+<a href=#88 id=88 data-nosnippet>88</a>    <span class="kw">type </span>PaginationData = PaginationState&lt;<span class="self">Self</span>&gt;;
+<a href=#89 id=89 data-nosnippet>89</a>    <span class="kw">type </span>Response = Vec&lt;Category&gt;;
+<a href=#90 id=90 data-nosnippet>90</a>
+<a href=#91 id=91 data-nosnippet>91</a>    <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"search/categories"</span>;
+<a href=#92 id=92 data-nosnippet>92</a>    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
+<a href=#93 id=93 data-nosnippet>93</a>    </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator = <span class="macro">twitch_oauth2::validator!</span>[];
+<a href=#94 id=94 data-nosnippet>94</a>}
+<a href=#95 id=95 data-nosnippet>95</a>
+<a href=#96 id=96 data-nosnippet>96</a><span class="kw">impl </span>RequestGet <span class="kw">for </span>SearchCategoriesRequest&lt;<span class="lifetime">'_</span>&gt; {
+<a href=#97 id=97 data-nosnippet>97</a>    <span class="kw">fn </span>parse_inner_response(
+<a href=#98 id=98 data-nosnippet>98</a>        request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
+<a href=#99 id=99 data-nosnippet>99</a>        uri: <span class="kw-2">&amp;</span>http::Uri,
+<a href=#100 id=100 data-nosnippet>100</a>        response: <span class="kw-2">&amp;</span>str,
+<a href=#101 id=101 data-nosnippet>101</a>        status: http::StatusCode,
+<a href=#102 id=102 data-nosnippet>102</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::Response&lt;<span class="self">Self</span>, <span class="self">Self</span>::Response&gt;, helix::HelixRequestGetError&gt;
+<a href=#103 id=103 data-nosnippet>103</a>    <span class="kw">where
+<a href=#104 id=104 data-nosnippet>104</a>        </span><span class="self">Self</span>: Sized,
+<a href=#105 id=105 data-nosnippet>105</a>    {
+<a href=#106 id=106 data-nosnippet>106</a>        <span class="kw">let </span>response: helix::InnerResponse&lt;<span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Response&gt;&gt; =
+<a href=#107 id=107 data-nosnippet>107</a>            helix::parse_json(response, <span class="bool-val">true</span>).map_err(|e| {
+<a href=#108 id=108 data-nosnippet>108</a>                helix::HelixRequestGetError::DeserializeError(
+<a href=#109 id=109 data-nosnippet>109</a>                    response.to_string(),
+<a href=#110 id=110 data-nosnippet>110</a>                    e,
+<a href=#111 id=111 data-nosnippet>111</a>                    uri.clone(),
+<a href=#112 id=112 data-nosnippet>112</a>                    status,
+<a href=#113 id=113 data-nosnippet>113</a>                )
+<a href=#114 id=114 data-nosnippet>114</a>            })<span class="question-mark">?</span>;
+<a href=#115 id=115 data-nosnippet>115</a>        <span class="prelude-val">Ok</span>(helix::Response::new(
+<a href=#116 id=116 data-nosnippet>116</a>            response.data.unwrap_or_default(),
+<a href=#117 id=117 data-nosnippet>117</a>            PaginationState::new(response.pagination.cursor, request, response.total),
+<a href=#118 id=118 data-nosnippet>118</a>            response.other,
+<a href=#119 id=119 data-nosnippet>119</a>        ))
+<a href=#120 id=120 data-nosnippet>120</a>    }
+<a href=#121 id=121 data-nosnippet>121</a>}
+<a href=#122 id=122 data-nosnippet>122</a>
+<a href=#123 id=123 data-nosnippet>123</a><span class="kw">impl </span>helix::Paginated <span class="kw">for </span>SearchCategoriesRequest&lt;<span class="lifetime">'_</span>&gt; {
+<a href=#124 id=124 data-nosnippet>124</a>    <span class="kw">fn </span>set_pagination(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cursor: <span class="prelude-ty">Option</span>&lt;helix::Cursor&gt;) {
+<a href=#125 id=125 data-nosnippet>125</a>        <span class="self">self</span>.after = cursor.map(|c| c.into_cow())
+<a href=#126 id=126 data-nosnippet>126</a>    }
+<a href=#127 id=127 data-nosnippet>127</a>}
+<a href=#128 id=128 data-nosnippet>128</a>
+<a href=#129 id=129 data-nosnippet>129</a><span class="attr">#[cfg(test)]
+<a href=#130 id=130 data-nosnippet>130</a>#[test]
+<a href=#131 id=131 data-nosnippet>131</a></span><span class="kw">fn </span>test_request() {
+<a href=#132 id=132 data-nosnippet>132</a>    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
+<a href=#133 id=133 data-nosnippet>133</a>    <span class="kw">let </span>req = SearchCategoriesRequest::query(<span class="string">"fort"</span>);
+<a href=#134 id=134 data-nosnippet>134</a>
+<a href=#135 id=135 data-nosnippet>135</a>    <span class="comment">// From twitch docs
+<a href=#136 id=136 data-nosnippet>136</a>    </span><span class="kw">let </span>data = <span class="string">br#"
+<a href=#137 id=137 data-nosnippet>137</a>{
+<a href=#138 id=138 data-nosnippet>138</a>    "data": [
+<a href=#139 id=139 data-nosnippet>139</a>        {
+<a href=#140 id=140 data-nosnippet>140</a>            "id": "33214",
+<a href=#141 id=141 data-nosnippet>141</a>            "name": "Fortnite",
+<a href=#142 id=142 data-nosnippet>142</a>            "box_art_url": "https://static-cdn.jtvnw.net/ttv-boxart/Fortnite-{width}x{height}.jpg"
+<a href=#143 id=143 data-nosnippet>143</a>        },
+<a href=#144 id=144 data-nosnippet>144</a>        {
+<a href=#145 id=145 data-nosnippet>145</a>            "id": "33214",
+<a href=#146 id=146 data-nosnippet>146</a>            "name": "Fortnite",
+<a href=#147 id=147 data-nosnippet>147</a>            "box_art_url": "https://static-cdn.jtvnw.net/ttv-boxart/Fortnite-{width}x{height}.jpg"
+<a href=#148 id=148 data-nosnippet>148</a>        }
+<a href=#149 id=149 data-nosnippet>149</a>    ],
+<a href=#150 id=150 data-nosnippet>150</a>    "pagination": {
+<a href=#151 id=151 data-nosnippet>151</a>        "cursor": "eyJiIjpudWxsLCJhIjp7IkN"
+<a href=#152 id=152 data-nosnippet>152</a>    }
+<a href=#153 id=153 data-nosnippet>153</a>}
+<a href=#154 id=154 data-nosnippet>154</a>"#
+<a href=#155 id=155 data-nosnippet>155</a>    </span>.to_vec();
+<a href=#156 id=156 data-nosnippet>156</a>
+<a href=#157 id=157 data-nosnippet>157</a>    <span class="kw">let </span>http_response = http::Response::builder().body(data).unwrap();
+<a href=#158 id=158 data-nosnippet>158</a>
+<a href=#159 id=159 data-nosnippet>159</a>    <span class="kw">let </span>uri = req.get_uri().unwrap();
+<a href=#160 id=160 data-nosnippet>160</a>    <span class="macro">assert_eq!</span>(
+<a href=#161 id=161 data-nosnippet>161</a>        uri.to_string(),
+<a href=#162 id=162 data-nosnippet>162</a>        <span class="string">"https://api.twitch.tv/helix/search/categories?query=fort"
+<a href=#163 id=163 data-nosnippet>163</a>    </span>);
+<a href=#164 id=164 data-nosnippet>164</a>
+<a href=#165 id=165 data-nosnippet>165</a>    <span class="macro">dbg!</span>(SearchCategoriesRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
+<a href=#166 id=166 data-nosnippet>166</a>}
+<a href=#167 id=167 data-nosnippet>167</a>
+<a href=#168 id=168 data-nosnippet>168</a><span class="attr">#[cfg(test)]
+<a href=#169 id=169 data-nosnippet>169</a>#[test]
+<a href=#170 id=170 data-nosnippet>170</a></span><span class="kw">fn </span>test_request_null() {
+<a href=#171 id=171 data-nosnippet>171</a>    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
+<a href=#172 id=172 data-nosnippet>172</a>    <span class="kw">let </span>req = SearchCategoriesRequest::query(<span class="string">"aaaaaaaaaaaaaaaaaaaaaaaaaaa"</span>);
+<a href=#173 id=173 data-nosnippet>173</a>
+<a href=#174 id=174 data-nosnippet>174</a>    <span class="comment">// From twitch docs
+<a href=#175 id=175 data-nosnippet>175</a>    </span><span class="kw">let </span>data = <span class="string">br#"
+<a href=#176 id=176 data-nosnippet>176</a>{
+<a href=#177 id=177 data-nosnippet>177</a>    "data": null,
+<a href=#178 id=178 data-nosnippet>178</a>    "pagination": {}
+<a href=#179 id=179 data-nosnippet>179</a>}
+<a href=#180 id=180 data-nosnippet>180</a>"#
+<a href=#181 id=181 data-nosnippet>181</a>    </span>.to_vec();
+<a href=#182 id=182 data-nosnippet>182</a>
+<a href=#183 id=183 data-nosnippet>183</a>    <span class="kw">let </span>http_response = http::Response::builder().body(data).unwrap();
+<a href=#184 id=184 data-nosnippet>184</a>
+<a href=#185 id=185 data-nosnippet>185</a>    <span class="kw">let </span>uri = req.get_uri().unwrap();
+<a href=#186 id=186 data-nosnippet>186</a>    <span class="macro">assert_eq!</span>(
+<a href=#187 id=187 data-nosnippet>187</a>        uri.to_string(),
+<a href=#188 id=188 data-nosnippet>188</a>        <span class="string">"https://api.twitch.tv/helix/search/categories?query=aaaaaaaaaaaaaaaaaaaaaaaaaaa"
+<a href=#189 id=189 data-nosnippet>189</a>    </span>);
+<a href=#190 id=190 data-nosnippet>190</a>
+<a href=#191 id=191 data-nosnippet>191</a>    <span class="macro">dbg!</span>(SearchCategoriesRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
+<a href=#192 id=192 data-nosnippet>192</a>}</code></pre></div></section></main></body></html>

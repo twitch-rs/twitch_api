@@ -91,103 +91,104 @@
 <a href=#91 id=91 data-nosnippet>91</a>}
 <a href=#92 id=92 data-nosnippet>92</a>
 <a href=#93 id=93 data-nosnippet>93</a><span class="kw">impl </span>Request <span class="kw">for </span>GetUserExtensionsRequest {
-<a href=#94 id=94 data-nosnippet>94</a>    <span class="kw">type </span>Response = Vec&lt;Extension&gt;;
-<a href=#95 id=95 data-nosnippet>95</a>
-<a href=#96 id=96 data-nosnippet>96</a>    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
-<a href=#97 id=97 data-nosnippet>97</a>    </span><span class="kw">const </span>OPT_SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[twitch_oauth2::Scope] =
-<a href=#98 id=98 data-nosnippet>98</a>        <span class="kw-2">&amp;</span>[twitch_oauth2::Scope::UserReadBlockedUsers];
-<a href=#99 id=99 data-nosnippet>99</a>    <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"users/extensions/list"</span>;
-<a href=#100 id=100 data-nosnippet>100</a>    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
-<a href=#101 id=101 data-nosnippet>101</a>    </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator = <span class="macro">twitch_oauth2::validator!</span>[any(
-<a href=#102 id=102 data-nosnippet>102</a>        twitch_oauth2::Scope::UserReadBroadcast,
-<a href=#103 id=103 data-nosnippet>103</a>        twitch_oauth2::Scope::UserEditBroadcast
-<a href=#104 id=104 data-nosnippet>104</a>    )];
-<a href=#105 id=105 data-nosnippet>105</a>}
-<a href=#106 id=106 data-nosnippet>106</a>
-<a href=#107 id=107 data-nosnippet>107</a><span class="kw">impl </span>RequestGet <span class="kw">for </span>GetUserExtensionsRequest {}
-<a href=#108 id=108 data-nosnippet>108</a>
-<a href=#109 id=109 data-nosnippet>109</a><span class="attr">#[cfg(test)]
-<a href=#110 id=110 data-nosnippet>110</a>#[test]
-<a href=#111 id=111 data-nosnippet>111</a></span><span class="kw">fn </span>test_request() {
-<a href=#112 id=112 data-nosnippet>112</a>    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-<a href=#113 id=113 data-nosnippet>113</a>    <span class="kw">let </span>req = GetUserExtensionsRequest::new();
-<a href=#114 id=114 data-nosnippet>114</a>
-<a href=#115 id=115 data-nosnippet>115</a>    <span class="kw">let </span>data = <span class="string">br#"
-<a href=#116 id=116 data-nosnippet>116</a>    {
-<a href=#117 id=117 data-nosnippet>117</a>        "data": [
-<a href=#118 id=118 data-nosnippet>118</a>            {
-<a href=#119 id=119 data-nosnippet>119</a>                "id": "wi08ebtatdc7oj83wtl9uxwz807l8b",
-<a href=#120 id=120 data-nosnippet>120</a>                "version": "1.1.8",
-<a href=#121 id=121 data-nosnippet>121</a>                "name": "Streamlabs Leaderboard",
-<a href=#122 id=122 data-nosnippet>122</a>                "can_activate": true,
-<a href=#123 id=123 data-nosnippet>123</a>                "type": [
-<a href=#124 id=124 data-nosnippet>124</a>                    "panel"
-<a href=#125 id=125 data-nosnippet>125</a>                ]
-<a href=#126 id=126 data-nosnippet>126</a>            },
-<a href=#127 id=127 data-nosnippet>127</a>            {
-<a href=#128 id=128 data-nosnippet>128</a>                "id": "d4uvtfdr04uq6raoenvj7m86gdk16v",
-<a href=#129 id=129 data-nosnippet>129</a>                "version": "2.0.2",
-<a href=#130 id=130 data-nosnippet>130</a>                "name": "Prime Subscription and Loot Reminder",
-<a href=#131 id=131 data-nosnippet>131</a>                "can_activate": true,
-<a href=#132 id=132 data-nosnippet>132</a>                "type": [
-<a href=#133 id=133 data-nosnippet>133</a>                    "overlay"
-<a href=#134 id=134 data-nosnippet>134</a>                ]
-<a href=#135 id=135 data-nosnippet>135</a>            },
-<a href=#136 id=136 data-nosnippet>136</a>            {
-<a href=#137 id=137 data-nosnippet>137</a>                "id": "rh6jq1q334hqc2rr1qlzqbvwlfl3x0",
-<a href=#138 id=138 data-nosnippet>138</a>                "version": "1.1.0",
-<a href=#139 id=139 data-nosnippet>139</a>                "name": "TopClip",
-<a href=#140 id=140 data-nosnippet>140</a>                "can_activate": true,
-<a href=#141 id=141 data-nosnippet>141</a>                "type": [
-<a href=#142 id=142 data-nosnippet>142</a>                    "mobile",
-<a href=#143 id=143 data-nosnippet>143</a>                    "panel"
-<a href=#144 id=144 data-nosnippet>144</a>                ]
-<a href=#145 id=145 data-nosnippet>145</a>            },
-<a href=#146 id=146 data-nosnippet>146</a>            {
-<a href=#147 id=147 data-nosnippet>147</a>                "id": "zfh2irvx2jb4s60f02jq0ajm8vwgka",
-<a href=#148 id=148 data-nosnippet>148</a>                "version": "1.0.19",
-<a href=#149 id=149 data-nosnippet>149</a>                "name": "Streamlabs",
-<a href=#150 id=150 data-nosnippet>150</a>                "can_activate": true,
-<a href=#151 id=151 data-nosnippet>151</a>                "type": [
-<a href=#152 id=152 data-nosnippet>152</a>                    "mobile",
-<a href=#153 id=153 data-nosnippet>153</a>                    "overlay"
-<a href=#154 id=154 data-nosnippet>154</a>                ]
-<a href=#155 id=155 data-nosnippet>155</a>            },
-<a href=#156 id=156 data-nosnippet>156</a>            {
-<a href=#157 id=157 data-nosnippet>157</a>                "id": "lqnf3zxk0rv0g7gq92mtmnirjz2cjj",
-<a href=#158 id=158 data-nosnippet>158</a>                "version": "0.0.1",
-<a href=#159 id=159 data-nosnippet>159</a>                "name": "Dev Experience Test",
-<a href=#160 id=160 data-nosnippet>160</a>                "can_activate": true,
-<a href=#161 id=161 data-nosnippet>161</a>                "type": [
-<a href=#162 id=162 data-nosnippet>162</a>                    "component",
-<a href=#163 id=163 data-nosnippet>163</a>                    "mobile",
-<a href=#164 id=164 data-nosnippet>164</a>                    "panel",
-<a href=#165 id=165 data-nosnippet>165</a>                    "overlay"
-<a href=#166 id=166 data-nosnippet>166</a>                ]
-<a href=#167 id=167 data-nosnippet>167</a>            }
-<a href=#168 id=168 data-nosnippet>168</a>        ]
-<a href=#169 id=169 data-nosnippet>169</a>    }
-<a href=#170 id=170 data-nosnippet>170</a>    "#
-<a href=#171 id=171 data-nosnippet>171</a>    </span>.to_vec();
-<a href=#172 id=172 data-nosnippet>172</a>
-<a href=#173 id=173 data-nosnippet>173</a>    <span class="kw">let </span>http_response = http::Response::builder().body(data).unwrap();
-<a href=#174 id=174 data-nosnippet>174</a>
-<a href=#175 id=175 data-nosnippet>175</a>    <span class="kw">let </span>uri = req.get_uri().unwrap();
-<a href=#176 id=176 data-nosnippet>176</a>    <span class="macro">assert_eq!</span>(
-<a href=#177 id=177 data-nosnippet>177</a>        uri.to_string(),
-<a href=#178 id=178 data-nosnippet>178</a>        <span class="string">"https://api.twitch.tv/helix/users/extensions/list?"
-<a href=#179 id=179 data-nosnippet>179</a>    </span>);
-<a href=#180 id=180 data-nosnippet>180</a>
-<a href=#181 id=181 data-nosnippet>181</a>    <span class="kw">let </span>res = GetUserExtensionsRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response)
-<a href=#182 id=182 data-nosnippet>182</a>        .unwrap()
-<a href=#183 id=183 data-nosnippet>183</a>        .data;
-<a href=#184 id=184 data-nosnippet>184</a>    <span class="macro">assert_eq!</span>(res.len(), <span class="number">5</span>);
-<a href=#185 id=185 data-nosnippet>185</a>    <span class="macro">assert_eq!</span>(res[<span class="number">4</span>].id.as_str(), <span class="string">"lqnf3zxk0rv0g7gq92mtmnirjz2cjj"</span>);
-<a href=#186 id=186 data-nosnippet>186</a>    <span class="macro">assert_eq!</span>(res[<span class="number">4</span>].version, <span class="string">"0.0.1"</span>);
-<a href=#187 id=187 data-nosnippet>187</a>    <span class="macro">assert!</span>(res[<span class="number">4</span>].can_activate);
-<a href=#188 id=188 data-nosnippet>188</a>    <span class="macro">assert_eq!</span>(res[<span class="number">4</span>].type_.len(), <span class="number">4</span>);
-<a href=#189 id=189 data-nosnippet>189</a>    <span class="macro">assert_eq!</span>(res[<span class="number">4</span>].type_[<span class="number">0</span>], ExtensionType::Component);
-<a href=#190 id=190 data-nosnippet>190</a>    <span class="macro">assert_eq!</span>(res[<span class="number">4</span>].type_[<span class="number">1</span>], ExtensionType::Mobile);
-<a href=#191 id=191 data-nosnippet>191</a>    <span class="macro">assert_eq!</span>(res[<span class="number">4</span>].type_[<span class="number">2</span>], ExtensionType::Panel);
-<a href=#192 id=192 data-nosnippet>192</a>    <span class="macro">assert_eq!</span>(res[<span class="number">4</span>].type_[<span class="number">3</span>], ExtensionType::Overlay);
-<a href=#193 id=193 data-nosnippet>193</a>}</code></pre></div></section></main></body></html>
+<a href=#94 id=94 data-nosnippet>94</a>    <span class="kw">type </span>PaginationData = ();
+<a href=#95 id=95 data-nosnippet>95</a>    <span class="kw">type </span>Response = Vec&lt;Extension&gt;;
+<a href=#96 id=96 data-nosnippet>96</a>
+<a href=#97 id=97 data-nosnippet>97</a>    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
+<a href=#98 id=98 data-nosnippet>98</a>    </span><span class="kw">const </span>OPT_SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[twitch_oauth2::Scope] =
+<a href=#99 id=99 data-nosnippet>99</a>        <span class="kw-2">&amp;</span>[twitch_oauth2::Scope::UserReadBlockedUsers];
+<a href=#100 id=100 data-nosnippet>100</a>    <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"users/extensions/list"</span>;
+<a href=#101 id=101 data-nosnippet>101</a>    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
+<a href=#102 id=102 data-nosnippet>102</a>    </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator = <span class="macro">twitch_oauth2::validator!</span>[any(
+<a href=#103 id=103 data-nosnippet>103</a>        twitch_oauth2::Scope::UserReadBroadcast,
+<a href=#104 id=104 data-nosnippet>104</a>        twitch_oauth2::Scope::UserEditBroadcast
+<a href=#105 id=105 data-nosnippet>105</a>    )];
+<a href=#106 id=106 data-nosnippet>106</a>}
+<a href=#107 id=107 data-nosnippet>107</a>
+<a href=#108 id=108 data-nosnippet>108</a><span class="kw">impl </span>RequestGet <span class="kw">for </span>GetUserExtensionsRequest {}
+<a href=#109 id=109 data-nosnippet>109</a>
+<a href=#110 id=110 data-nosnippet>110</a><span class="attr">#[cfg(test)]
+<a href=#111 id=111 data-nosnippet>111</a>#[test]
+<a href=#112 id=112 data-nosnippet>112</a></span><span class="kw">fn </span>test_request() {
+<a href=#113 id=113 data-nosnippet>113</a>    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
+<a href=#114 id=114 data-nosnippet>114</a>    <span class="kw">let </span>req = GetUserExtensionsRequest::new();
+<a href=#115 id=115 data-nosnippet>115</a>
+<a href=#116 id=116 data-nosnippet>116</a>    <span class="kw">let </span>data = <span class="string">br#"
+<a href=#117 id=117 data-nosnippet>117</a>    {
+<a href=#118 id=118 data-nosnippet>118</a>        "data": [
+<a href=#119 id=119 data-nosnippet>119</a>            {
+<a href=#120 id=120 data-nosnippet>120</a>                "id": "wi08ebtatdc7oj83wtl9uxwz807l8b",
+<a href=#121 id=121 data-nosnippet>121</a>                "version": "1.1.8",
+<a href=#122 id=122 data-nosnippet>122</a>                "name": "Streamlabs Leaderboard",
+<a href=#123 id=123 data-nosnippet>123</a>                "can_activate": true,
+<a href=#124 id=124 data-nosnippet>124</a>                "type": [
+<a href=#125 id=125 data-nosnippet>125</a>                    "panel"
+<a href=#126 id=126 data-nosnippet>126</a>                ]
+<a href=#127 id=127 data-nosnippet>127</a>            },
+<a href=#128 id=128 data-nosnippet>128</a>            {
+<a href=#129 id=129 data-nosnippet>129</a>                "id": "d4uvtfdr04uq6raoenvj7m86gdk16v",
+<a href=#130 id=130 data-nosnippet>130</a>                "version": "2.0.2",
+<a href=#131 id=131 data-nosnippet>131</a>                "name": "Prime Subscription and Loot Reminder",
+<a href=#132 id=132 data-nosnippet>132</a>                "can_activate": true,
+<a href=#133 id=133 data-nosnippet>133</a>                "type": [
+<a href=#134 id=134 data-nosnippet>134</a>                    "overlay"
+<a href=#135 id=135 data-nosnippet>135</a>                ]
+<a href=#136 id=136 data-nosnippet>136</a>            },
+<a href=#137 id=137 data-nosnippet>137</a>            {
+<a href=#138 id=138 data-nosnippet>138</a>                "id": "rh6jq1q334hqc2rr1qlzqbvwlfl3x0",
+<a href=#139 id=139 data-nosnippet>139</a>                "version": "1.1.0",
+<a href=#140 id=140 data-nosnippet>140</a>                "name": "TopClip",
+<a href=#141 id=141 data-nosnippet>141</a>                "can_activate": true,
+<a href=#142 id=142 data-nosnippet>142</a>                "type": [
+<a href=#143 id=143 data-nosnippet>143</a>                    "mobile",
+<a href=#144 id=144 data-nosnippet>144</a>                    "panel"
+<a href=#145 id=145 data-nosnippet>145</a>                ]
+<a href=#146 id=146 data-nosnippet>146</a>            },
+<a href=#147 id=147 data-nosnippet>147</a>            {
+<a href=#148 id=148 data-nosnippet>148</a>                "id": "zfh2irvx2jb4s60f02jq0ajm8vwgka",
+<a href=#149 id=149 data-nosnippet>149</a>                "version": "1.0.19",
+<a href=#150 id=150 data-nosnippet>150</a>                "name": "Streamlabs",
+<a href=#151 id=151 data-nosnippet>151</a>                "can_activate": true,
+<a href=#152 id=152 data-nosnippet>152</a>                "type": [
+<a href=#153 id=153 data-nosnippet>153</a>                    "mobile",
+<a href=#154 id=154 data-nosnippet>154</a>                    "overlay"
+<a href=#155 id=155 data-nosnippet>155</a>                ]
+<a href=#156 id=156 data-nosnippet>156</a>            },
+<a href=#157 id=157 data-nosnippet>157</a>            {
+<a href=#158 id=158 data-nosnippet>158</a>                "id": "lqnf3zxk0rv0g7gq92mtmnirjz2cjj",
+<a href=#159 id=159 data-nosnippet>159</a>                "version": "0.0.1",
+<a href=#160 id=160 data-nosnippet>160</a>                "name": "Dev Experience Test",
+<a href=#161 id=161 data-nosnippet>161</a>                "can_activate": true,
+<a href=#162 id=162 data-nosnippet>162</a>                "type": [
+<a href=#163 id=163 data-nosnippet>163</a>                    "component",
+<a href=#164 id=164 data-nosnippet>164</a>                    "mobile",
+<a href=#165 id=165 data-nosnippet>165</a>                    "panel",
+<a href=#166 id=166 data-nosnippet>166</a>                    "overlay"
+<a href=#167 id=167 data-nosnippet>167</a>                ]
+<a href=#168 id=168 data-nosnippet>168</a>            }
+<a href=#169 id=169 data-nosnippet>169</a>        ]
+<a href=#170 id=170 data-nosnippet>170</a>    }
+<a href=#171 id=171 data-nosnippet>171</a>    "#
+<a href=#172 id=172 data-nosnippet>172</a>    </span>.to_vec();
+<a href=#173 id=173 data-nosnippet>173</a>
+<a href=#174 id=174 data-nosnippet>174</a>    <span class="kw">let </span>http_response = http::Response::builder().body(data).unwrap();
+<a href=#175 id=175 data-nosnippet>175</a>
+<a href=#176 id=176 data-nosnippet>176</a>    <span class="kw">let </span>uri = req.get_uri().unwrap();
+<a href=#177 id=177 data-nosnippet>177</a>    <span class="macro">assert_eq!</span>(
+<a href=#178 id=178 data-nosnippet>178</a>        uri.to_string(),
+<a href=#179 id=179 data-nosnippet>179</a>        <span class="string">"https://api.twitch.tv/helix/users/extensions/list?"
+<a href=#180 id=180 data-nosnippet>180</a>    </span>);
+<a href=#181 id=181 data-nosnippet>181</a>
+<a href=#182 id=182 data-nosnippet>182</a>    <span class="kw">let </span>res = GetUserExtensionsRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response)
+<a href=#183 id=183 data-nosnippet>183</a>        .unwrap()
+<a href=#184 id=184 data-nosnippet>184</a>        .data;
+<a href=#185 id=185 data-nosnippet>185</a>    <span class="macro">assert_eq!</span>(res.len(), <span class="number">5</span>);
+<a href=#186 id=186 data-nosnippet>186</a>    <span class="macro">assert_eq!</span>(res[<span class="number">4</span>].id.as_str(), <span class="string">"lqnf3zxk0rv0g7gq92mtmnirjz2cjj"</span>);
+<a href=#187 id=187 data-nosnippet>187</a>    <span class="macro">assert_eq!</span>(res[<span class="number">4</span>].version, <span class="string">"0.0.1"</span>);
+<a href=#188 id=188 data-nosnippet>188</a>    <span class="macro">assert!</span>(res[<span class="number">4</span>].can_activate);
+<a href=#189 id=189 data-nosnippet>189</a>    <span class="macro">assert_eq!</span>(res[<span class="number">4</span>].type_.len(), <span class="number">4</span>);
+<a href=#190 id=190 data-nosnippet>190</a>    <span class="macro">assert_eq!</span>(res[<span class="number">4</span>].type_[<span class="number">0</span>], ExtensionType::Component);
+<a href=#191 id=191 data-nosnippet>191</a>    <span class="macro">assert_eq!</span>(res[<span class="number">4</span>].type_[<span class="number">1</span>], ExtensionType::Mobile);
+<a href=#192 id=192 data-nosnippet>192</a>    <span class="macro">assert_eq!</span>(res[<span class="number">4</span>].type_[<span class="number">2</span>], ExtensionType::Panel);
+<a href=#193 id=193 data-nosnippet>193</a>    <span class="macro">assert_eq!</span>(res[<span class="number">4</span>].type_[<span class="number">3</span>], ExtensionType::Overlay);
+<a href=#194 id=194 data-nosnippet>194</a>}</code></pre></div></section></main></body></html>

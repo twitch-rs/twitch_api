@@ -123,59 +123,60 @@
 <a href=#123 id=123 data-nosnippet>123</a></span><span class="kw">pub type </span>AddBlockedTermResponse = BlockedTerm;
 <a href=#124 id=124 data-nosnippet>124</a>
 <a href=#125 id=125 data-nosnippet>125</a><span class="kw">impl </span>Request <span class="kw">for </span>AddBlockedTermRequest&lt;<span class="lifetime">'_</span>&gt; {
-<a href=#126 id=126 data-nosnippet>126</a>    <span class="comment">// FIXME: this is a single entry
-<a href=#127 id=127 data-nosnippet>127</a>    </span><span class="kw">type </span>Response = Vec&lt;BlockedTerm&gt;;
-<a href=#128 id=128 data-nosnippet>128</a>
-<a href=#129 id=129 data-nosnippet>129</a>    <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"moderation/blocked_terms"</span>;
-<a href=#130 id=130 data-nosnippet>130</a>    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
-<a href=#131 id=131 data-nosnippet>131</a>    </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator =
-<a href=#132 id=132 data-nosnippet>132</a>        <span class="macro">twitch_oauth2::validator!</span>[twitch_oauth2::Scope::ModeratorManageBlockedTerms];
-<a href=#133 id=133 data-nosnippet>133</a>}
-<a href=#134 id=134 data-nosnippet>134</a>
-<a href=#135 id=135 data-nosnippet>135</a><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; RequestPost <span class="kw">for </span>AddBlockedTermRequest&lt;<span class="lifetime">'a</span>&gt; {
-<a href=#136 id=136 data-nosnippet>136</a>    <span class="kw">type </span>Body = AddBlockedTermBody&lt;<span class="lifetime">'a</span>&gt;;
-<a href=#137 id=137 data-nosnippet>137</a>}
-<a href=#138 id=138 data-nosnippet>138</a>
-<a href=#139 id=139 data-nosnippet>139</a><span class="attr">#[cfg(test)]
-<a href=#140 id=140 data-nosnippet>140</a>#[test]
-<a href=#141 id=141 data-nosnippet>141</a></span><span class="kw">fn </span>test_request() {
-<a href=#142 id=142 data-nosnippet>142</a>    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-<a href=#143 id=143 data-nosnippet>143</a>    <span class="kw">let </span>req = AddBlockedTermRequest::new(<span class="string">"1234"</span>, <span class="string">"5678"</span>);
-<a href=#144 id=144 data-nosnippet>144</a>
-<a href=#145 id=145 data-nosnippet>145</a>    <span class="kw">let </span>body = AddBlockedTermBody::new(<span class="string">"A phrase I’m not fond of"</span>);
-<a href=#146 id=146 data-nosnippet>146</a>
-<a href=#147 id=147 data-nosnippet>147</a>    <span class="macro">assert_eq!</span>(
-<a href=#148 id=148 data-nosnippet>148</a>        std::str::from_utf8(<span class="kw-2">&amp;</span>body.try_to_body().unwrap()).unwrap(),
-<a href=#149 id=149 data-nosnippet>149</a>        <span class="string">r#"{"text":"A phrase I’m not fond of"}"#
-<a href=#150 id=150 data-nosnippet>150</a>    </span>);
-<a href=#151 id=151 data-nosnippet>151</a>
-<a href=#152 id=152 data-nosnippet>152</a>    <span class="macro">dbg!</span>(req.create_request(body, <span class="string">"token"</span>, <span class="string">"clientid"</span>).unwrap());
-<a href=#153 id=153 data-nosnippet>153</a>
-<a href=#154 id=154 data-nosnippet>154</a>    <span class="comment">// From twitch docs
-<a href=#155 id=155 data-nosnippet>155</a>    </span><span class="kw">let </span>data = <span class="string">br#"
-<a href=#156 id=156 data-nosnippet>156</a>    {
-<a href=#157 id=157 data-nosnippet>157</a>        "data": [
-<a href=#158 id=158 data-nosnippet>158</a>          {
-<a href=#159 id=159 data-nosnippet>159</a>            "broadcaster_id": "713936733",
-<a href=#160 id=160 data-nosnippet>160</a>            "moderator_id": "713936733",
-<a href=#161 id=161 data-nosnippet>161</a>            "id": "3bb6e5d3-afb1-416c-ad4e-21af970ccfe7",
-<a href=#162 id=162 data-nosnippet>162</a>            "text": "A phrase I'm not fond of",
-<a href=#163 id=163 data-nosnippet>163</a>            "created_at": "2021-09-29T15:36:45Z",
-<a href=#164 id=164 data-nosnippet>164</a>            "updated_at": "2021-09-29T15:36:45Z",
-<a href=#165 id=165 data-nosnippet>165</a>            "expires_at": null
-<a href=#166 id=166 data-nosnippet>166</a>          }
-<a href=#167 id=167 data-nosnippet>167</a>        ]
-<a href=#168 id=168 data-nosnippet>168</a>      }
-<a href=#169 id=169 data-nosnippet>169</a>"#
-<a href=#170 id=170 data-nosnippet>170</a>    </span>.to_vec();
-<a href=#171 id=171 data-nosnippet>171</a>
-<a href=#172 id=172 data-nosnippet>172</a>    <span class="kw">let </span>http_response = http::Response::builder().body(data).unwrap();
-<a href=#173 id=173 data-nosnippet>173</a>
-<a href=#174 id=174 data-nosnippet>174</a>    <span class="kw">let </span>uri = req.get_uri().unwrap();
-<a href=#175 id=175 data-nosnippet>175</a>    <span class="macro">assert_eq!</span>(
-<a href=#176 id=176 data-nosnippet>176</a>        uri.to_string(),
-<a href=#177 id=177 data-nosnippet>177</a>        <span class="string">"https://api.twitch.tv/helix/moderation/blocked_terms?broadcaster_id=1234&amp;moderator_id=5678"
-<a href=#178 id=178 data-nosnippet>178</a>    </span>);
-<a href=#179 id=179 data-nosnippet>179</a>
-<a href=#180 id=180 data-nosnippet>180</a>    <span class="macro">dbg!</span>(AddBlockedTermRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
-<a href=#181 id=181 data-nosnippet>181</a>}</code></pre></div></section></main></body></html>
+<a href=#126 id=126 data-nosnippet>126</a>    <span class="kw">type </span>PaginationData = ();
+<a href=#127 id=127 data-nosnippet>127</a>    <span class="comment">// FIXME: this is a single entry
+<a href=#128 id=128 data-nosnippet>128</a>    </span><span class="kw">type </span>Response = Vec&lt;BlockedTerm&gt;;
+<a href=#129 id=129 data-nosnippet>129</a>
+<a href=#130 id=130 data-nosnippet>130</a>    <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"moderation/blocked_terms"</span>;
+<a href=#131 id=131 data-nosnippet>131</a>    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
+<a href=#132 id=132 data-nosnippet>132</a>    </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator =
+<a href=#133 id=133 data-nosnippet>133</a>        <span class="macro">twitch_oauth2::validator!</span>[twitch_oauth2::Scope::ModeratorManageBlockedTerms];
+<a href=#134 id=134 data-nosnippet>134</a>}
+<a href=#135 id=135 data-nosnippet>135</a>
+<a href=#136 id=136 data-nosnippet>136</a><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; RequestPost <span class="kw">for </span>AddBlockedTermRequest&lt;<span class="lifetime">'a</span>&gt; {
+<a href=#137 id=137 data-nosnippet>137</a>    <span class="kw">type </span>Body = AddBlockedTermBody&lt;<span class="lifetime">'a</span>&gt;;
+<a href=#138 id=138 data-nosnippet>138</a>}
+<a href=#139 id=139 data-nosnippet>139</a>
+<a href=#140 id=140 data-nosnippet>140</a><span class="attr">#[cfg(test)]
+<a href=#141 id=141 data-nosnippet>141</a>#[test]
+<a href=#142 id=142 data-nosnippet>142</a></span><span class="kw">fn </span>test_request() {
+<a href=#143 id=143 data-nosnippet>143</a>    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
+<a href=#144 id=144 data-nosnippet>144</a>    <span class="kw">let </span>req = AddBlockedTermRequest::new(<span class="string">"1234"</span>, <span class="string">"5678"</span>);
+<a href=#145 id=145 data-nosnippet>145</a>
+<a href=#146 id=146 data-nosnippet>146</a>    <span class="kw">let </span>body = AddBlockedTermBody::new(<span class="string">"A phrase I’m not fond of"</span>);
+<a href=#147 id=147 data-nosnippet>147</a>
+<a href=#148 id=148 data-nosnippet>148</a>    <span class="macro">assert_eq!</span>(
+<a href=#149 id=149 data-nosnippet>149</a>        std::str::from_utf8(<span class="kw-2">&amp;</span>body.try_to_body().unwrap()).unwrap(),
+<a href=#150 id=150 data-nosnippet>150</a>        <span class="string">r#"{"text":"A phrase I’m not fond of"}"#
+<a href=#151 id=151 data-nosnippet>151</a>    </span>);
+<a href=#152 id=152 data-nosnippet>152</a>
+<a href=#153 id=153 data-nosnippet>153</a>    <span class="macro">dbg!</span>(req.create_request(body, <span class="string">"token"</span>, <span class="string">"clientid"</span>).unwrap());
+<a href=#154 id=154 data-nosnippet>154</a>
+<a href=#155 id=155 data-nosnippet>155</a>    <span class="comment">// From twitch docs
+<a href=#156 id=156 data-nosnippet>156</a>    </span><span class="kw">let </span>data = <span class="string">br#"
+<a href=#157 id=157 data-nosnippet>157</a>    {
+<a href=#158 id=158 data-nosnippet>158</a>        "data": [
+<a href=#159 id=159 data-nosnippet>159</a>          {
+<a href=#160 id=160 data-nosnippet>160</a>            "broadcaster_id": "713936733",
+<a href=#161 id=161 data-nosnippet>161</a>            "moderator_id": "713936733",
+<a href=#162 id=162 data-nosnippet>162</a>            "id": "3bb6e5d3-afb1-416c-ad4e-21af970ccfe7",
+<a href=#163 id=163 data-nosnippet>163</a>            "text": "A phrase I'm not fond of",
+<a href=#164 id=164 data-nosnippet>164</a>            "created_at": "2021-09-29T15:36:45Z",
+<a href=#165 id=165 data-nosnippet>165</a>            "updated_at": "2021-09-29T15:36:45Z",
+<a href=#166 id=166 data-nosnippet>166</a>            "expires_at": null
+<a href=#167 id=167 data-nosnippet>167</a>          }
+<a href=#168 id=168 data-nosnippet>168</a>        ]
+<a href=#169 id=169 data-nosnippet>169</a>      }
+<a href=#170 id=170 data-nosnippet>170</a>"#
+<a href=#171 id=171 data-nosnippet>171</a>    </span>.to_vec();
+<a href=#172 id=172 data-nosnippet>172</a>
+<a href=#173 id=173 data-nosnippet>173</a>    <span class="kw">let </span>http_response = http::Response::builder().body(data).unwrap();
+<a href=#174 id=174 data-nosnippet>174</a>
+<a href=#175 id=175 data-nosnippet>175</a>    <span class="kw">let </span>uri = req.get_uri().unwrap();
+<a href=#176 id=176 data-nosnippet>176</a>    <span class="macro">assert_eq!</span>(
+<a href=#177 id=177 data-nosnippet>177</a>        uri.to_string(),
+<a href=#178 id=178 data-nosnippet>178</a>        <span class="string">"https://api.twitch.tv/helix/moderation/blocked_terms?broadcaster_id=1234&amp;moderator_id=5678"
+<a href=#179 id=179 data-nosnippet>179</a>    </span>);
+<a href=#180 id=180 data-nosnippet>180</a>
+<a href=#181 id=181 data-nosnippet>181</a>    <span class="macro">dbg!</span>(AddBlockedTermRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
+<a href=#182 id=182 data-nosnippet>182</a>}</code></pre></div></section></main></body></html>

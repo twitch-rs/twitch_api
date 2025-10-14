@@ -67,64 +67,65 @@
 <a href=#67 id=67 data-nosnippet>67</a></span><span class="kw">pub type </span>Tag = helix::tags::TwitchTag;
 <a href=#68 id=68 data-nosnippet>68</a>
 <a href=#69 id=69 data-nosnippet>69</a><span class="kw">impl </span>Request <span class="kw">for </span>GetStreamTagsRequest&lt;<span class="lifetime">'_</span>&gt; {
-<a href=#70 id=70 data-nosnippet>70</a>    <span class="kw">type </span>Response = Vec&lt;Tag&gt;;
-<a href=#71 id=71 data-nosnippet>71</a>
-<a href=#72 id=72 data-nosnippet>72</a>    <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"streams/tags"</span>;
-<a href=#73 id=73 data-nosnippet>73</a>    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
-<a href=#74 id=74 data-nosnippet>74</a>    </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator = <span class="macro">twitch_oauth2::validator!</span>[];
-<a href=#75 id=75 data-nosnippet>75</a>}
-<a href=#76 id=76 data-nosnippet>76</a>
-<a href=#77 id=77 data-nosnippet>77</a><span class="kw">impl </span>RequestGet <span class="kw">for </span>GetStreamTagsRequest&lt;<span class="lifetime">'_</span>&gt; {}
-<a href=#78 id=78 data-nosnippet>78</a>
-<a href=#79 id=79 data-nosnippet>79</a><span class="attr">#[cfg(test)]
-<a href=#80 id=80 data-nosnippet>80</a>#[test]
-<a href=#81 id=81 data-nosnippet>81</a></span><span class="kw">fn </span>test_request() {
-<a href=#82 id=82 data-nosnippet>82</a>    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-<a href=#83 id=83 data-nosnippet>83</a>    <span class="kw">let </span>req = GetStreamTagsRequest::broadcaster_id(<span class="string">"198704263"</span>);
-<a href=#84 id=84 data-nosnippet>84</a>
-<a href=#85 id=85 data-nosnippet>85</a>    <span class="comment">// From twitch docs
-<a href=#86 id=86 data-nosnippet>86</a>    </span><span class="kw">let </span>data = <span class="string">"\
-<a href=#87 id=87 data-nosnippet>87</a>{\n\
-<a href=#88 id=88 data-nosnippet>88</a>    \"data\": [\n\
-<a href=#89 id=89 data-nosnippet>89</a>        {\n\
-<a href=#90 id=90 data-nosnippet>90</a>            \"tag_id\": \"621fb5bf-5498-4d8f-b4ac-db4d40d401bf\",\n\
-<a href=#91 id=91 data-nosnippet>91</a>            \"is_auto\": false,\n\
-<a href=#92 id=92 data-nosnippet>92</a>            \"localization_names\": {\n\
-<a href=#93 id=93 data-nosnippet>93</a>                \"bg-bg\": \"Завършване без продължаване\",\n\
-<a href=#94 id=94 data-nosnippet>94</a>                \"cs-cz\": \"Na jeden z&amp;aacute;tah\",\n\
-<a href=#95 id=95 data-nosnippet>95</a>                \"da-dk\": \"Continue klaret\"\n\
-<a href=#96 id=96 data-nosnippet>96</a>            },\n\
-<a href=#97 id=97 data-nosnippet>97</a>            \"localization_descriptions\": {\n\
-<a href=#98 id=98 data-nosnippet>98</a>                \"bg-bg\": \"За потоци с акцент върху завършване на аркадна игра с монети, в която не се използва продължаване\",\n\
-<a href=#99 id=99 data-nosnippet>99</a>                \"cs-cz\": \"Pro vys&amp;iacute;l&amp;aacute;n&amp;iacute; s důrazem na plněn&amp;iacute; mincov&amp;yacute;ch ark&amp;aacute;dov&amp;yacute;ch her bez použit&amp;iacute; pokračov&amp;aacute;n&amp;iacute;.\",\n\
-<a href=#100 id=100 data-nosnippet>100</a>                \"da-dk\": \"Til streams med v&amp;aelig;gt p&amp;aring; at gennemf&amp;oslash;re et arkadespil uden at bruge continues\"\n\
-<a href=#101 id=101 data-nosnippet>101</a>            }\n\
-<a href=#102 id=102 data-nosnippet>102</a>        },\n\
-<a href=#103 id=103 data-nosnippet>103</a>        {\n\
-<a href=#104 id=104 data-nosnippet>104</a>            \"tag_id\": \"79977fb9-f106-4a87-a386-f1b0f99783dd\",\n\
-<a href=#105 id=105 data-nosnippet>105</a>            \"is_auto\": false,\n\
-<a href=#106 id=106 data-nosnippet>106</a>            \"localization_names\": {\n\
-<a href=#107 id=107 data-nosnippet>107</a>                \"bg-bg\": \"PvE\",\n\
-<a href=#108 id=108 data-nosnippet>108</a>                \"cs-cz\": \"PvE\"\n\
-<a href=#109 id=109 data-nosnippet>109</a>            },\n\
-<a href=#110 id=110 data-nosnippet>110</a>            \"localization_descriptions\": {\n\
-<a href=#111 id=111 data-nosnippet>111</a>                \"bg-bg\": \"За потоци с акцент върху PVE геймплей\",\n\
-<a href=#112 id=112 data-nosnippet>112</a>                \"cs-cz\": \"Pro vys&amp;iacute;l&amp;aacute;n&amp;iacute; s důrazem na hratelnost \\\"hr&amp;aacute;č vs. prostřed&amp;iacute;\\\".\",\n\
-<a href=#113 id=113 data-nosnippet>113</a>                \"da-dk\": \"Til streams med v&amp;aelig;gt p&amp;aring; spil, hvor det er spilleren mod omgivelserne.\"\n\
-<a href=#114 id=114 data-nosnippet>114</a>            }\n\
-<a href=#115 id=115 data-nosnippet>115</a>        }\n\
-<a href=#116 id=116 data-nosnippet>116</a>    ]\n\
-<a href=#117 id=117 data-nosnippet>117</a>}\n\
-<a href=#118 id=118 data-nosnippet>118</a>"
-<a href=#119 id=119 data-nosnippet>119</a>        </span>.as_bytes().to_vec();
-<a href=#120 id=120 data-nosnippet>120</a>
-<a href=#121 id=121 data-nosnippet>121</a>    <span class="kw">let </span>http_response = http::Response::builder().body(data).unwrap();
-<a href=#122 id=122 data-nosnippet>122</a>
-<a href=#123 id=123 data-nosnippet>123</a>    <span class="kw">let </span>uri = req.get_uri().unwrap();
-<a href=#124 id=124 data-nosnippet>124</a>    <span class="macro">assert_eq!</span>(
-<a href=#125 id=125 data-nosnippet>125</a>        uri.to_string(),
-<a href=#126 id=126 data-nosnippet>126</a>        <span class="string">"https://api.twitch.tv/helix/streams/tags?broadcaster_id=198704263"
-<a href=#127 id=127 data-nosnippet>127</a>    </span>);
-<a href=#128 id=128 data-nosnippet>128</a>
-<a href=#129 id=129 data-nosnippet>129</a>    <span class="macro">dbg!</span>(GetStreamTagsRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
-<a href=#130 id=130 data-nosnippet>130</a>}</code></pre></div></section></main></body></html>
+<a href=#70 id=70 data-nosnippet>70</a>    <span class="kw">type </span>PaginationData = ();
+<a href=#71 id=71 data-nosnippet>71</a>    <span class="kw">type </span>Response = Vec&lt;Tag&gt;;
+<a href=#72 id=72 data-nosnippet>72</a>
+<a href=#73 id=73 data-nosnippet>73</a>    <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"streams/tags"</span>;
+<a href=#74 id=74 data-nosnippet>74</a>    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
+<a href=#75 id=75 data-nosnippet>75</a>    </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator = <span class="macro">twitch_oauth2::validator!</span>[];
+<a href=#76 id=76 data-nosnippet>76</a>}
+<a href=#77 id=77 data-nosnippet>77</a>
+<a href=#78 id=78 data-nosnippet>78</a><span class="kw">impl </span>RequestGet <span class="kw">for </span>GetStreamTagsRequest&lt;<span class="lifetime">'_</span>&gt; {}
+<a href=#79 id=79 data-nosnippet>79</a>
+<a href=#80 id=80 data-nosnippet>80</a><span class="attr">#[cfg(test)]
+<a href=#81 id=81 data-nosnippet>81</a>#[test]
+<a href=#82 id=82 data-nosnippet>82</a></span><span class="kw">fn </span>test_request() {
+<a href=#83 id=83 data-nosnippet>83</a>    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
+<a href=#84 id=84 data-nosnippet>84</a>    <span class="kw">let </span>req = GetStreamTagsRequest::broadcaster_id(<span class="string">"198704263"</span>);
+<a href=#85 id=85 data-nosnippet>85</a>
+<a href=#86 id=86 data-nosnippet>86</a>    <span class="comment">// From twitch docs
+<a href=#87 id=87 data-nosnippet>87</a>    </span><span class="kw">let </span>data = <span class="string">"\
+<a href=#88 id=88 data-nosnippet>88</a>{\n\
+<a href=#89 id=89 data-nosnippet>89</a>    \"data\": [\n\
+<a href=#90 id=90 data-nosnippet>90</a>        {\n\
+<a href=#91 id=91 data-nosnippet>91</a>            \"tag_id\": \"621fb5bf-5498-4d8f-b4ac-db4d40d401bf\",\n\
+<a href=#92 id=92 data-nosnippet>92</a>            \"is_auto\": false,\n\
+<a href=#93 id=93 data-nosnippet>93</a>            \"localization_names\": {\n\
+<a href=#94 id=94 data-nosnippet>94</a>                \"bg-bg\": \"Завършване без продължаване\",\n\
+<a href=#95 id=95 data-nosnippet>95</a>                \"cs-cz\": \"Na jeden z&amp;aacute;tah\",\n\
+<a href=#96 id=96 data-nosnippet>96</a>                \"da-dk\": \"Continue klaret\"\n\
+<a href=#97 id=97 data-nosnippet>97</a>            },\n\
+<a href=#98 id=98 data-nosnippet>98</a>            \"localization_descriptions\": {\n\
+<a href=#99 id=99 data-nosnippet>99</a>                \"bg-bg\": \"За потоци с акцент върху завършване на аркадна игра с монети, в която не се използва продължаване\",\n\
+<a href=#100 id=100 data-nosnippet>100</a>                \"cs-cz\": \"Pro vys&amp;iacute;l&amp;aacute;n&amp;iacute; s důrazem na plněn&amp;iacute; mincov&amp;yacute;ch ark&amp;aacute;dov&amp;yacute;ch her bez použit&amp;iacute; pokračov&amp;aacute;n&amp;iacute;.\",\n\
+<a href=#101 id=101 data-nosnippet>101</a>                \"da-dk\": \"Til streams med v&amp;aelig;gt p&amp;aring; at gennemf&amp;oslash;re et arkadespil uden at bruge continues\"\n\
+<a href=#102 id=102 data-nosnippet>102</a>            }\n\
+<a href=#103 id=103 data-nosnippet>103</a>        },\n\
+<a href=#104 id=104 data-nosnippet>104</a>        {\n\
+<a href=#105 id=105 data-nosnippet>105</a>            \"tag_id\": \"79977fb9-f106-4a87-a386-f1b0f99783dd\",\n\
+<a href=#106 id=106 data-nosnippet>106</a>            \"is_auto\": false,\n\
+<a href=#107 id=107 data-nosnippet>107</a>            \"localization_names\": {\n\
+<a href=#108 id=108 data-nosnippet>108</a>                \"bg-bg\": \"PvE\",\n\
+<a href=#109 id=109 data-nosnippet>109</a>                \"cs-cz\": \"PvE\"\n\
+<a href=#110 id=110 data-nosnippet>110</a>            },\n\
+<a href=#111 id=111 data-nosnippet>111</a>            \"localization_descriptions\": {\n\
+<a href=#112 id=112 data-nosnippet>112</a>                \"bg-bg\": \"За потоци с акцент върху PVE геймплей\",\n\
+<a href=#113 id=113 data-nosnippet>113</a>                \"cs-cz\": \"Pro vys&amp;iacute;l&amp;aacute;n&amp;iacute; s důrazem na hratelnost \\\"hr&amp;aacute;č vs. prostřed&amp;iacute;\\\".\",\n\
+<a href=#114 id=114 data-nosnippet>114</a>                \"da-dk\": \"Til streams med v&amp;aelig;gt p&amp;aring; spil, hvor det er spilleren mod omgivelserne.\"\n\
+<a href=#115 id=115 data-nosnippet>115</a>            }\n\
+<a href=#116 id=116 data-nosnippet>116</a>        }\n\
+<a href=#117 id=117 data-nosnippet>117</a>    ]\n\
+<a href=#118 id=118 data-nosnippet>118</a>}\n\
+<a href=#119 id=119 data-nosnippet>119</a>"
+<a href=#120 id=120 data-nosnippet>120</a>        </span>.as_bytes().to_vec();
+<a href=#121 id=121 data-nosnippet>121</a>
+<a href=#122 id=122 data-nosnippet>122</a>    <span class="kw">let </span>http_response = http::Response::builder().body(data).unwrap();
+<a href=#123 id=123 data-nosnippet>123</a>
+<a href=#124 id=124 data-nosnippet>124</a>    <span class="kw">let </span>uri = req.get_uri().unwrap();
+<a href=#125 id=125 data-nosnippet>125</a>    <span class="macro">assert_eq!</span>(
+<a href=#126 id=126 data-nosnippet>126</a>        uri.to_string(),
+<a href=#127 id=127 data-nosnippet>127</a>        <span class="string">"https://api.twitch.tv/helix/streams/tags?broadcaster_id=198704263"
+<a href=#128 id=128 data-nosnippet>128</a>    </span>);
+<a href=#129 id=129 data-nosnippet>129</a>
+<a href=#130 id=130 data-nosnippet>130</a>    <span class="macro">dbg!</span>(GetStreamTagsRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
+<a href=#131 id=131 data-nosnippet>131</a>}</code></pre></div></section></main></body></html>

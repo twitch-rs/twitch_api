@@ -3,7 +3,7 @@
 <a href=#3 id=3 data-nosnippet>3</a>
 <a href=#4 id=4 data-nosnippet>4</a></span><span class="kw">use super</span>::<span class="kw-2">*</span>;
 <a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span><span class="kw">crate</span>::eventsub;
-<a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span>helix::RequestGet;
+<a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span>helix::{PaginationState, RequestGet};
 <a href=#7 id=7 data-nosnippet>7</a>
 <a href=#8 id=8 data-nosnippet>8</a><span class="doccomment">/// Query Parameters for [Get Conduit Shards](super::get_conduit_shards)
 <a href=#9 id=9 data-nosnippet>9</a>///
@@ -63,146 +63,147 @@
 <a href=#63 id=63 data-nosnippet>63</a>}
 <a href=#64 id=64 data-nosnippet>64</a>
 <a href=#65 id=65 data-nosnippet>65</a><span class="kw">impl </span>Request <span class="kw">for </span>GetConduitShardsRequest&lt;<span class="lifetime">'_</span>&gt; {
-<a href=#66 id=66 data-nosnippet>66</a>    <span class="kw">type </span>Response = Vec&lt;eventsub::ShardResponse&gt;;
-<a href=#67 id=67 data-nosnippet>67</a>
-<a href=#68 id=68 data-nosnippet>68</a>    <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"eventsub/conduits/shards"</span>;
-<a href=#69 id=69 data-nosnippet>69</a>    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
-<a href=#70 id=70 data-nosnippet>70</a>    </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator = <span class="macro">twitch_oauth2::validator!</span>[];
-<a href=#71 id=71 data-nosnippet>71</a>}
-<a href=#72 id=72 data-nosnippet>72</a>
-<a href=#73 id=73 data-nosnippet>73</a><span class="kw">impl </span>RequestGet <span class="kw">for </span>GetConduitShardsRequest&lt;<span class="lifetime">'_</span>&gt; {}
-<a href=#74 id=74 data-nosnippet>74</a>
-<a href=#75 id=75 data-nosnippet>75</a><span class="kw">impl </span>helix::Paginated <span class="kw">for </span>GetConduitShardsRequest&lt;<span class="lifetime">'_</span>&gt; {
-<a href=#76 id=76 data-nosnippet>76</a>    <span class="kw">fn </span>set_pagination(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cursor: <span class="prelude-ty">Option</span>&lt;helix::Cursor&gt;) {
-<a href=#77 id=77 data-nosnippet>77</a>        <span class="self">self</span>.after = cursor.map(|c| c.into_cow())
-<a href=#78 id=78 data-nosnippet>78</a>    }
-<a href=#79 id=79 data-nosnippet>79</a>}
-<a href=#80 id=80 data-nosnippet>80</a>
-<a href=#81 id=81 data-nosnippet>81</a><span class="attr">#[cfg(test)]
-<a href=#82 id=82 data-nosnippet>82</a>#[test]
-<a href=#83 id=83 data-nosnippet>83</a></span><span class="kw">fn </span>test_uri() {
-<a href=#84 id=84 data-nosnippet>84</a>    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-<a href=#85 id=85 data-nosnippet>85</a>    <span class="kw">let </span>req = GetConduitShardsRequest::new(<span class="string">"12345"</span>);
-<a href=#86 id=86 data-nosnippet>86</a>
-<a href=#87 id=87 data-nosnippet>87</a>    <span class="kw">let </span>uri = req.get_uri().unwrap();
-<a href=#88 id=88 data-nosnippet>88</a>    <span class="macro">assert_eq!</span>(
-<a href=#89 id=89 data-nosnippet>89</a>        uri.to_string(),
-<a href=#90 id=90 data-nosnippet>90</a>        <span class="string">"https://api.twitch.tv/helix/eventsub/conduits/shards?conduit_id=12345"
-<a href=#91 id=91 data-nosnippet>91</a>    </span>);
-<a href=#92 id=92 data-nosnippet>92</a>}
-<a href=#93 id=93 data-nosnippet>93</a>
-<a href=#94 id=94 data-nosnippet>94</a><span class="attr">#[cfg(test)]
-<a href=#95 id=95 data-nosnippet>95</a>#[test]
-<a href=#96 id=96 data-nosnippet>96</a></span><span class="kw">fn </span>test_request() {
-<a href=#97 id=97 data-nosnippet>97</a>    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-<a href=#98 id=98 data-nosnippet>98</a>    <span class="kw">use </span>types::Timestamp;
-<a href=#99 id=99 data-nosnippet>99</a>
-<a href=#100 id=100 data-nosnippet>100</a>    <span class="kw">use </span><span class="kw">crate</span>::eventsub::{
-<a href=#101 id=101 data-nosnippet>101</a>        ShardStatus, TransportResponse, WebhookTransportResponse, WebsocketTransportResponse,
-<a href=#102 id=102 data-nosnippet>102</a>    };
-<a href=#103 id=103 data-nosnippet>103</a>    <span class="kw">let </span>req = GetConduitShardsRequest::new(<span class="string">"12345"</span>);
-<a href=#104 id=104 data-nosnippet>104</a>
-<a href=#105 id=105 data-nosnippet>105</a>    <span class="kw">let </span>data = <span class="string">br#"{
-<a href=#106 id=106 data-nosnippet>106</a>  "data": [
-<a href=#107 id=107 data-nosnippet>107</a>    {
-<a href=#108 id=108 data-nosnippet>108</a>      "id": "0",
-<a href=#109 id=109 data-nosnippet>109</a>      "status": "enabled",
-<a href=#110 id=110 data-nosnippet>110</a>      "transport": {
-<a href=#111 id=111 data-nosnippet>111</a>        "method": "webhook",
-<a href=#112 id=112 data-nosnippet>112</a>        "callback": "https://this-is-a-callback.com"
-<a href=#113 id=113 data-nosnippet>113</a>      }
-<a href=#114 id=114 data-nosnippet>114</a>    },
-<a href=#115 id=115 data-nosnippet>115</a>    {
-<a href=#116 id=116 data-nosnippet>116</a>      "id": "1",
-<a href=#117 id=117 data-nosnippet>117</a>      "status": "webhook_callback_verification_pending",
-<a href=#118 id=118 data-nosnippet>118</a>      "transport": {
-<a href=#119 id=119 data-nosnippet>119</a>        "method": "webhook",
-<a href=#120 id=120 data-nosnippet>120</a>        "callback": "https://this-is-a-callback-2.com"
-<a href=#121 id=121 data-nosnippet>121</a>      }
-<a href=#122 id=122 data-nosnippet>122</a>    },
-<a href=#123 id=123 data-nosnippet>123</a>    {
-<a href=#124 id=124 data-nosnippet>124</a>      "id": "2",
-<a href=#125 id=125 data-nosnippet>125</a>      "status": "enabled",
-<a href=#126 id=126 data-nosnippet>126</a>      "transport": {
-<a href=#127 id=127 data-nosnippet>127</a>        "method": "websocket",
-<a href=#128 id=128 data-nosnippet>128</a>        "session_id": "9fd5164a-a958-4c60-b7f4-6a7202506ca0",
-<a href=#129 id=129 data-nosnippet>129</a>        "connected_at": "2020-11-10T14:32:18.730260295Z"
-<a href=#130 id=130 data-nosnippet>130</a>      }
-<a href=#131 id=131 data-nosnippet>131</a>    },
-<a href=#132 id=132 data-nosnippet>132</a>    {
-<a href=#133 id=133 data-nosnippet>133</a>      "id": "3",
-<a href=#134 id=134 data-nosnippet>134</a>      "status": "enabled",
-<a href=#135 id=135 data-nosnippet>135</a>      "transport": {
-<a href=#136 id=136 data-nosnippet>136</a>        "method": "websocket",
-<a href=#137 id=137 data-nosnippet>137</a>        "session_id": "238b4b08-13f1-4b8f-8d31-56665a7a9d9f",
-<a href=#138 id=138 data-nosnippet>138</a>        "connected_at": "2020-11-10T14:32:18.730260295Z"
-<a href=#139 id=139 data-nosnippet>139</a>      }
-<a href=#140 id=140 data-nosnippet>140</a>    },
-<a href=#141 id=141 data-nosnippet>141</a>    {
-<a href=#142 id=142 data-nosnippet>142</a>      "id": "4",
-<a href=#143 id=143 data-nosnippet>143</a>      "status": "websocket_disconnected",
-<a href=#144 id=144 data-nosnippet>144</a>      "transport": {
-<a href=#145 id=145 data-nosnippet>145</a>        "method": "websocket",
-<a href=#146 id=146 data-nosnippet>146</a>        "session_id": "ad1c9fc3-0d99-4eb7-8a04-8608e8ff9ec9",
-<a href=#147 id=147 data-nosnippet>147</a>        "connected_at": "2020-11-10T14:32:18.730260295Z",
-<a href=#148 id=148 data-nosnippet>148</a>        "disconnected_at": "2020-11-11T14:32:18.730260295Z"
-<a href=#149 id=149 data-nosnippet>149</a>      }
-<a href=#150 id=150 data-nosnippet>150</a>    }
-<a href=#151 id=151 data-nosnippet>151</a>  ],
-<a href=#152 id=152 data-nosnippet>152</a>  "pagination": {}
-<a href=#153 id=153 data-nosnippet>153</a>}"#
-<a href=#154 id=154 data-nosnippet>154</a>    </span>.to_vec();
-<a href=#155 id=155 data-nosnippet>155</a>    <span class="kw">let </span>http_response = http::Response::builder().status(<span class="number">200</span>).body(data).unwrap();
-<a href=#156 id=156 data-nosnippet>156</a>
-<a href=#157 id=157 data-nosnippet>157</a>    <span class="kw">let </span>uri = req.get_uri().unwrap();
-<a href=#158 id=158 data-nosnippet>158</a>    <span class="kw">let </span>response = GetConduitShardsRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap();
-<a href=#159 id=159 data-nosnippet>159</a>
-<a href=#160 id=160 data-nosnippet>160</a>    <span class="macro">assert_eq!</span>(
-<a href=#161 id=161 data-nosnippet>161</a>        response.data,
-<a href=#162 id=162 data-nosnippet>162</a>        <span class="macro">vec!</span>[
-<a href=#163 id=163 data-nosnippet>163</a>            <span class="kw">crate</span>::eventsub::ShardResponse {
-<a href=#164 id=164 data-nosnippet>164</a>                id: <span class="string">"0"</span>.into(),
-<a href=#165 id=165 data-nosnippet>165</a>                status: ShardStatus::Enabled,
-<a href=#166 id=166 data-nosnippet>166</a>                transport: TransportResponse::Webhook(WebhookTransportResponse {
-<a href=#167 id=167 data-nosnippet>167</a>                    callback: <span class="string">"https://this-is-a-callback.com"</span>.to_string(),
-<a href=#168 id=168 data-nosnippet>168</a>                }),
-<a href=#169 id=169 data-nosnippet>169</a>            },
-<a href=#170 id=170 data-nosnippet>170</a>            <span class="kw">crate</span>::eventsub::ShardResponse {
-<a href=#171 id=171 data-nosnippet>171</a>                id: <span class="string">"1"</span>.into(),
-<a href=#172 id=172 data-nosnippet>172</a>                status: ShardStatus::WebhookCallbackVerificationPending,
-<a href=#173 id=173 data-nosnippet>173</a>                transport: TransportResponse::Webhook(WebhookTransportResponse {
-<a href=#174 id=174 data-nosnippet>174</a>                    callback: <span class="string">"https://this-is-a-callback-2.com"</span>.to_string(),
-<a href=#175 id=175 data-nosnippet>175</a>                }),
-<a href=#176 id=176 data-nosnippet>176</a>            },
-<a href=#177 id=177 data-nosnippet>177</a>            <span class="kw">crate</span>::eventsub::ShardResponse {
-<a href=#178 id=178 data-nosnippet>178</a>                id: <span class="string">"2"</span>.into(),
-<a href=#179 id=179 data-nosnippet>179</a>                status: ShardStatus::Enabled,
-<a href=#180 id=180 data-nosnippet>180</a>                transport: TransportResponse::Websocket(WebsocketTransportResponse {
-<a href=#181 id=181 data-nosnippet>181</a>                    session_id: <span class="string">"9fd5164a-a958-4c60-b7f4-6a7202506ca0"</span>.to_string(),
-<a href=#182 id=182 data-nosnippet>182</a>                    connected_at: <span class="prelude-val">Some</span>(Timestamp::from_static(<span class="string">"2020-11-10T14:32:18.730260295Z"</span>)),
-<a href=#183 id=183 data-nosnippet>183</a>                    disconnected_at: <span class="prelude-val">None</span>,
-<a href=#184 id=184 data-nosnippet>184</a>                }),
-<a href=#185 id=185 data-nosnippet>185</a>            },
-<a href=#186 id=186 data-nosnippet>186</a>            <span class="kw">crate</span>::eventsub::ShardResponse {
-<a href=#187 id=187 data-nosnippet>187</a>                id: <span class="string">"3"</span>.into(),
-<a href=#188 id=188 data-nosnippet>188</a>                status: ShardStatus::Enabled,
-<a href=#189 id=189 data-nosnippet>189</a>                transport: TransportResponse::Websocket(WebsocketTransportResponse {
-<a href=#190 id=190 data-nosnippet>190</a>                    session_id: <span class="string">"238b4b08-13f1-4b8f-8d31-56665a7a9d9f"</span>.to_string(),
-<a href=#191 id=191 data-nosnippet>191</a>                    connected_at: <span class="prelude-val">Some</span>(Timestamp::from_static(<span class="string">"2020-11-10T14:32:18.730260295Z"</span>)),
-<a href=#192 id=192 data-nosnippet>192</a>                    disconnected_at: <span class="prelude-val">None</span>,
-<a href=#193 id=193 data-nosnippet>193</a>                }),
-<a href=#194 id=194 data-nosnippet>194</a>            },
-<a href=#195 id=195 data-nosnippet>195</a>            <span class="kw">crate</span>::eventsub::ShardResponse {
-<a href=#196 id=196 data-nosnippet>196</a>                id: <span class="string">"4"</span>.into(),
-<a href=#197 id=197 data-nosnippet>197</a>                status: ShardStatus::WebsocketDisconnected,
-<a href=#198 id=198 data-nosnippet>198</a>                transport: TransportResponse::Websocket(WebsocketTransportResponse {
-<a href=#199 id=199 data-nosnippet>199</a>                    session_id: <span class="string">"ad1c9fc3-0d99-4eb7-8a04-8608e8ff9ec9"</span>.to_string(),
-<a href=#200 id=200 data-nosnippet>200</a>                    connected_at: <span class="prelude-val">Some</span>(Timestamp::from_static(<span class="string">"2020-11-10T14:32:18.730260295Z"</span>)),
-<a href=#201 id=201 data-nosnippet>201</a>                    disconnected_at: <span class="prelude-val">Some</span>(Timestamp::from_static(<span class="string">"2020-11-11T14:32:18.730260295Z"</span>)),
-<a href=#202 id=202 data-nosnippet>202</a>                }),
-<a href=#203 id=203 data-nosnippet>203</a>            },
-<a href=#204 id=204 data-nosnippet>204</a>        ]
-<a href=#205 id=205 data-nosnippet>205</a>    );
-<a href=#206 id=206 data-nosnippet>206</a>
-<a href=#207 id=207 data-nosnippet>207</a>    <span class="macro">dbg!</span>(<span class="string">"{:#?}"</span>, response);
-<a href=#208 id=208 data-nosnippet>208</a>}</code></pre></div></section></main></body></html>
+<a href=#66 id=66 data-nosnippet>66</a>    <span class="kw">type </span>PaginationData = PaginationState&lt;<span class="self">Self</span>&gt;;
+<a href=#67 id=67 data-nosnippet>67</a>    <span class="kw">type </span>Response = Vec&lt;eventsub::ShardResponse&gt;;
+<a href=#68 id=68 data-nosnippet>68</a>
+<a href=#69 id=69 data-nosnippet>69</a>    <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"eventsub/conduits/shards"</span>;
+<a href=#70 id=70 data-nosnippet>70</a>    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
+<a href=#71 id=71 data-nosnippet>71</a>    </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator = <span class="macro">twitch_oauth2::validator!</span>[];
+<a href=#72 id=72 data-nosnippet>72</a>}
+<a href=#73 id=73 data-nosnippet>73</a>
+<a href=#74 id=74 data-nosnippet>74</a><span class="kw">impl </span>RequestGet <span class="kw">for </span>GetConduitShardsRequest&lt;<span class="lifetime">'_</span>&gt; {}
+<a href=#75 id=75 data-nosnippet>75</a>
+<a href=#76 id=76 data-nosnippet>76</a><span class="kw">impl </span>helix::Paginated <span class="kw">for </span>GetConduitShardsRequest&lt;<span class="lifetime">'_</span>&gt; {
+<a href=#77 id=77 data-nosnippet>77</a>    <span class="kw">fn </span>set_pagination(<span class="kw-2">&amp;mut </span><span class="self">self</span>, cursor: <span class="prelude-ty">Option</span>&lt;helix::Cursor&gt;) {
+<a href=#78 id=78 data-nosnippet>78</a>        <span class="self">self</span>.after = cursor.map(|c| c.into_cow())
+<a href=#79 id=79 data-nosnippet>79</a>    }
+<a href=#80 id=80 data-nosnippet>80</a>}
+<a href=#81 id=81 data-nosnippet>81</a>
+<a href=#82 id=82 data-nosnippet>82</a><span class="attr">#[cfg(test)]
+<a href=#83 id=83 data-nosnippet>83</a>#[test]
+<a href=#84 id=84 data-nosnippet>84</a></span><span class="kw">fn </span>test_uri() {
+<a href=#85 id=85 data-nosnippet>85</a>    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
+<a href=#86 id=86 data-nosnippet>86</a>    <span class="kw">let </span>req = GetConduitShardsRequest::new(<span class="string">"12345"</span>);
+<a href=#87 id=87 data-nosnippet>87</a>
+<a href=#88 id=88 data-nosnippet>88</a>    <span class="kw">let </span>uri = req.get_uri().unwrap();
+<a href=#89 id=89 data-nosnippet>89</a>    <span class="macro">assert_eq!</span>(
+<a href=#90 id=90 data-nosnippet>90</a>        uri.to_string(),
+<a href=#91 id=91 data-nosnippet>91</a>        <span class="string">"https://api.twitch.tv/helix/eventsub/conduits/shards?conduit_id=12345"
+<a href=#92 id=92 data-nosnippet>92</a>    </span>);
+<a href=#93 id=93 data-nosnippet>93</a>}
+<a href=#94 id=94 data-nosnippet>94</a>
+<a href=#95 id=95 data-nosnippet>95</a><span class="attr">#[cfg(test)]
+<a href=#96 id=96 data-nosnippet>96</a>#[test]
+<a href=#97 id=97 data-nosnippet>97</a></span><span class="kw">fn </span>test_request() {
+<a href=#98 id=98 data-nosnippet>98</a>    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
+<a href=#99 id=99 data-nosnippet>99</a>    <span class="kw">use </span>types::Timestamp;
+<a href=#100 id=100 data-nosnippet>100</a>
+<a href=#101 id=101 data-nosnippet>101</a>    <span class="kw">use </span><span class="kw">crate</span>::eventsub::{
+<a href=#102 id=102 data-nosnippet>102</a>        ShardStatus, TransportResponse, WebhookTransportResponse, WebsocketTransportResponse,
+<a href=#103 id=103 data-nosnippet>103</a>    };
+<a href=#104 id=104 data-nosnippet>104</a>    <span class="kw">let </span>req = GetConduitShardsRequest::new(<span class="string">"12345"</span>);
+<a href=#105 id=105 data-nosnippet>105</a>
+<a href=#106 id=106 data-nosnippet>106</a>    <span class="kw">let </span>data = <span class="string">br#"{
+<a href=#107 id=107 data-nosnippet>107</a>  "data": [
+<a href=#108 id=108 data-nosnippet>108</a>    {
+<a href=#109 id=109 data-nosnippet>109</a>      "id": "0",
+<a href=#110 id=110 data-nosnippet>110</a>      "status": "enabled",
+<a href=#111 id=111 data-nosnippet>111</a>      "transport": {
+<a href=#112 id=112 data-nosnippet>112</a>        "method": "webhook",
+<a href=#113 id=113 data-nosnippet>113</a>        "callback": "https://this-is-a-callback.com"
+<a href=#114 id=114 data-nosnippet>114</a>      }
+<a href=#115 id=115 data-nosnippet>115</a>    },
+<a href=#116 id=116 data-nosnippet>116</a>    {
+<a href=#117 id=117 data-nosnippet>117</a>      "id": "1",
+<a href=#118 id=118 data-nosnippet>118</a>      "status": "webhook_callback_verification_pending",
+<a href=#119 id=119 data-nosnippet>119</a>      "transport": {
+<a href=#120 id=120 data-nosnippet>120</a>        "method": "webhook",
+<a href=#121 id=121 data-nosnippet>121</a>        "callback": "https://this-is-a-callback-2.com"
+<a href=#122 id=122 data-nosnippet>122</a>      }
+<a href=#123 id=123 data-nosnippet>123</a>    },
+<a href=#124 id=124 data-nosnippet>124</a>    {
+<a href=#125 id=125 data-nosnippet>125</a>      "id": "2",
+<a href=#126 id=126 data-nosnippet>126</a>      "status": "enabled",
+<a href=#127 id=127 data-nosnippet>127</a>      "transport": {
+<a href=#128 id=128 data-nosnippet>128</a>        "method": "websocket",
+<a href=#129 id=129 data-nosnippet>129</a>        "session_id": "9fd5164a-a958-4c60-b7f4-6a7202506ca0",
+<a href=#130 id=130 data-nosnippet>130</a>        "connected_at": "2020-11-10T14:32:18.730260295Z"
+<a href=#131 id=131 data-nosnippet>131</a>      }
+<a href=#132 id=132 data-nosnippet>132</a>    },
+<a href=#133 id=133 data-nosnippet>133</a>    {
+<a href=#134 id=134 data-nosnippet>134</a>      "id": "3",
+<a href=#135 id=135 data-nosnippet>135</a>      "status": "enabled",
+<a href=#136 id=136 data-nosnippet>136</a>      "transport": {
+<a href=#137 id=137 data-nosnippet>137</a>        "method": "websocket",
+<a href=#138 id=138 data-nosnippet>138</a>        "session_id": "238b4b08-13f1-4b8f-8d31-56665a7a9d9f",
+<a href=#139 id=139 data-nosnippet>139</a>        "connected_at": "2020-11-10T14:32:18.730260295Z"
+<a href=#140 id=140 data-nosnippet>140</a>      }
+<a href=#141 id=141 data-nosnippet>141</a>    },
+<a href=#142 id=142 data-nosnippet>142</a>    {
+<a href=#143 id=143 data-nosnippet>143</a>      "id": "4",
+<a href=#144 id=144 data-nosnippet>144</a>      "status": "websocket_disconnected",
+<a href=#145 id=145 data-nosnippet>145</a>      "transport": {
+<a href=#146 id=146 data-nosnippet>146</a>        "method": "websocket",
+<a href=#147 id=147 data-nosnippet>147</a>        "session_id": "ad1c9fc3-0d99-4eb7-8a04-8608e8ff9ec9",
+<a href=#148 id=148 data-nosnippet>148</a>        "connected_at": "2020-11-10T14:32:18.730260295Z",
+<a href=#149 id=149 data-nosnippet>149</a>        "disconnected_at": "2020-11-11T14:32:18.730260295Z"
+<a href=#150 id=150 data-nosnippet>150</a>      }
+<a href=#151 id=151 data-nosnippet>151</a>    }
+<a href=#152 id=152 data-nosnippet>152</a>  ],
+<a href=#153 id=153 data-nosnippet>153</a>  "pagination": {}
+<a href=#154 id=154 data-nosnippet>154</a>}"#
+<a href=#155 id=155 data-nosnippet>155</a>    </span>.to_vec();
+<a href=#156 id=156 data-nosnippet>156</a>    <span class="kw">let </span>http_response = http::Response::builder().status(<span class="number">200</span>).body(data).unwrap();
+<a href=#157 id=157 data-nosnippet>157</a>
+<a href=#158 id=158 data-nosnippet>158</a>    <span class="kw">let </span>uri = req.get_uri().unwrap();
+<a href=#159 id=159 data-nosnippet>159</a>    <span class="kw">let </span>response = GetConduitShardsRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap();
+<a href=#160 id=160 data-nosnippet>160</a>
+<a href=#161 id=161 data-nosnippet>161</a>    <span class="macro">assert_eq!</span>(
+<a href=#162 id=162 data-nosnippet>162</a>        response.data,
+<a href=#163 id=163 data-nosnippet>163</a>        <span class="macro">vec!</span>[
+<a href=#164 id=164 data-nosnippet>164</a>            <span class="kw">crate</span>::eventsub::ShardResponse {
+<a href=#165 id=165 data-nosnippet>165</a>                id: <span class="string">"0"</span>.into(),
+<a href=#166 id=166 data-nosnippet>166</a>                status: ShardStatus::Enabled,
+<a href=#167 id=167 data-nosnippet>167</a>                transport: TransportResponse::Webhook(WebhookTransportResponse {
+<a href=#168 id=168 data-nosnippet>168</a>                    callback: <span class="string">"https://this-is-a-callback.com"</span>.to_string(),
+<a href=#169 id=169 data-nosnippet>169</a>                }),
+<a href=#170 id=170 data-nosnippet>170</a>            },
+<a href=#171 id=171 data-nosnippet>171</a>            <span class="kw">crate</span>::eventsub::ShardResponse {
+<a href=#172 id=172 data-nosnippet>172</a>                id: <span class="string">"1"</span>.into(),
+<a href=#173 id=173 data-nosnippet>173</a>                status: ShardStatus::WebhookCallbackVerificationPending,
+<a href=#174 id=174 data-nosnippet>174</a>                transport: TransportResponse::Webhook(WebhookTransportResponse {
+<a href=#175 id=175 data-nosnippet>175</a>                    callback: <span class="string">"https://this-is-a-callback-2.com"</span>.to_string(),
+<a href=#176 id=176 data-nosnippet>176</a>                }),
+<a href=#177 id=177 data-nosnippet>177</a>            },
+<a href=#178 id=178 data-nosnippet>178</a>            <span class="kw">crate</span>::eventsub::ShardResponse {
+<a href=#179 id=179 data-nosnippet>179</a>                id: <span class="string">"2"</span>.into(),
+<a href=#180 id=180 data-nosnippet>180</a>                status: ShardStatus::Enabled,
+<a href=#181 id=181 data-nosnippet>181</a>                transport: TransportResponse::Websocket(WebsocketTransportResponse {
+<a href=#182 id=182 data-nosnippet>182</a>                    session_id: <span class="string">"9fd5164a-a958-4c60-b7f4-6a7202506ca0"</span>.to_string(),
+<a href=#183 id=183 data-nosnippet>183</a>                    connected_at: <span class="prelude-val">Some</span>(Timestamp::from_static(<span class="string">"2020-11-10T14:32:18.730260295Z"</span>)),
+<a href=#184 id=184 data-nosnippet>184</a>                    disconnected_at: <span class="prelude-val">None</span>,
+<a href=#185 id=185 data-nosnippet>185</a>                }),
+<a href=#186 id=186 data-nosnippet>186</a>            },
+<a href=#187 id=187 data-nosnippet>187</a>            <span class="kw">crate</span>::eventsub::ShardResponse {
+<a href=#188 id=188 data-nosnippet>188</a>                id: <span class="string">"3"</span>.into(),
+<a href=#189 id=189 data-nosnippet>189</a>                status: ShardStatus::Enabled,
+<a href=#190 id=190 data-nosnippet>190</a>                transport: TransportResponse::Websocket(WebsocketTransportResponse {
+<a href=#191 id=191 data-nosnippet>191</a>                    session_id: <span class="string">"238b4b08-13f1-4b8f-8d31-56665a7a9d9f"</span>.to_string(),
+<a href=#192 id=192 data-nosnippet>192</a>                    connected_at: <span class="prelude-val">Some</span>(Timestamp::from_static(<span class="string">"2020-11-10T14:32:18.730260295Z"</span>)),
+<a href=#193 id=193 data-nosnippet>193</a>                    disconnected_at: <span class="prelude-val">None</span>,
+<a href=#194 id=194 data-nosnippet>194</a>                }),
+<a href=#195 id=195 data-nosnippet>195</a>            },
+<a href=#196 id=196 data-nosnippet>196</a>            <span class="kw">crate</span>::eventsub::ShardResponse {
+<a href=#197 id=197 data-nosnippet>197</a>                id: <span class="string">"4"</span>.into(),
+<a href=#198 id=198 data-nosnippet>198</a>                status: ShardStatus::WebsocketDisconnected,
+<a href=#199 id=199 data-nosnippet>199</a>                transport: TransportResponse::Websocket(WebsocketTransportResponse {
+<a href=#200 id=200 data-nosnippet>200</a>                    session_id: <span class="string">"ad1c9fc3-0d99-4eb7-8a04-8608e8ff9ec9"</span>.to_string(),
+<a href=#201 id=201 data-nosnippet>201</a>                    connected_at: <span class="prelude-val">Some</span>(Timestamp::from_static(<span class="string">"2020-11-10T14:32:18.730260295Z"</span>)),
+<a href=#202 id=202 data-nosnippet>202</a>                    disconnected_at: <span class="prelude-val">Some</span>(Timestamp::from_static(<span class="string">"2020-11-11T14:32:18.730260295Z"</span>)),
+<a href=#203 id=203 data-nosnippet>203</a>                }),
+<a href=#204 id=204 data-nosnippet>204</a>            },
+<a href=#205 id=205 data-nosnippet>205</a>        ]
+<a href=#206 id=206 data-nosnippet>206</a>    );
+<a href=#207 id=207 data-nosnippet>207</a>
+<a href=#208 id=208 data-nosnippet>208</a>    <span class="macro">dbg!</span>(<span class="string">"{:#?}"</span>, response);
+<a href=#209 id=209 data-nosnippet>209</a>}</code></pre></div></section></main></body></html>

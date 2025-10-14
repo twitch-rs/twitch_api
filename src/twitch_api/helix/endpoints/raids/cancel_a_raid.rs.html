@@ -69,57 +69,58 @@
 <a href=#69 id=69 data-nosnippet>69</a>}
 <a href=#70 id=70 data-nosnippet>70</a>
 <a href=#71 id=71 data-nosnippet>71</a><span class="kw">impl </span>Request <span class="kw">for </span>CancelARaidRequest&lt;<span class="lifetime">'_</span>&gt; {
-<a href=#72 id=72 data-nosnippet>72</a>    <span class="kw">type </span>Response = CancelARaidResponse;
-<a href=#73 id=73 data-nosnippet>73</a>
-<a href=#74 id=74 data-nosnippet>74</a>    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
-<a href=#75 id=75 data-nosnippet>75</a>    </span><span class="kw">const </span>OPT_SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[twitch_oauth2::Scope] = <span class="kw-2">&amp;</span>[];
-<a href=#76 id=76 data-nosnippet>76</a>    <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"raids"</span>;
-<a href=#77 id=77 data-nosnippet>77</a>    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
-<a href=#78 id=78 data-nosnippet>78</a>    </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator =
-<a href=#79 id=79 data-nosnippet>79</a>        <span class="macro">twitch_oauth2::validator!</span>[twitch_oauth2::Scope::ChannelManageRaids];
-<a href=#80 id=80 data-nosnippet>80</a>}
-<a href=#81 id=81 data-nosnippet>81</a>
-<a href=#82 id=82 data-nosnippet>82</a><span class="kw">impl </span>RequestDelete <span class="kw">for </span>CancelARaidRequest&lt;<span class="lifetime">'_</span>&gt; {
-<a href=#83 id=83 data-nosnippet>83</a>    <span class="kw">fn </span>parse_inner_response(
-<a href=#84 id=84 data-nosnippet>84</a>        request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
-<a href=#85 id=85 data-nosnippet>85</a>        uri: <span class="kw-2">&amp;</span>http::Uri,
-<a href=#86 id=86 data-nosnippet>86</a>        response: <span class="kw-2">&amp;</span>str,
-<a href=#87 id=87 data-nosnippet>87</a>        status: http::StatusCode,
-<a href=#88 id=88 data-nosnippet>88</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::Response&lt;<span class="self">Self</span>, <span class="self">Self</span>::Response&gt;, helix::HelixRequestDeleteError&gt;
-<a href=#89 id=89 data-nosnippet>89</a>    <span class="kw">where
-<a href=#90 id=90 data-nosnippet>90</a>        </span><span class="self">Self</span>: Sized,
-<a href=#91 id=91 data-nosnippet>91</a>    {
-<a href=#92 id=92 data-nosnippet>92</a>        <span class="kw">match </span>status {
-<a href=#93 id=93 data-nosnippet>93</a>            http::StatusCode::NO_CONTENT =&gt; <span class="prelude-val">Ok</span>(helix::Response::with_data(
-<a href=#94 id=94 data-nosnippet>94</a>                CancelARaidResponse::Success,
-<a href=#95 id=95 data-nosnippet>95</a>                request,
-<a href=#96 id=96 data-nosnippet>96</a>            )),
-<a href=#97 id=97 data-nosnippet>97</a>            <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(helix::HelixRequestDeleteError::InvalidResponse {
-<a href=#98 id=98 data-nosnippet>98</a>                reason: <span class="string">"unexpected status"</span>,
-<a href=#99 id=99 data-nosnippet>99</a>                response: response.to_string(),
-<a href=#100 id=100 data-nosnippet>100</a>                status,
-<a href=#101 id=101 data-nosnippet>101</a>                uri: uri.clone(),
-<a href=#102 id=102 data-nosnippet>102</a>            }),
-<a href=#103 id=103 data-nosnippet>103</a>        }
-<a href=#104 id=104 data-nosnippet>104</a>    }
-<a href=#105 id=105 data-nosnippet>105</a>}
-<a href=#106 id=106 data-nosnippet>106</a>
-<a href=#107 id=107 data-nosnippet>107</a><span class="attr">#[cfg(test)]
-<a href=#108 id=108 data-nosnippet>108</a>#[test]
-<a href=#109 id=109 data-nosnippet>109</a></span><span class="kw">fn </span>test_request() {
-<a href=#110 id=110 data-nosnippet>110</a>    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-<a href=#111 id=111 data-nosnippet>111</a>    <span class="kw">let </span>req = CancelARaidRequest::broadcaster_id(<span class="string">"12345678"</span>);
-<a href=#112 id=112 data-nosnippet>112</a>
-<a href=#113 id=113 data-nosnippet>113</a>    <span class="comment">// From twitch docs
-<a href=#114 id=114 data-nosnippet>114</a>    </span><span class="kw">let </span>data = <span class="string">br#""#</span>.to_vec();
-<a href=#115 id=115 data-nosnippet>115</a>
-<a href=#116 id=116 data-nosnippet>116</a>    <span class="kw">let </span>http_response = http::Response::builder().status(<span class="number">204</span>).body(data).unwrap();
-<a href=#117 id=117 data-nosnippet>117</a>
-<a href=#118 id=118 data-nosnippet>118</a>    <span class="kw">let </span>uri = req.get_uri().unwrap();
-<a href=#119 id=119 data-nosnippet>119</a>    <span class="macro">assert_eq!</span>(
-<a href=#120 id=120 data-nosnippet>120</a>        uri.to_string(),
-<a href=#121 id=121 data-nosnippet>121</a>        <span class="string">"https://api.twitch.tv/helix/raids?broadcaster_id=12345678"
-<a href=#122 id=122 data-nosnippet>122</a>    </span>);
-<a href=#123 id=123 data-nosnippet>123</a>
-<a href=#124 id=124 data-nosnippet>124</a>    <span class="macro">dbg!</span>(CancelARaidRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
-<a href=#125 id=125 data-nosnippet>125</a>}</code></pre></div></section></main></body></html>
+<a href=#72 id=72 data-nosnippet>72</a>    <span class="kw">type </span>PaginationData = ();
+<a href=#73 id=73 data-nosnippet>73</a>    <span class="kw">type </span>Response = CancelARaidResponse;
+<a href=#74 id=74 data-nosnippet>74</a>
+<a href=#75 id=75 data-nosnippet>75</a>    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
+<a href=#76 id=76 data-nosnippet>76</a>    </span><span class="kw">const </span>OPT_SCOPE: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[twitch_oauth2::Scope] = <span class="kw-2">&amp;</span>[];
+<a href=#77 id=77 data-nosnippet>77</a>    <span class="kw">const </span>PATH: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"raids"</span>;
+<a href=#78 id=78 data-nosnippet>78</a>    <span class="attr">#[cfg(feature = <span class="string">"twitch_oauth2"</span>)]
+<a href=#79 id=79 data-nosnippet>79</a>    </span><span class="kw">const </span>SCOPE: twitch_oauth2::Validator =
+<a href=#80 id=80 data-nosnippet>80</a>        <span class="macro">twitch_oauth2::validator!</span>[twitch_oauth2::Scope::ChannelManageRaids];
+<a href=#81 id=81 data-nosnippet>81</a>}
+<a href=#82 id=82 data-nosnippet>82</a>
+<a href=#83 id=83 data-nosnippet>83</a><span class="kw">impl </span>RequestDelete <span class="kw">for </span>CancelARaidRequest&lt;<span class="lifetime">'_</span>&gt; {
+<a href=#84 id=84 data-nosnippet>84</a>    <span class="kw">fn </span>parse_inner_response(
+<a href=#85 id=85 data-nosnippet>85</a>        request: <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;,
+<a href=#86 id=86 data-nosnippet>86</a>        uri: <span class="kw-2">&amp;</span>http::Uri,
+<a href=#87 id=87 data-nosnippet>87</a>        response: <span class="kw-2">&amp;</span>str,
+<a href=#88 id=88 data-nosnippet>88</a>        status: http::StatusCode,
+<a href=#89 id=89 data-nosnippet>89</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::Response&lt;<span class="self">Self</span>, <span class="self">Self</span>::Response&gt;, helix::HelixRequestDeleteError&gt;
+<a href=#90 id=90 data-nosnippet>90</a>    <span class="kw">where
+<a href=#91 id=91 data-nosnippet>91</a>        </span><span class="self">Self</span>: Sized,
+<a href=#92 id=92 data-nosnippet>92</a>    {
+<a href=#93 id=93 data-nosnippet>93</a>        <span class="kw">match </span>status {
+<a href=#94 id=94 data-nosnippet>94</a>            http::StatusCode::NO_CONTENT =&gt; <span class="prelude-val">Ok</span>(helix::Response::with_data(
+<a href=#95 id=95 data-nosnippet>95</a>                CancelARaidResponse::Success,
+<a href=#96 id=96 data-nosnippet>96</a>                request,
+<a href=#97 id=97 data-nosnippet>97</a>            )),
+<a href=#98 id=98 data-nosnippet>98</a>            <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(helix::HelixRequestDeleteError::InvalidResponse {
+<a href=#99 id=99 data-nosnippet>99</a>                reason: <span class="string">"unexpected status"</span>,
+<a href=#100 id=100 data-nosnippet>100</a>                response: response.to_string(),
+<a href=#101 id=101 data-nosnippet>101</a>                status,
+<a href=#102 id=102 data-nosnippet>102</a>                uri: uri.clone(),
+<a href=#103 id=103 data-nosnippet>103</a>            }),
+<a href=#104 id=104 data-nosnippet>104</a>        }
+<a href=#105 id=105 data-nosnippet>105</a>    }
+<a href=#106 id=106 data-nosnippet>106</a>}
+<a href=#107 id=107 data-nosnippet>107</a>
+<a href=#108 id=108 data-nosnippet>108</a><span class="attr">#[cfg(test)]
+<a href=#109 id=109 data-nosnippet>109</a>#[test]
+<a href=#110 id=110 data-nosnippet>110</a></span><span class="kw">fn </span>test_request() {
+<a href=#111 id=111 data-nosnippet>111</a>    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
+<a href=#112 id=112 data-nosnippet>112</a>    <span class="kw">let </span>req = CancelARaidRequest::broadcaster_id(<span class="string">"12345678"</span>);
+<a href=#113 id=113 data-nosnippet>113</a>
+<a href=#114 id=114 data-nosnippet>114</a>    <span class="comment">// From twitch docs
+<a href=#115 id=115 data-nosnippet>115</a>    </span><span class="kw">let </span>data = <span class="string">br#""#</span>.to_vec();
+<a href=#116 id=116 data-nosnippet>116</a>
+<a href=#117 id=117 data-nosnippet>117</a>    <span class="kw">let </span>http_response = http::Response::builder().status(<span class="number">204</span>).body(data).unwrap();
+<a href=#118 id=118 data-nosnippet>118</a>
+<a href=#119 id=119 data-nosnippet>119</a>    <span class="kw">let </span>uri = req.get_uri().unwrap();
+<a href=#120 id=120 data-nosnippet>120</a>    <span class="macro">assert_eq!</span>(
+<a href=#121 id=121 data-nosnippet>121</a>        uri.to_string(),
+<a href=#122 id=122 data-nosnippet>122</a>        <span class="string">"https://api.twitch.tv/helix/raids?broadcaster_id=12345678"
+<a href=#123 id=123 data-nosnippet>123</a>    </span>);
+<a href=#124 id=124 data-nosnippet>124</a>
+<a href=#125 id=125 data-nosnippet>125</a>    <span class="macro">dbg!</span>(CancelARaidRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
+<a href=#126 id=126 data-nosnippet>126</a>}</code></pre></div></section></main></body></html>
