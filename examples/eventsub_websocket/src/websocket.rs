@@ -1,9 +1,6 @@
-use std::{
-    sync::{
-        atomic::{AtomicBool, Ordering},
-        Arc,
-    },
-    time::Duration,
+use std::sync::{
+    atomic::{AtomicBool, Ordering},
+    Arc,
 };
 
 use eyre::Context;
@@ -15,6 +12,7 @@ use tokio::{
         Mutex, MutexGuard,
     },
     task::{JoinError, JoinHandle},
+    time::{Duration, Instant},
 };
 use tokio_tungstenite::{
     tungstenite::{client::IntoClientRequest, protocol::WebSocketConfig, Message as WsMessage},
@@ -107,6 +105,8 @@ enum SideEffect {
     Nothing,
     /// do something useful with received message
     Something(types::UserId),
+    /// reset the timeout and keep the connection alive
+    ResetKeepalive,
     /// kill predecessor and swap the handle
     KillPredecessor,
     /// spawn successor and await death signal
@@ -251,7 +251,7 @@ impl WebSocketConnection {
                 Ok(SideEffect::AssignSuccessor(successor))
             }
             // TODO: keepalive counting https://dev.twitch.tv/docs/eventsub/handling-websocket-events/#keepalive-message
-            EventsubWebsocketData::Keepalive { .. } => Ok(SideEffect::Nothing),
+            EventsubWebsocketData::Keepalive { .. } => Ok(SideEffect::ResetKeepalive),
             EventsubWebsocketData::Revocation { metadata, .. } => {
                 eyre::bail!("got revocation: {metadata:?}")
             }
@@ -287,6 +287,9 @@ impl ActorHandle {
                 self_killer,
             };
 
+            /// default keepalive duration is 10 seconds
+            const WINDOW: u64 = 10;
+            let mut timeout: Instant = Instant::now() + Duration::from_secs(WINDOW);
             let mut successor: Option<Self> = None;
 
             loop {
@@ -304,18 +307,22 @@ impl ActorHandle {
                         let side_effect = connection.process_message(frame).await?;
                         match side_effect {
                             SideEffect::Nothing => {}
+                            SideEffect::ResetKeepalive => timeout = Instant::now() + Duration::from_secs(WINDOW),
                             SideEffect::Something(user_id) => {
+                                // reset keepalive on event
+                                timeout = Instant::now() + Duration::from_secs(WINDOW);
                                 tracing::info!(
                                     "doing something useful with user id {user_id:?}"
                                 );
-                                todo!();
+                                /* TODO */
                             },
                             SideEffect::KillPredecessor => predecessor_killer.send(())?,
                             SideEffect::AssignSuccessor(actor_handle) => {
                                 successor = Some(actor_handle);
                             },
                         }
-                    }
+                    },
+                    _ = tokio::time::sleep_until(timeout) => eyre::bail!("connection timed out"),
                 }
             }
         }))
