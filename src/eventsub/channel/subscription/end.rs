@@ -2,7 +2,7 @@
 //! A subscription to the specified channel expires.
 
 use super::*;
-/// [`channel.subscription.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelSubscriptionEnd): a subscription to the specified channel expires.
+/// [`channel.subscription.end`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelSubscriptionEnd): a subscription to the specified channel ends.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
