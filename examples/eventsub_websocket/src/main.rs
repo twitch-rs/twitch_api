@@ -1,4 +1,3 @@
-#![warn(clippy::unwrap_in_result)]
 pub mod opts;
 pub mod util;
 pub mod websocket;
@@ -6,12 +5,8 @@ pub mod websocket;
 use clap::Parser;
 pub use opts::Secret;
 use reqwest::Client;
-use tokio::sync::Mutex;
 
-use std::{
-    collections::HashSet,
-    sync::{Arc, LazyLock},
-};
+use std::sync::{Arc, LazyLock};
 
 use opts::Opts;
 
@@ -77,8 +72,5 @@ pub async fn run(opts: Arc<Opts>) -> eyre::Result<()> {
         token.user_id.clone()
     };
 
-    // maybe the example can be generalized to handle a collection of ids
-    let channel_ids = Arc::new(HashSet::from([user_id]));
-
-    websocket::run(client, Arc::new(Mutex::new(token)), opts, channel_ids).await
+    websocket::run(client, token, opts, user_id).await
 }

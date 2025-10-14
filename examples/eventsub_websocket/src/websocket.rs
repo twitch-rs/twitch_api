@@ -1,10 +1,13 @@
-use std::{collections::HashSet, sync::Arc, time::Duration};
+use std::{
+    sync::{
+        atomic::{AtomicBool, Ordering},
+        Arc,
+    },
+    time::Duration,
+};
 
 use eyre::Context;
-use futures::{
-    stream::{self, SplitStream},
-    StreamExt, TryStreamExt,
-};
+use futures::{stream::SplitStream, StreamExt};
 use reqwest::Client;
 use tokio::{
     sync::{
@@ -14,9 +17,7 @@ use tokio::{
     task::{JoinError, JoinHandle},
 };
 use tokio_tungstenite::{
-    tungstenite::{
-        client::IntoClientRequest, protocol::WebSocketConfig, Message as WsMessage,
-    },
+    tungstenite::{client::IntoClientRequest, protocol::WebSocketConfig, Message as WsMessage},
     MaybeTlsStream, WebSocketStream,
 };
 use twitch_api::{
@@ -24,7 +25,7 @@ use twitch_api::{
         self,
         channel::{ChannelBanV1, ChannelUnbanV1},
         event::websocket::{EventsubWebsocketData, ReconnectPayload, WelcomePayload},
-        Event, EventSubSubscription, EventSubscription, EventType, Message, Transport,
+        Event, EventSubscription, Message, SessionData, Transport,
     },
     helix::{eventsub::CreateEventSubSubscription, ClientRequestError, HelixRequestPostError},
     twitch_oauth2::{TwitchToken, UserToken},
@@ -57,123 +58,22 @@ async fn connect(
     Ok(socket)
 }
 
-async fn make_token(
-    client: &impl twitch_oauth2::client::Client,
-    token: impl Into<twitch_oauth2::AccessToken>,
-) -> Result<UserToken, eyre::Report> {
-    UserToken::from_existing(client, token.into(), None, None)
-        .await
-        .context("could not use access token")
-}
-
 async fn refresh_if_expired(
     token: Arc<Mutex<UserToken>>,
     helix_client: &HelixClient<'_, Client>,
-    opts: &crate::Opts,
+    _opts: &crate::Opts,
 ) -> eyre::Result<()> {
-    let mut lock: MutexGuard<'_, UserToken> = token.lock().await;
+    let lock: MutexGuard<'_, UserToken> = token.lock().await;
 
     if lock.expires_in() >= Duration::from_secs(60) {
         return Ok(());
     }
-    let client = helix_client.get_client();
+    let _client = helix_client.get_client();
 
-    let new_token = if let Some(ref access_token) = opts.access_token {
-        make_token(client, access_token.secret().to_string()).await?
-    } else if let (Some(ref oauth_service_url), Some(ref pointer)) =
-        (&opts.oauth2_service_url, &opts.oauth2_service_pointer)
-    {
-        tracing::info!(
-            "using oauth service on `{}` to get oauth token",
-            oauth_service_url
-        );
+    /* TODO: token refresh logic is left up to the user */
 
-        let mut request = client.get(oauth_service_url.clone());
-        if let Some(ref key) = opts.oauth2_service_key {
-            request = request.bearer_auth(key.secret());
-        }
-        let request = request.build()?;
-        tracing::debug!("request: {:?}", request);
-
-        match client.execute(request).await {
-            Ok(response)
-                if !(response.status().is_client_error()
-                    || response.status().is_server_error()) =>
-            {
-                let service_response: serde_json::Value = response
-                    .json()
-                    .await
-                    .context("could not transform oauth service response to json")?;
-                make_token(
-                    client,
-                    service_response
-                        .pointer(pointer)
-                        .ok_or_else(|| eyre::eyre!("could not get a field on `{}`", pointer))?
-                        .as_str()
-                        .ok_or_else(|| eyre::eyre!("token is not a string"))?
-                        .to_string(),
-                )
-                .await?
-            }
-            Ok(response_error) => {
-                let status = response_error.status();
-                let error = response_error.text().await?;
-                eyre::bail!(
-                    "oauth service returned error code: {} with body: {:?}",
-                    status,
-                    error
-                );
-            }
-            Err(e) => {
-                return Err(e)
-                    .with_context(|| format!("calling oauth service on `{}`", &oauth_service_url))
-            }
-        }
-    } else {
-        panic!("got empty vals for token cli group: {:?}", opts)
-    };
-
-    *lock = new_token;
     drop(lock);
     Ok(())
-}
-
-async fn get_existing_subscriptions(
-    helix_client: &HelixClient<'_, Client>,
-    token: &UserToken,
-    session_id: &str,
-    event_type: EventType,
-) -> eyre::Result<HashSet<types::UserId>> {
-    Ok(helix_client
-        .get_eventsub_subscriptions(
-            Some(eventsub::Status::Enabled),
-            Some(event_type),
-            None,
-            token,
-        )
-        .map_ok(|r: twitch_api::helix::eventsub::EventSubSubscriptions| {
-            stream::iter(
-                r.subscriptions
-                    .into_iter()
-                    .filter(|s: &EventSubSubscription| {
-                        s.transport.as_websocket().is_some_and(
-                            |t: &eventsub::WebsocketTransportResponse| t.session_id == session_id,
-                        )
-                    })
-                    .filter_map(|sub: EventSubSubscription| {
-                        Some(types::UserId::new(
-                            sub.condition
-                                .get("broadcaster_user_id")?
-                                .as_str()?
-                                .to_owned(),
-                        ))
-                    })
-                    .map(Ok::<_, ClientRequestError<reqwest::Error>>),
-            )
-        })
-        .try_flatten()
-        .try_collect::<HashSet<types::UserId>>()
-        .await?)
 }
 
 async fn subscribe(
@@ -201,171 +101,162 @@ async fn subscribe(
     Ok(())
 }
 
-async fn process_message(
-    socket: &mut SplitStream<WebSocketStream<MaybeTlsStream<tokio::net::TcpStream>>>,
-    helix_client: &'static HelixClient<'_, Client>,
-    token: Arc<Mutex<UserToken>>,
-    opts: Arc<crate::Opts>,
-    channel_ids: Arc<HashSet<types::UserId>>,
-    predecessor_killer: UnboundedSender<()>,
-    self_killer: UnboundedSender<()>,
-) -> eyre::Result<Option<ActorHandle>> {
-    let Some(message) = socket.next().await else {
-        return Err(eyre::eyre!("websocket stream closed unexpectedly"));
-    };
-    let frame = match message {
-        Ok(WsMessage::Close(frame)) => {
-            let reason = frame.map(|frame| frame.reason).unwrap_or_default();
-            return Err(eyre::eyre!(
-                "websocket stream closed unexpectedly with reason {reason}"
-            ));
-        }
-        Ok(WsMessage::Frame(_)) => unreachable!(),
-        Ok(WsMessage::Ping(_) | WsMessage::Pong(_)) => {
-            // no need to do anything as tungstenite automatically handles pings for you
-            // but refresh the token just in case
-            refresh_if_expired(token, helix_client, &opts).await?;
-            return Ok(None);
-        }
-        Ok(WsMessage::Binary(_)) => unimplemented!(),
-        Ok(WsMessage::Text(payload)) => payload,
-        Err(err) => return Err(err).context("tungstenite error"),
-    };
+/// action to perform on received message
+enum SideEffect {
+    /// do nothing with the message
+    Nothing,
+    /// do something useful with received message
+    Something(types::UserId),
+    /// kill predecessor and swap the handle
+    KillPredecessor,
+    /// spawn successor and await death signal
+    AssignSuccessor(ActorHandle),
+}
 
-    let event_data = Event::parse_websocket(&frame).context("parsing error")?;
+async fn process_welcome(
+    subscribed: &AtomicBool,
+    token: &Mutex<UserToken>,
+    helix_client: &HelixClient<'_, Client>,
+    user_id: &types::UserId,
+    session: SessionData<'_>,
+) -> eyre::Result<()> {
+    // preventing duplicating subscriptions and hitting 409
+    if !subscribed.load(Ordering::Relaxed) {
+        return Ok(());
+    }
+    let user_token: MutexGuard<'_, UserToken> = token.lock().await;
+    tokio::try_join!(
+        subscribe(
+            helix_client,
+            session.id.to_string(),
+            &user_token,
+            ChannelBanV1::broadcaster_user_id(user_id.clone()),
+        ),
+        subscribe(
+            helix_client,
+            session.id.to_string(),
+            &user_token,
+            ChannelUnbanV1::broadcaster_user_id(user_id.clone()),
+        ),
+    )?;
+    drop(user_token);
+    subscribed.store(true, Ordering::Relaxed);
+    Ok(())
+}
 
-    match event_data {
-        EventsubWebsocketData::Welcome {
-            payload: WelcomePayload { session },
-            ..
-        } => {
-            let user_token: MutexGuard<'_, UserToken> = token.lock().await;
-            // preventing duplicating subscriptions and hitting 409
-            let ban_subs = get_existing_subscriptions(
-                helix_client,
-                &user_token,
-                &session.id,
-                EventType::ChannelBan,
-            )
-            .await?;
-            let unban_subs = get_existing_subscriptions(
-                helix_client,
-                &user_token,
-                &session.id,
-                EventType::ChannelUnban,
-            )
-            .await?;
-            let bans = channel_ids
-                .difference(&ban_subs)
-                .cloned()
-                .map(|user_id: types::UserId| {
-                    // cloning the session id
-                    subscribe(
-                        helix_client,
-                        session.id.to_string(),
-                        &user_token,
-                        ChannelBanV1::broadcaster_user_id(user_id),
-                    )
-                });
-            let unbans =
-                channel_ids
-                    .difference(&unban_subs)
-                    .cloned()
-                    .map(|user_id: types::UserId| {
-                        subscribe(
-                            helix_client,
-                            session.id.to_string(),
-                            &user_token,
-                            ChannelUnbanV1::broadcaster_user_id(user_id),
-                        )
-                    });
-            stream::iter(bans)
-                .buffer_unordered(4)
-                // this is horrible but at least it's concurrent
-                .collect::<Vec<eyre::Result<()>>>()
-                .await
-                .into_iter()
-                .try_for_each(|r| r)?;
-            stream::iter(unbans)
-                .buffer_unordered(4)
-                // this is horrible but at least it's concurrent
-                .collect::<Vec<eyre::Result<()>>>()
-                .await
-                .into_iter()
-                .try_for_each(|r| r)?;
+/// Here is where you would handle the events you want to listen to
+fn process_payload(event: Event) -> eyre::Result<SideEffect> {
+    match event {
+        Event::ChannelBanV1(eventsub::Payload { message, .. }) => {
+            match message {
+                // not needed for websocket
+                Message::VerificationRequest(_) => unreachable!(),
+                Message::Revocation() => Err(eyre::eyre!("unexpected subscription revocation")),
+                Message::Notification(payload) => {
+                    /*
+                    do something useful with the payload
+                    */
+                    tracing::info!("doing something useful with channel.ban {payload:?}");
 
-            drop(user_token);
-            predecessor_killer.send(())?;
-
-            Ok(None)
-        }
-        EventsubWebsocketData::Reconnect {
-            payload: ReconnectPayload { session },
-            ..
-        } => {
-            let url: String = session.reconnect_url.unwrap().into_owned();
-            let successor =
-                ActorHandle::spawn(url, helix_client, self_killer, token, opts, channel_ids);
-            Ok(Some(successor))
-        }
-        // TODO: keepalive counting https://dev.twitch.tv/docs/eventsub/handling-websocket-events/#keepalive-message
-        EventsubWebsocketData::Keepalive { .. } => Ok(None),
-        EventsubWebsocketData::Revocation { metadata, .. } => {
-            eyre::bail!("got revocation event: {metadata:?}")
-        }
-        EventsubWebsocketData::Notification { payload, .. } => {
-            match payload {
-                Event::ChannelBanV1(eventsub::Payload { message, .. }) => {
-                    match message {
-                        // not needed for websocket
-                        Message::VerificationRequest(_) => unreachable!(),
-                        Message::Revocation() => {
-                            Err(eyre::eyre!("unexpected subscription revocation"))
-                        }
-                        Message::Notification(payload) => {
-                            /*
-                            do something useful with the payload
-                            */
-                            tracing::info!("doing something useful with channel.ban {payload:?}");
-
-                            Ok(None)
-                        }
-                        message => {
-                            tracing::debug!("unexpected message {message:?}");
-                            Ok(None)
-                        }
-                    }
+                    Ok(SideEffect::Something(payload.user_id))
                 }
-                Event::ChannelUnbanV1(eventsub::Payload { message, .. }) => {
-                    match message {
-                        // not needed for websocket
-                        Message::VerificationRequest(_) => unreachable!(),
-                        Message::Revocation() => {
-                            Err(eyre::eyre!("unexpected subscription revocation"))
-                        }
-                        Message::Notification(payload) => {
-                            /*
-                            do something useful with the payload
-                            */
-                            tracing::info!("doing something useful with channel.unban {payload:?}");
-
-                            Ok(None)
-                        }
-                        message => {
-                            tracing::debug!("unexpected message {message:?}");
-                            Ok(None)
-                        }
-                    }
-                }
-                event => {
-                    tracing::debug!("unexpected event {event:?}");
-                    Ok(None)
-                }
+                _ => Ok(SideEffect::Nothing),
             }
         }
-        data => {
-            tracing::debug!("unexpected data {data:?}");
-            Ok(None)
+        Event::ChannelUnbanV1(eventsub::Payload { message, .. }) => {
+            match message {
+                // not needed for websocket
+                Message::VerificationRequest(_) => unreachable!(),
+                Message::Revocation() => Err(eyre::eyre!("unexpected subscription revocation")),
+                Message::Notification(payload) => {
+                    /*
+                    do something useful with the payload
+                    */
+                    tracing::info!("doing something useful with channel.unban {payload:?}");
+
+                    Ok(SideEffect::Something(payload.user_id))
+                }
+                _ => Ok(SideEffect::Nothing),
+            }
+        }
+        _ => Ok(SideEffect::Nothing),
+    }
+}
+
+struct WebSocketConnection {
+    socket: SplitStream<WebSocketStream<MaybeTlsStream<tokio::net::TcpStream>>>,
+    helix_client: &'static HelixClient<'static, Client>,
+    token: Arc<Mutex<UserToken>>,
+    opts: Arc<crate::Opts>,
+    subscribed: Arc<AtomicBool>,
+    user_id: Arc<types::UserId>,
+    self_killer: UnboundedSender<()>,
+}
+
+impl WebSocketConnection {
+    async fn receive_message(&mut self) -> eyre::Result<Option<String>> {
+        let Some(message) = self.socket.next().await else {
+            return Err(eyre::eyre!("websocket stream closed unexpectedly"));
+        };
+        match message.context("tungstenite error")? {
+            WsMessage::Close(frame) => {
+                let reason = frame.map(|frame| frame.reason).unwrap_or_default();
+                Err(eyre::eyre!(
+                    "websocket stream closed unexpectedly with reason {reason}"
+                ))
+            }
+            WsMessage::Frame(_) => unreachable!(),
+            WsMessage::Ping(_) | WsMessage::Pong(_) => {
+                // no need to do anything as tungstenite automatically handles pings for you
+                // but refresh the token just in case
+                refresh_if_expired(self.token.clone(), self.helix_client, &self.opts).await?;
+                Ok(None)
+            }
+            WsMessage::Binary(_) => unimplemented!(),
+            WsMessage::Text(payload) => Ok(Some(payload)),
+        }
+    }
+
+    async fn process_message(&self, frame: String) -> eyre::Result<SideEffect> {
+        let event_data = Event::parse_websocket(&frame).context("parsing error")?;
+        match event_data {
+            EventsubWebsocketData::Welcome {
+                payload: WelcomePayload { session },
+                ..
+            } => {
+                process_welcome(
+                    &self.subscribed,
+                    &self.token,
+                    self.helix_client,
+                    &self.user_id,
+                    session,
+                )
+                .await?;
+                Ok(SideEffect::KillPredecessor)
+            }
+            EventsubWebsocketData::Reconnect {
+                payload: ReconnectPayload { session },
+                ..
+            } => {
+                let url: String = session.reconnect_url.unwrap().into_owned();
+                let successor = ActorHandle::spawn(
+                    url,
+                    self.helix_client,
+                    self.self_killer.clone(),
+                    self.token.clone(),
+                    self.opts.clone(),
+                    self.subscribed.clone(),
+                    self.user_id.clone(),
+                );
+                Ok(SideEffect::AssignSuccessor(successor))
+            }
+            // TODO: keepalive counting https://dev.twitch.tv/docs/eventsub/handling-websocket-events/#keepalive-message
+            EventsubWebsocketData::Keepalive { .. } => Ok(SideEffect::Nothing),
+            EventsubWebsocketData::Revocation { metadata, .. } => {
+                eyre::bail!("got revocation: {metadata:?}")
+            }
+            EventsubWebsocketData::Notification { payload: event, .. } => process_payload(event),
+            _ => Ok(SideEffect::Nothing),
         }
     }
 }
@@ -379,11 +270,23 @@ impl ActorHandle {
         predecessor_killer: UnboundedSender<()>,
         token: Arc<Mutex<UserToken>>,
         opts: Arc<crate::Opts>,
-        channel_ids: Arc<HashSet<types::UserId>>,
+        subscribed: Arc<AtomicBool>,
+        user_id: Arc<types::UserId>,
     ) -> Self {
         Self(tokio::spawn(async move {
-            let mut socket = connect(url).await?;
+            let socket = connect(url).await?;
             let (self_killer, mut terminator) = mpsc::unbounded_channel::<()>();
+
+            let mut connection = WebSocketConnection {
+                socket,
+                helix_client,
+                token,
+                opts,
+                subscribed,
+                user_id,
+                self_killer,
+            };
+
             let mut successor: Option<Self> = None;
 
             loop {
@@ -391,17 +294,28 @@ impl ActorHandle {
                     biased;
                     result = terminator.recv() => {
                         result.unwrap();
-                        return Ok(successor.expect("can't receive death signal from successor if it isn't spawned yet"));
+                        let Some(successor) = successor else {
+                            // can't receive death signal from successor if it isn't spawned yet
+                            unreachable!();
+                        };
+                        return Ok(successor);
                     }
-                    result = process_message(
-                        &mut socket,
-                        helix_client,
-                        token.clone(),
-                        opts.clone(),
-                        channel_ids.clone(),
-                        predecessor_killer.clone(),
-                        self_killer.clone(),
-                    ) => if let Some(handle) = result? { successor = Some(handle) }
+                    result = connection.receive_message() => if let Some(frame) = result? {
+                        let side_effect = connection.process_message(frame).await?;
+                        match side_effect {
+                            SideEffect::Nothing => {}
+                            SideEffect::Something(user_id) => {
+                                tracing::info!(
+                                    "doing something useful with user id {user_id:?}"
+                                );
+                                todo!();
+                            },
+                            SideEffect::KillPredecessor => predecessor_killer.send(())?,
+                            SideEffect::AssignSuccessor(actor_handle) => {
+                                successor = Some(actor_handle);
+                            },
+                        }
+                    }
                 }
             }
         }))
@@ -412,13 +326,16 @@ impl ActorHandle {
 
 pub async fn run(
     helix_client: &'static HelixClient<'_, Client>,
-    token: Arc<Mutex<UserToken>>,
+    token: UserToken,
     opts: Arc<crate::opts::Opts>,
-    channel_ids: Arc<HashSet<types::UserId>>,
+    user_id: types::UserId,
 ) -> eyre::Result<()> {
     let url = twitch_api::TWITCH_EVENTSUB_WEBSOCKET_URL.clone();
+    let token = Arc::new(Mutex::new(token));
+    let user_id = Arc::new(user_id);
+    let subscribed = Arc::new(AtomicBool::new(false));
 
-    // `_` and `_unused` turn out to have different semantics where `_` is dropped immediately,
+    // `_` and `_unused` have different semantics where `_` is dropped immediately,
     // so sender gets a recv error
     let (dummy_killer, _unused) = mpsc::unbounded_channel::<()>();
     let mut handle = ActorHandle::spawn(
@@ -427,13 +344,15 @@ pub async fn run(
         dummy_killer.clone(),
         token.clone(),
         opts.clone(),
-        channel_ids.clone(),
+        subscribed.clone(),
+        user_id.clone(),
     );
 
     loop {
         handle = match handle.join().await? {
             Ok(handle) => handle,
             Err(err) => {
+                subscribed.store(false, Ordering::Relaxed);
                 tracing::error!("{err}");
                 ActorHandle::spawn(
                     url.clone(),
@@ -441,7 +360,8 @@ pub async fn run(
                     dummy_killer.clone(),
                     token.clone(),
                     opts.clone(),
-                    channel_ids.clone(),
+                    subscribed.clone(),
+                    user_id.clone(),
                 )
             }
         }
