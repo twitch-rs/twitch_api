@@ -9,7 +9,7 @@ use reqwest::Client;
 use tokio::{
     sync::{
         mpsc::{self, UnboundedSender},
-        Mutex, MutexGuard,
+        Mutex,
     },
     task::{JoinError, JoinHandle},
     time::{Duration, Instant},
@@ -25,17 +25,12 @@ use twitch_api::{
         event::websocket::{EventsubWebsocketData, ReconnectPayload, WelcomePayload},
         Event, EventSubscription, Message, SessionData, Transport,
     },
-    helix::{eventsub::CreateEventSubSubscription, ClientRequestError, HelixRequestPostError},
+    helix::eventsub::CreateEventSubSubscription,
     twitch_oauth2::{TwitchToken, UserToken},
     types, HelixClient,
 };
 
 /// Connect to the websocket and return the stream
-///
-/// eventsub websocket doesn't support outgoing messages except pongs (which are implicitly handled by tungstenite)
-/// so we return only the receiving end of the socket
-///
-/// [Getting Events Using WebSockets](https://dev.twitch.tv/docs/eventsub/handling-websocket-events/)
 async fn connect(
     request: impl IntoClientRequest + Unpin,
 ) -> Result<SplitStream<WebSocketStream<MaybeTlsStream<tokio::net::TcpStream>>>, eyre::Error> {
@@ -60,18 +55,17 @@ async fn refresh_if_expired(
     token: Arc<Mutex<UserToken>>,
     helix_client: &HelixClient<'_, Client>,
     _opts: &crate::Opts,
-) -> eyre::Result<()> {
-    let lock: MutexGuard<'_, UserToken> = token.lock().await;
+) {
+    let lock = token.lock().await;
 
     if lock.expires_in() >= Duration::from_secs(60) {
-        return Ok(());
+        return;
     }
     let _client = helix_client.get_client();
 
-    /* TODO: token refresh logic is left up to the user */
+    // TODO: token refresh logic is left up to the user
 
     drop(lock);
-    Ok(())
 }
 
 async fn subscribe(
@@ -81,30 +75,16 @@ async fn subscribe(
     subscription: impl EventSubscription + Send,
 ) -> eyre::Result<()> {
     let transport: Transport = Transport::websocket(session_id);
-    let event_info: Result<CreateEventSubSubscription<_>, ClientRequestError<reqwest::Error>> =
-        helix_client
-            .create_eventsub_subscription(subscription, transport, token)
-            .await;
-    match event_info {
-        Err(ClientRequestError::HelixRequestPostError(HelixRequestPostError::Error {
-            status,
-            ..
-        })) if status.as_u16() == 409 => {
-            tracing::warn!("409 subscription already exists");
-        }
-        _ => {
-            event_info?;
-        }
-    }
+    let _event_info: CreateEventSubSubscription<_> = helix_client
+        .create_eventsub_subscription(subscription, transport, token)
+        .await?;
     Ok(())
 }
 
 /// action to perform on received message
-enum SideEffect {
+enum Action {
     /// do nothing with the message
     Nothing,
-    /// do something useful with received message
-    Something(types::UserId),
     /// reset the timeout and keep the connection alive
     ResetKeepalive,
     /// kill predecessor and swap the handle
@@ -120,11 +100,11 @@ async fn process_welcome(
     user_id: &types::UserId,
     session: SessionData<'_>,
 ) -> eyre::Result<()> {
-    // preventing duplicating subscriptions and hitting 409
-    if !subscribed.load(Ordering::Relaxed) {
+    // if we're already subscribed, don't subscribe again
+    if subscribed.load(Ordering::Relaxed) {
         return Ok(());
     }
-    let user_token: MutexGuard<'_, UserToken> = token.lock().await;
+    let user_token = token.lock().await;
     tokio::try_join!(
         subscribe(
             helix_client,
@@ -139,13 +119,12 @@ async fn process_welcome(
             ChannelUnbanV1::broadcaster_user_id(user_id.clone()),
         ),
     )?;
-    drop(user_token);
     subscribed.store(true, Ordering::Relaxed);
     Ok(())
 }
 
 /// Here is where you would handle the events you want to listen to
-fn process_payload(event: Event) -> eyre::Result<SideEffect> {
+fn process_payload(event: Event) -> eyre::Result<Action> {
     match event {
         Event::ChannelBanV1(eventsub::Payload { message, .. }) => {
             match message {
@@ -153,14 +132,13 @@ fn process_payload(event: Event) -> eyre::Result<SideEffect> {
                 Message::VerificationRequest(_) => unreachable!(),
                 Message::Revocation() => Err(eyre::eyre!("unexpected subscription revocation")),
                 Message::Notification(payload) => {
-                    /*
-                    do something useful with the payload
-                    */
-                    tracing::info!("doing something useful with channel.ban {payload:?}");
+                    // do something useful with the payload
+                    tracing::info!(?payload, "got ban event");
 
-                    Ok(SideEffect::Something(payload.user_id))
+                    // new events reset keepalive timeout too
+                    Ok(Action::ResetKeepalive)
                 }
-                _ => Ok(SideEffect::Nothing),
+                _ => Ok(Action::Nothing),
             }
         }
         Event::ChannelUnbanV1(eventsub::Payload { message, .. }) => {
@@ -169,17 +147,16 @@ fn process_payload(event: Event) -> eyre::Result<SideEffect> {
                 Message::VerificationRequest(_) => unreachable!(),
                 Message::Revocation() => Err(eyre::eyre!("unexpected subscription revocation")),
                 Message::Notification(payload) => {
-                    /*
-                    do something useful with the payload
-                    */
-                    tracing::info!("doing something useful with channel.unban {payload:?}");
+                    // do something useful with the payload
+                    tracing::info!(?payload, "got unban event");
 
-                    Ok(SideEffect::Something(payload.user_id))
+                    // new events reset keepalive timeout too
+                    Ok(Action::ResetKeepalive)
                 }
-                _ => Ok(SideEffect::Nothing),
+                _ => Ok(Action::Nothing),
             }
         }
-        _ => Ok(SideEffect::Nothing),
+        _ => Ok(Action::Nothing),
     }
 }
 
@@ -190,7 +167,7 @@ struct WebSocketConnection {
     opts: Arc<crate::Opts>,
     subscribed: Arc<AtomicBool>,
     user_id: Arc<types::UserId>,
-    self_killer: UnboundedSender<()>,
+    kill_self_tx: UnboundedSender<()>,
 }
 
 impl WebSocketConnection {
@@ -209,7 +186,7 @@ impl WebSocketConnection {
             WsMessage::Ping(_) | WsMessage::Pong(_) => {
                 // no need to do anything as tungstenite automatically handles pings for you
                 // but refresh the token just in case
-                refresh_if_expired(self.token.clone(), self.helix_client, &self.opts).await?;
+                refresh_if_expired(self.token.clone(), self.helix_client, &self.opts).await;
                 Ok(None)
             }
             WsMessage::Binary(_) => unimplemented!(),
@@ -217,7 +194,7 @@ impl WebSocketConnection {
         }
     }
 
-    async fn process_message(&self, frame: String) -> eyre::Result<SideEffect> {
+    async fn process_message(&self, frame: String) -> eyre::Result<Action> {
         let event_data = Event::parse_websocket(&frame).context("parsing error")?;
         match event_data {
             EventsubWebsocketData::Welcome {
@@ -232,7 +209,7 @@ impl WebSocketConnection {
                     session,
                 )
                 .await?;
-                Ok(SideEffect::KillPredecessor)
+                Ok(Action::KillPredecessor)
             }
             EventsubWebsocketData::Reconnect {
                 payload: ReconnectPayload { session },
@@ -242,21 +219,20 @@ impl WebSocketConnection {
                 let successor = ActorHandle::spawn(
                     url,
                     self.helix_client,
-                    self.self_killer.clone(),
+                    self.kill_self_tx.clone(),
                     self.token.clone(),
                     self.opts.clone(),
                     self.subscribed.clone(),
                     self.user_id.clone(),
                 );
-                Ok(SideEffect::AssignSuccessor(successor))
+                Ok(Action::AssignSuccessor(successor))
             }
-            // TODO: keepalive counting https://dev.twitch.tv/docs/eventsub/handling-websocket-events/#keepalive-message
-            EventsubWebsocketData::Keepalive { .. } => Ok(SideEffect::ResetKeepalive),
+            EventsubWebsocketData::Keepalive { .. } => Ok(Action::ResetKeepalive),
             EventsubWebsocketData::Revocation { metadata, .. } => {
                 eyre::bail!("got revocation: {metadata:?}")
             }
             EventsubWebsocketData::Notification { payload: event, .. } => process_payload(event),
-            _ => Ok(SideEffect::Nothing),
+            _ => Ok(Action::Nothing),
         }
     }
 }
@@ -267,7 +243,7 @@ impl ActorHandle {
     pub fn spawn(
         url: impl IntoClientRequest + Unpin + Send + 'static,
         helix_client: &'static HelixClient<'_, Client>,
-        predecessor_killer: UnboundedSender<()>,
+        kill_predecessor_tx: UnboundedSender<()>,
         token: Arc<Mutex<UserToken>>,
         opts: Arc<crate::Opts>,
         subscribed: Arc<AtomicBool>,
@@ -275,7 +251,10 @@ impl ActorHandle {
     ) -> Self {
         Self(tokio::spawn(async move {
             let socket = connect(url).await?;
-            let (self_killer, mut terminator) = mpsc::unbounded_channel::<()>();
+            // If we receive a reconnect message we want to spawn a new connection to twitch.
+            // The already existing session should wait on the new session to receive a welcome message before being closed.
+            // https://dev.twitch.tv/docs/eventsub/handling-websocket-events/#reconnect-message
+            let (kill_self_tx, mut kill_self_rx) = mpsc::unbounded_channel::<()>();
 
             let mut connection = WebSocketConnection {
                 socket,
@@ -284,7 +263,7 @@ impl ActorHandle {
                 opts,
                 subscribed,
                 user_id,
-                self_killer,
+                kill_self_tx,
             };
 
             /// default keepalive duration is 10 seconds
@@ -295,7 +274,7 @@ impl ActorHandle {
             loop {
                 tokio::select! {
                     biased;
-                    result = terminator.recv() => {
+                    result = kill_self_rx.recv() => {
                         result.unwrap();
                         let Some(successor) = successor else {
                             // can't receive death signal from successor if it isn't spawned yet
@@ -306,18 +285,10 @@ impl ActorHandle {
                     result = connection.receive_message() => if let Some(frame) = result? {
                         let side_effect = connection.process_message(frame).await?;
                         match side_effect {
-                            SideEffect::Nothing => {}
-                            SideEffect::ResetKeepalive => timeout = Instant::now() + Duration::from_secs(WINDOW),
-                            SideEffect::Something(user_id) => {
-                                // reset keepalive on event
-                                timeout = Instant::now() + Duration::from_secs(WINDOW);
-                                tracing::info!(
-                                    "doing something useful with user id {user_id:?}"
-                                );
-                                /* TODO */
-                            },
-                            SideEffect::KillPredecessor => predecessor_killer.send(())?,
-                            SideEffect::AssignSuccessor(actor_handle) => {
+                            Action::Nothing => {}
+                            Action::ResetKeepalive => timeout = Instant::now() + Duration::from_secs(WINDOW),
+                            Action::KillPredecessor => kill_predecessor_tx.send(())?,
+                            Action::AssignSuccessor(actor_handle) => {
                                 successor = Some(actor_handle);
                             },
                         }
@@ -342,13 +313,14 @@ pub async fn run(
     let user_id = Arc::new(user_id);
     let subscribed = Arc::new(AtomicBool::new(false));
 
-    // `_` and `_unused` have different semantics where `_` is dropped immediately,
-    // so sender gets a recv error
-    let (dummy_killer, _unused) = mpsc::unbounded_channel::<()>();
+    // since this is a root actor without a predecessor it has no previous connection to kill
+    // but we still need to give it a sender to satisfy the function signature.
+    // `_` and `_unused` have different semantics where `_` is dropped immediately and sender gets a recv error
+    let (dummy_tx, _unused_rx) = mpsc::unbounded_channel::<()>();
     let mut handle = ActorHandle::spawn(
         url.clone(),
         helix_client,
-        dummy_killer.clone(),
+        dummy_tx.clone(),
         token.clone(),
         opts.clone(),
         subscribed.clone(),
@@ -364,7 +336,7 @@ pub async fn run(
                 ActorHandle::spawn(
                     url.clone(),
                     helix_client,
-                    dummy_killer.clone(),
+                    dummy_tx.clone(),
                     token.clone(),
                     opts.clone(),
                     subscribed.clone(),
