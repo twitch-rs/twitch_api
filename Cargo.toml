@@ -29,9 +29,9 @@ exclude = ["twitch_types", "twitch_oauth2"]
 [workspace.dependencies]
 twitch_api = { version = "0.7.2", path = "." }
 twitch_oauth2 = { version = "0.16.0", path = "twitch_oauth2/" }
-twitch_types = { version = "0.4.9", features = [
+twitch_types = { version = "0.4.10", features = [
     "serde",
-], path = "./twitch_types" }
+], path = "twitch_types/" }
 ureq = { version = "2.10.1", default-features = false, features = [
     "tls",
 ]}
@@ -120,6 +120,7 @@ eventsub = [
     "twitch_types/timestamp",
     "twitch_types/sub",
     "twitch_types/color",
+    "twitch_types/extension"
 ]
 
 hmac = ["dep:crypto_hmac", "dep:sha2"]

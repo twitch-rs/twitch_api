@@ -185,11 +185,11 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer"><code style="color: var(--link-color)">extension.*</code> 🔴 0/1</summary>
+//! <details><summary style="cursor: pointer"><code style="color: var(--link-color)">extension.*</code> 🟢 1/1</summary>
 //!
 //! | Name | Subscription<br>Payload |
 //! |---|:---|
-//! | [`extension.bits_transaction.create`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#extensionbits_transactioncreate) (v1) | -<br>- |
+//! | [`extension.bits_transaction.create`](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#extensionbits_transactioncreate) (v1) | [ExtensionBitsTransactionCreateV1](extension::ExtensionBitsTransactionCreateV1)<br>[ExtensionBitsTransactionCreateV1Payload](extension::ExtensionBitsTransactionCreateV1Payload) |
 //!
 //! </details>
 //!
@@ -227,6 +227,7 @@ pub mod automod;
 pub mod channel;
 pub mod conduit;
 pub mod event;
+pub mod extension;
 pub mod stream;
 pub mod user;
 

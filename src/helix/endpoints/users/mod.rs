@@ -23,12 +23,13 @@
 //!
 //! <!-- generate with "cargo xtask overview" (with a nightly toolchain) -->
 //! <!-- BEGIN-OVERVIEW -->
-//! <details open><summary style="cursor: pointer">Users 🟢 8/8</summary>
+//! <details open><summary style="cursor: pointer">Users 🟡 8/9</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
 //! | [Get Users](https://dev.twitch.tv/docs/api/reference#get-users) | [`HelixClient::get_user_from_id`](crate::helix::HelixClient::get_user_from_id), [`HelixClient::get_user_from_login`](crate::helix::HelixClient::get_user_from_login), [`HelixClient::get_users_from_ids`](crate::helix::HelixClient::get_users_from_ids), [`HelixClient::get_users_from_logins`](crate::helix::HelixClient::get_users_from_logins) | [`get_users`] |
 //! | [Update User](https://dev.twitch.tv/docs/api/reference#update-user) | [`HelixClient::update_user_description`](crate::helix::HelixClient::update_user_description) | [`update_user`] |
+//! | [Get Authorization By User](https://dev.twitch.tv/docs/api/reference#get-authorization-by-user) | - | - |
 //! | [Get User Block List](https://dev.twitch.tv/docs/api/reference#get-user-block-list) | - | [`get_user_block_list`] |
 //! | [Block User](https://dev.twitch.tv/docs/api/reference#block-user) | [`HelixClient::block_user`](crate::helix::HelixClient::block_user) | [`block_user`] |
 //! | [Unblock User](https://dev.twitch.tv/docs/api/reference#unblock-user) | [`HelixClient::unblock_user`](crate::helix::HelixClient::unblock_user) | [`unblock_user`] |
