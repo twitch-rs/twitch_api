@@ -90,6 +90,7 @@ macro_rules! fill_events {
             channel::ChannelWarningAcknowledgeV1;
             channel::ChannelWarningSendV1;
             conduit::ConduitShardDisabledV1;
+            extension::ExtensionBitsTransactionCreateV1;
             stream::StreamOfflineV1;
             stream::StreamOnlineV1;
             user::UserAuthorizationGrantV1;
@@ -310,6 +311,8 @@ make_event_type!("Event Types": pub enum EventType {
     ChannelVipRemove => "channel.vip.remove",
     "sends a notification when eventsub disables a shard due to the status of the underlying transport changing.":
     ConduitShardDisabled => "conduit.shard.disabled",
+    "an extension triggers a bits transaction":
+    ExtensionBitsTransactionCreate => "extension.bits_transaction.create",
     "the specified broadcaster starts a stream.":
     StreamOnline => "stream.online",
     "the specified broadcaster stops a stream.":
@@ -497,6 +500,8 @@ pub enum Event {
     ChannelModeratorRemoveV1(Payload<channel::ChannelModeratorRemoveV1>),
     /// Conduit Shard Disabled V1 Event
     ConduitShardDisabledV1(Payload<conduit::ConduitShardDisabledV1>),
+    /// Extension Bits Transaction Create V1 Event
+    ExtensionBitsTransactionCreateV1(Payload<extension::ExtensionBitsTransactionCreateV1>),
     /// StreamOnline V1 Event
     StreamOnlineV1(Payload<stream::StreamOnlineV1>),
     /// StreamOffline V1 Event
