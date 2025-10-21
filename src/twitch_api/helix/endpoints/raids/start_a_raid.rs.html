@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/raids/start_a_raid.rs`."><title>start_a_raid.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-ca0dd0c4.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.92.0-nightly (f04e3dfc8 2025-10-19)" data-channel="nightly" data-search-js="search-8d3311b9.js" data-stringdex-js="stringdex-c3e638e9.js" data-settings-js="settings-c38705f0.js" ><script src="../../../../../static.files/storage-e2aeef58.js"></script><script defer src="../../../../../static.files/src-script-813739b1.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-ce535bd0.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">twitch_api/helix/endpoints/raids/</div>start_a_raid.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="doccomment">//! Raid another channel by sending the broadcaster’s viewers to the targeted channel.
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/helix/endpoints/raids/start_a_raid.rs`."><title>start_a_raid.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-ca0dd0c4.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="twitch_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.92.0-nightly (4068bafed 2025-10-20)" data-channel="nightly" data-search-js="search-8d3311b9.js" data-stringdex-js="stringdex-c3e638e9.js" data-settings-js="settings-c38705f0.js" ><script src="../../../../../static.files/storage-e2aeef58.js"></script><script defer src="../../../../../static.files/src-script-813739b1.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-ce535bd0.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">twitch_api/helix/endpoints/raids/</div>start_a_raid.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="doccomment">//! Raid another channel by sending the broadcaster’s viewers to the targeted channel.
 <a href=#2 id=2 data-nosnippet>2</a>//! [`start-a-raid`](https://dev.twitch.tv/docs/api/reference#start-a-raid)
 <a href=#3 id=3 data-nosnippet>3</a>//!
 <a href=#4 id=4 data-nosnippet>4</a>//! # Accessing the endpoint
@@ -102,61 +102,40 @@
 <a href=#102 id=102 data-nosnippet>102</a>    <span class="kw">where
 <a href=#103 id=103 data-nosnippet>103</a>        </span><span class="self">Self</span>: Sized,
 <a href=#104 id=104 data-nosnippet>104</a>    {
-<a href=#105 id=105 data-nosnippet>105</a>        <span class="kw">let </span>response: helix::InnerResponse&lt;Vec&lt;<span class="self">Self</span>::Response&gt;&gt; =
-<a href=#106 id=106 data-nosnippet>106</a>            helix::parse_json(response_str, <span class="bool-val">true</span>).map_err(|e| {
-<a href=#107 id=107 data-nosnippet>107</a>                helix::HelixRequestPostError::DeserializeError(
-<a href=#108 id=108 data-nosnippet>108</a>                    response_str.to_string(),
-<a href=#109 id=109 data-nosnippet>109</a>                    e,
-<a href=#110 id=110 data-nosnippet>110</a>                    uri.clone(),
-<a href=#111 id=111 data-nosnippet>111</a>                    status,
-<a href=#112 id=112 data-nosnippet>112</a>                )
-<a href=#113 id=113 data-nosnippet>113</a>            })<span class="question-mark">?</span>;
-<a href=#114 id=114 data-nosnippet>114</a>        <span class="kw">let </span>data = response.data.into_iter().next().ok_or_else(|| {
-<a href=#115 id=115 data-nosnippet>115</a>            helix::HelixRequestPostError::InvalidResponse {
-<a href=#116 id=116 data-nosnippet>116</a>                reason: <span class="string">"response included no data"</span>,
-<a href=#117 id=117 data-nosnippet>117</a>                response: response_str.to_string(),
-<a href=#118 id=118 data-nosnippet>118</a>                status,
-<a href=#119 id=119 data-nosnippet>119</a>                uri: uri.clone(),
-<a href=#120 id=120 data-nosnippet>120</a>            }
-<a href=#121 id=121 data-nosnippet>121</a>        })<span class="question-mark">?</span>;
-<a href=#122 id=122 data-nosnippet>122</a>        <span class="prelude-val">Ok</span>(helix::Response {
-<a href=#123 id=123 data-nosnippet>123</a>            data,
-<a href=#124 id=124 data-nosnippet>124</a>            pagination_data: (),
-<a href=#125 id=125 data-nosnippet>125</a>            other: <span class="prelude-val">None</span>,
-<a href=#126 id=126 data-nosnippet>126</a>        })
-<a href=#127 id=127 data-nosnippet>127</a>    }
+<a href=#105 id=105 data-nosnippet>105</a>        helix::parse_single_return(_request, uri, response_str, status)
+<a href=#106 id=106 data-nosnippet>106</a>    }
+<a href=#107 id=107 data-nosnippet>107</a>}
+<a href=#108 id=108 data-nosnippet>108</a>
+<a href=#109 id=109 data-nosnippet>109</a><span class="attr">#[cfg(test)]
+<a href=#110 id=110 data-nosnippet>110</a>#[test]
+<a href=#111 id=111 data-nosnippet>111</a></span><span class="kw">fn </span>test_request() {
+<a href=#112 id=112 data-nosnippet>112</a>    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
+<a href=#113 id=113 data-nosnippet>113</a>    <span class="kw">let </span>req = StartARaidRequest::new(<span class="string">"12345678"</span>, <span class="string">"87654321"</span>);
+<a href=#114 id=114 data-nosnippet>114</a>
+<a href=#115 id=115 data-nosnippet>115</a>    <span class="macro">dbg!</span>(req
+<a href=#116 id=116 data-nosnippet>116</a>        .create_request(Default::default(), <span class="string">"token"</span>, <span class="string">"clientid"</span>)
+<a href=#117 id=117 data-nosnippet>117</a>        .unwrap());
+<a href=#118 id=118 data-nosnippet>118</a>
+<a href=#119 id=119 data-nosnippet>119</a>    <span class="comment">// From twitch docs
+<a href=#120 id=120 data-nosnippet>120</a>    </span><span class="kw">let </span>data = <span class="string">br##"
+<a href=#121 id=121 data-nosnippet>121</a>{
+<a href=#122 id=122 data-nosnippet>122</a>    "data": [
+<a href=#123 id=123 data-nosnippet>123</a>        {
+<a href=#124 id=124 data-nosnippet>124</a>            "created_at": "2022-02-18T07:20:50.52Z",
+<a href=#125 id=125 data-nosnippet>125</a>            "is_mature": false
+<a href=#126 id=126 data-nosnippet>126</a>        }
+<a href=#127 id=127 data-nosnippet>127</a>    ]
 <a href=#128 id=128 data-nosnippet>128</a>}
-<a href=#129 id=129 data-nosnippet>129</a>
-<a href=#130 id=130 data-nosnippet>130</a><span class="attr">#[cfg(test)]
-<a href=#131 id=131 data-nosnippet>131</a>#[test]
-<a href=#132 id=132 data-nosnippet>132</a></span><span class="kw">fn </span>test_request() {
-<a href=#133 id=133 data-nosnippet>133</a>    <span class="kw">use </span>helix::<span class="kw-2">*</span>;
-<a href=#134 id=134 data-nosnippet>134</a>    <span class="kw">let </span>req = StartARaidRequest::new(<span class="string">"12345678"</span>, <span class="string">"87654321"</span>);
-<a href=#135 id=135 data-nosnippet>135</a>
-<a href=#136 id=136 data-nosnippet>136</a>    <span class="macro">dbg!</span>(req
-<a href=#137 id=137 data-nosnippet>137</a>        .create_request(Default::default(), <span class="string">"token"</span>, <span class="string">"clientid"</span>)
-<a href=#138 id=138 data-nosnippet>138</a>        .unwrap());
+<a href=#129 id=129 data-nosnippet>129</a>    "##
+<a href=#130 id=130 data-nosnippet>130</a>    </span>.to_vec();
+<a href=#131 id=131 data-nosnippet>131</a>
+<a href=#132 id=132 data-nosnippet>132</a>    <span class="kw">let </span>http_response = http::Response::builder().status(<span class="number">200</span>).body(data).unwrap();
+<a href=#133 id=133 data-nosnippet>133</a>
+<a href=#134 id=134 data-nosnippet>134</a>    <span class="kw">let </span>uri = req.get_uri().unwrap();
+<a href=#135 id=135 data-nosnippet>135</a>    <span class="macro">assert_eq!</span>(
+<a href=#136 id=136 data-nosnippet>136</a>        uri.to_string(),
+<a href=#137 id=137 data-nosnippet>137</a>        <span class="string">"https://api.twitch.tv/helix/raids?from_broadcaster_id=12345678&amp;to_broadcaster_id=87654321"
+<a href=#138 id=138 data-nosnippet>138</a>    </span>);
 <a href=#139 id=139 data-nosnippet>139</a>
-<a href=#140 id=140 data-nosnippet>140</a>    <span class="comment">// From twitch docs
-<a href=#141 id=141 data-nosnippet>141</a>    </span><span class="kw">let </span>data = <span class="string">br##"
-<a href=#142 id=142 data-nosnippet>142</a>{
-<a href=#143 id=143 data-nosnippet>143</a>    "data": [
-<a href=#144 id=144 data-nosnippet>144</a>        {
-<a href=#145 id=145 data-nosnippet>145</a>            "created_at": "2022-02-18T07:20:50.52Z",
-<a href=#146 id=146 data-nosnippet>146</a>            "is_mature": false
-<a href=#147 id=147 data-nosnippet>147</a>        }
-<a href=#148 id=148 data-nosnippet>148</a>    ]
-<a href=#149 id=149 data-nosnippet>149</a>}
-<a href=#150 id=150 data-nosnippet>150</a>    "##
-<a href=#151 id=151 data-nosnippet>151</a>    </span>.to_vec();
-<a href=#152 id=152 data-nosnippet>152</a>
-<a href=#153 id=153 data-nosnippet>153</a>    <span class="kw">let </span>http_response = http::Response::builder().status(<span class="number">200</span>).body(data).unwrap();
-<a href=#154 id=154 data-nosnippet>154</a>
-<a href=#155 id=155 data-nosnippet>155</a>    <span class="kw">let </span>uri = req.get_uri().unwrap();
-<a href=#156 id=156 data-nosnippet>156</a>    <span class="macro">assert_eq!</span>(
-<a href=#157 id=157 data-nosnippet>157</a>        uri.to_string(),
-<a href=#158 id=158 data-nosnippet>158</a>        <span class="string">"https://api.twitch.tv/helix/raids?from_broadcaster_id=12345678&amp;to_broadcaster_id=87654321"
-<a href=#159 id=159 data-nosnippet>159</a>    </span>);
-<a href=#160 id=160 data-nosnippet>160</a>
-<a href=#161 id=161 data-nosnippet>161</a>    <span class="macro">dbg!</span>(StartARaidRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
-<a href=#162 id=162 data-nosnippet>162</a>}</code></pre></div></section></main></body></html>
+<a href=#140 id=140 data-nosnippet>140</a>    <span class="macro">dbg!</span>(StartARaidRequest::parse_response(<span class="prelude-val">Some</span>(req), <span class="kw-2">&amp;</span>uri, http_response).unwrap());
+<a href=#141 id=141 data-nosnippet>141</a>}</code></pre></div></section></main></body></html>
