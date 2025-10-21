@@ -152,7 +152,7 @@ impl<E: EventSubscription> helix::RequestPost for CreateEventSubSubscriptionRequ
         #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
         struct InnerResponse<E: EventSubscription> {
             #[serde(bound(deserialize = "E: EventSubscription"))]
-            data: Vec<InnerResponseData<E>>,
+            data: [InnerResponseData<E>; 1],
             limit: Option<usize>,
             total: usize,
             total_cost: usize,
@@ -161,14 +161,7 @@ impl<E: EventSubscription> helix::RequestPost for CreateEventSubSubscriptionRequ
         let response: InnerResponse<E> = helix::parse_json(text, true).map_err(|e| {
             helix::HelixRequestPostError::DeserializeError(text.to_string(), e, uri.clone(), status)
         })?;
-        let data = response.data.into_iter().next().ok_or_else(|| {
-            helix::HelixRequestPostError::InvalidResponse {
-                reason: "missing response data",
-                response: text.to_string(),
-                status,
-                uri: uri.clone(),
-            }
-        })?;
+        let [data] = response.data;
         Ok(helix::Response::with_data(
             CreateEventSubSubscription {
                 // helix::Response total is generally the total number of results, not what the total for this endpoint means. Thus, we set it to None.))

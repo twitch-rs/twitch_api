@@ -168,29 +168,7 @@ impl<'a> RequestPost for WarnChatUserRequest<'a> {
     where
         Self: Sized,
     {
-        #[derive(PartialEq, Deserialize, Debug, Clone)]
-        struct InnerResponse {
-            data: Vec<WarnChatUser>,
-        }
-        let InnerResponse { data } = helix::parse_json(response, true).map_err(|e| {
-            helix::HelixRequestPostError::DeserializeError(
-                response.to_string(),
-                e,
-                uri.clone(),
-                status,
-            )
-        })?;
-        Ok(helix::Response::with_data(
-            data.into_iter().next().ok_or_else(|| {
-                helix::HelixRequestPostError::InvalidResponse {
-                    reason: "missing response data",
-                    response: response.to_string(),
-                    status,
-                    uri: uri.clone(),
-                }
-            })?,
-            request,
-        ))
+        helix::parse_single_return(request, uri, response, status)
     }
 }
 

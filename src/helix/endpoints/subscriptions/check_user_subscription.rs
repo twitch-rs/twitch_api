@@ -117,27 +117,7 @@ impl RequestGet for CheckUserSubscriptionRequest<'_> {
     where
         Self: Sized,
     {
-        let inner_response: helix::InnerResponse<Vec<_>> =
-            helix::parse_json(text, true).map_err(|e| {
-                helix::HelixRequestGetError::DeserializeError(
-                    text.to_string(),
-                    e,
-                    uri.clone(),
-                    status,
-                )
-            })?;
-        Ok(helix::Response::new(
-            inner_response.data.into_iter().next().ok_or(
-                helix::HelixRequestGetError::InvalidResponse {
-                    reason: "expected an entry in `data`",
-                    response: text.to_string(),
-                    status,
-                    uri: uri.clone(),
-                },
-            )?,
-            (),
-            inner_response.other,
-        ))
+        helix::parse_single_return(_request, uri, text, status)
     }
 }
 

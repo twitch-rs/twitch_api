@@ -158,7 +158,7 @@ impl<'a> RequestPatch for EndPollRequest<'a> {
     {
         let resp = match status {
             http::StatusCode::OK => {
-                let resp: helix::InnerResponse<Vec<Poll>> =
+                let resp: helix::InnerResponse<[Poll; 1]> =
                     parse_json(response, true).map_err(|e| {
                         HelixRequestPatchError::DeserializeError(
                             response.to_string(),
@@ -167,14 +167,8 @@ impl<'a> RequestPatch for EndPollRequest<'a> {
                             status,
                         )
                     })?;
-                EndPoll::Success(resp.data.into_iter().next().ok_or(
-                    helix::HelixRequestPatchError::InvalidResponse {
-                        reason: "expected at least one element in data",
-                        response: response.to_string(),
-                        status,
-                        uri: uri.clone(),
-                    },
-                )?)
+                let [data] = resp.data;
+                EndPoll::Success(data)
             }
             http::StatusCode::BAD_REQUEST => EndPoll::MissingQuery,
             http::StatusCode::UNAUTHORIZED => EndPoll::AuthFailed,
