@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["ExtensionId","ExtensionIdRef"]};
+window.SIDEBAR_ITEMS = {"struct":["BitsTransactionId","BitsTransactionIdRef","ExtensionClientId","ExtensionClientIdRef","ExtensionId","ExtensionIdRef"]};

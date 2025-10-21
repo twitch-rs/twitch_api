@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["ExtensionBitsTransactionCreateV1","ExtensionBitsTransactionCreateV1Payload"]};
