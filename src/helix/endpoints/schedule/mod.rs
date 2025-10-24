@@ -4,12 +4,12 @@
 //!
 //! <!-- generate with "cargo xtask overview" (with a nightly toolchain) -->
 //! <!-- BEGIN-OVERVIEW -->
-//! <details open><summary style="cursor: pointer">Schedule 🟡 5/6</summary>
+//! <details open><summary style="cursor: pointer">Schedule 🟢 6/6</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
 //! | [Get Channel Stream Schedule](https://dev.twitch.tv/docs/api/reference#get-channel-stream-schedule) | - | [`get_channel_stream_schedule`] |
-//! | [Get Channel iCalendar](https://dev.twitch.tv/docs/api/reference#get-channel-icalendar) | - | - |
+//! | [Get Channel iCalendar](https://dev.twitch.tv/docs/api/reference#get-channel-icalendar) | [`HelixClient::get_channel_icalendar`](crate::helix::HelixClient::get_channel_icalendar) | [`get_channel_icalendar`] |
 //! | [Update Channel Stream Schedule](https://dev.twitch.tv/docs/api/reference#update-channel-stream-schedule) | - | [`update_channel_stream_schedule`] |
 //! | [Create Channel Stream Schedule Segment](https://dev.twitch.tv/docs/api/reference#create-channel-stream-schedule-segment) | - | [`create_channel_stream_schedule_segment`] |
 //! | [Update Channel Stream Schedule Segment](https://dev.twitch.tv/docs/api/reference#update-channel-stream-schedule-segment) | - | [`update_channel_stream_schedule_segment`] |
@@ -27,6 +27,7 @@ use std::borrow::Cow;
 
 pub mod create_channel_stream_schedule_segment;
 pub mod delete_channel_stream_schedule_segment;
+pub mod get_channel_icalendar;
 pub mod get_channel_stream_schedule;
 pub mod update_channel_stream_schedule;
 pub mod update_channel_stream_schedule_segment;
@@ -39,6 +40,8 @@ pub use create_channel_stream_schedule_segment::{
 pub use delete_channel_stream_schedule_segment::{
     DeleteChannelStreamScheduleSegment, DeleteChannelStreamScheduleSegmentRequest,
 };
+#[doc(inline)]
+pub use get_channel_icalendar::GetChannelICalendar;
 #[doc(inline)]
 pub use get_channel_stream_schedule::GetChannelStreamScheduleRequest;
 #[doc(inline)]
