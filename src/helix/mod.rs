@@ -127,11 +127,12 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer">Clips 🟡 2/3</summary>
+//! <details><summary style="cursor: pointer">Clips 🟡 2/4</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
 //! | [Create Clip](https://dev.twitch.tv/docs/api/reference#create-clip) | - | [`clips::create_clip`] |
+//! | [Create Clip From VOD](https://dev.twitch.tv/docs/api/reference#create-clip-from-vod) | - | - |
 //! | [Get Clips](https://dev.twitch.tv/docs/api/reference#get-clips) | - | [`clips::get_clips`] |
 //! | [Get Clips Download](https://dev.twitch.tv/docs/api/reference#get-clips-download) | - | - |
 //!
@@ -233,7 +234,7 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer">Moderation 🟢 23/23</summary>
+//! <details><summary style="cursor: pointer">Moderation 🟡 23/25</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
@@ -260,6 +261,8 @@
 //! | [Update Shield Mode Status](https://dev.twitch.tv/docs/api/reference#update-shield-mode-status) | - | [`moderation::update_shield_mode_status`] |
 //! | [Get Shield Mode Status](https://dev.twitch.tv/docs/api/reference#get-shield-mode-status) | - | [`moderation::get_shield_mode_status`] |
 //! | [Warn Chat User](https://dev.twitch.tv/docs/api/reference#warn-chat-user) | [`HelixClient::warn_chat_user`] | [`moderation::warn_chat_user`] |
+//! | [Add suspicious status to chat user](https://dev.twitch.tv/docs/api/reference#add-suspicious-status-to-chat-user) | - | - |
+//! | [Remove suspicious status from chat user](https://dev.twitch.tv/docs/api/reference#remove-suspicious-status-from-chat-user) | - | - |
 //!
 //! </details>
 //!

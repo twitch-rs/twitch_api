@@ -21,11 +21,12 @@
 //!
 //! <!-- generate with "cargo xtask overview" (with a nightly toolchain) -->
 //! <!-- BEGIN-OVERVIEW -->
-//! <details open><summary style="cursor: pointer">Clips 🟡 2/3</summary>
+//! <details open><summary style="cursor: pointer">Clips 🟡 2/4</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
 //! | [Create Clip](https://dev.twitch.tv/docs/api/reference#create-clip) | - | [`create_clip`] |
+//! | [Create Clip From VOD](https://dev.twitch.tv/docs/api/reference#create-clip-from-vod) | - | - |
 //! | [Get Clips](https://dev.twitch.tv/docs/api/reference#get-clips) | - | [`get_clips`] |
 //! | [Get Clips Download](https://dev.twitch.tv/docs/api/reference#get-clips-download) | - | - |
 //!
