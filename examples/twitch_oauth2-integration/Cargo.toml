@@ -8,5 +8,5 @@ edition = "2021"
 [dependencies]
 twitch_api = { workspace = true, features = ["reqwest", "helix"] }
 twitch_oauth2 = { workspace = true }
-reqwest = { version = "0.12.2" }
+reqwest = { workspace = true, default-features = true }
 tokio = { version = "1.40.0", features = ["macros"] }

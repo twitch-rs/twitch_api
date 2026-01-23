@@ -16,7 +16,7 @@ eyre = { version = "0.6" }
 futures = "0.3.28"
 hyper = "1.4.1"
 http-body-util = "0.1.1"
-reqwest = "0.12.2"
+reqwest = { workspace = true, default-features = true }
 retainer = "0.3.0"
 serde = "1.0.190"
 serde_derive = "1.0.190"
