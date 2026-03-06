@@ -32,8 +32,8 @@
 //! | [Update Shield Mode Status](https://dev.twitch.tv/docs/api/reference#update-shield-mode-status) | - | [`update_shield_mode_status`] |
 //! | [Get Shield Mode Status](https://dev.twitch.tv/docs/api/reference#get-shield-mode-status) | - | [`get_shield_mode_status`] |
 //! | [Warn Chat User](https://dev.twitch.tv/docs/api/reference#warn-chat-user) | [`HelixClient::warn_chat_user`](crate::helix::HelixClient::warn_chat_user) | [`warn_chat_user`] |
-//! | [Add suspicious status to chat user](https://dev.twitch.tv/docs/api/reference#add-suspicious-status-to-chat-user) | - | - |
-//! | [Remove suspicious status from chat user](https://dev.twitch.tv/docs/api/reference#remove-suspicious-status-from-chat-user) | - | - |
+//! | [Add Suspicious Status to Chat User](https://dev.twitch.tv/docs/api/reference#add-suspicious-status-to-chat-user) | - | - |
+//! | [Remove Suspicious Status From Chat User](https://dev.twitch.tv/docs/api/reference#remove-suspicious-status-from-chat-user) | - | - |
 //!
 //! </details>
 //!

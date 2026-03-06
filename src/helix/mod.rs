@@ -225,11 +225,10 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer">Hype Train 🟡 1/2</summary>
+//! <details><summary style="cursor: pointer">Hype Train 🔴 0/1</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
-//! | [Get Hype Train Events](https://dev.twitch.tv/docs/api/reference#get-hype-train-events) | - | [`hypetrain::get_hypetrain_events`] |
 //! | [Get Hype Train Status](https://dev.twitch.tv/docs/api/reference#get-hype-train-status) | - | - |
 //!
 //! </details>
@@ -261,8 +260,8 @@
 //! | [Update Shield Mode Status](https://dev.twitch.tv/docs/api/reference#update-shield-mode-status) | - | [`moderation::update_shield_mode_status`] |
 //! | [Get Shield Mode Status](https://dev.twitch.tv/docs/api/reference#get-shield-mode-status) | - | [`moderation::get_shield_mode_status`] |
 //! | [Warn Chat User](https://dev.twitch.tv/docs/api/reference#warn-chat-user) | [`HelixClient::warn_chat_user`] | [`moderation::warn_chat_user`] |
-//! | [Add suspicious status to chat user](https://dev.twitch.tv/docs/api/reference#add-suspicious-status-to-chat-user) | - | - |
-//! | [Remove suspicious status from chat user](https://dev.twitch.tv/docs/api/reference#remove-suspicious-status-from-chat-user) | - | - |
+//! | [Add Suspicious Status to Chat User](https://dev.twitch.tv/docs/api/reference#add-suspicious-status-to-chat-user) | - | - |
+//! | [Remove Suspicious Status From Chat User](https://dev.twitch.tv/docs/api/reference#remove-suspicious-status-from-chat-user) | - | - |
 //!
 //! </details>
 //!
