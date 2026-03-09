@@ -27,7 +27,10 @@ pub enum UreqError {
 impl Client for UreqAgent {
     type Error = UreqError;
 
-    fn req(&self, request: Request) -> BoxedFuture<'static, Result<Response, Self::Error>> {
+    fn req(
+        &self,
+        request: Request,
+    ) -> impl Future<Output = Result<Response, Self::Error>> + Send + use<> {
         use std::io::Read;
 
         let method = request.method().to_string();
@@ -39,7 +42,7 @@ impl Client for UreqAgent {
                 req = req.set(header.as_str(), value);
             }
         }
-        Box::pin(async move {
+        async move {
             let body = request.into_body();
             let response = match req
                 .send_bytes(&body)
@@ -89,6 +92,6 @@ impl Client for UreqAgent {
                 Ok(v) => result.body(v).map_err(Into::into),
                 Err(e) => Err(e.into()),
             }
-        })
+        }
     }
 }

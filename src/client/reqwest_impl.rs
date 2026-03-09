@@ -1,21 +1,25 @@
 use super::*;
 
+use futures::future::Either;
 use reqwest::Client as ReqwestClient;
 
 #[cfg_attr(nightly, doc(cfg(feature = "reqwest")))] // FIXME: This doc_cfg does nothing
 impl Client for ReqwestClient {
     type Error = reqwest::Error;
 
-    fn req(&self, request: Request) -> BoxedFuture<'static, Result<Response, Self::Error>> {
+    fn req(
+        &self,
+        request: Request,
+    ) -> impl Future<Output = Result<Response, Self::Error>> + Send + use<> {
         // Reqwest plays really nice here and has a try_from on `http::Request` -> `reqwest::Request`
         use std::convert::TryFrom;
         let req = match reqwest::Request::try_from(request) {
             Ok(req) => req,
-            Err(e) => return Box::pin(async { Err(e) }),
+            Err(e) => return Either::Right(async { Err(e) }),
         };
         // We need to "call" the execute outside the async closure to not capture self.
         let fut = self.execute(req);
-        Box::pin(async move {
+        let fut = async move {
             // Await the request and translate to `http::Response`
             let mut response = fut.await?;
             let mut result = http::Response::builder().status(response.status());
@@ -28,7 +32,8 @@ impl Client for ReqwestClient {
             Ok(result
                 .body(response.bytes().await?)
                 .expect("mismatch reqwest -> http conversion should not fail"))
-        })
+        };
+        Either::Left(fut)
     }
 }
 

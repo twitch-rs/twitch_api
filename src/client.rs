@@ -40,8 +40,10 @@
 //!     fn req(
 //!         &self,
 //!         request: Request,
-//!     ) -> BoxedFuture<'_, Result<Response, Self::Error>> {
-//!         Box::pin(async move { self.call(request).await })
+//!     ) -> impl std::future::Future<Output = Result<Response, Self::Error>>
+//!            + Send
+//!            + use<> {
+//!         self.call(request)
 //!     }
 //! }
 //! // And for full usage
@@ -111,7 +113,10 @@ pub trait Client: Send + Sync {
     /// Error returned by the client
     type Error: Error + Send + Sync + 'static;
     /// Send a request
-    fn req(&self, request: Request) -> BoxedFuture<'_, Result<Response, <Self as Client>::Error>>;
+    fn req(
+        &self,
+        request: Request,
+    ) -> impl Future<Output = Result<Response, <Self as Client>::Error>> + Send + use<Self>;
 }
 
 /// A specific client default for setting some sane defaults for API calls and oauth2 usage
@@ -146,25 +151,34 @@ pub struct DummyHttpClient;
 impl Client for DummyHttpClient {
     type Error = Self;
 
-    fn req(&self, _: Request) -> BoxedFuture<'_, Result<Response, Self::Error>> {
-        Box::pin(async { Err(Self) })
+    fn req(
+        &self,
+        _: Request,
+    ) -> impl Future<Output = Result<Response, Self::Error>> + Send + use<> {
+        async { Err(Self) }
     }
 }
 
 impl Client for twitch_oauth2::client::DummyClient {
     type Error = Self;
 
-    fn req(&self, _: Request) -> BoxedFuture<'_, Result<Response, Self::Error>> {
-        Box::pin(async { Err(Self) })
+    fn req(
+        &self,
+        _: Request,
+    ) -> impl Future<Output = Result<Response, Self::Error>> + Send + use<> {
+        async { Err(Self) }
     }
 }
 
-impl<C> Client for std::sync::Arc<C>
+impl<C: ?Sized> Client for std::sync::Arc<C>
 where C: Client
 {
     type Error = <C as Client>::Error;
 
-    fn req(&self, req: Request) -> BoxedFuture<'_, Result<Response, Self::Error>> {
+    fn req(
+        &self,
+        req: Request,
+    ) -> impl Future<Output = Result<Response, Self::Error>> + Send + use<C> {
         self.as_ref().req(req)
     }
 }
@@ -174,7 +188,10 @@ where C: Client
 {
     type Error = <C as Client>::Error;
 
-    fn req(&self, req: Request) -> BoxedFuture<'_, Result<Response, Self::Error>> {
+    fn req(
+        &self,
+        req: Request,
+    ) -> impl Future<Output = Result<Response, Self::Error>> + Send + use<C> {
         self.as_ref().req(req)
     }
 }
@@ -205,37 +222,33 @@ pub enum CompatError<E> {
 impl<'c, C: Client + Sync + 'c> twitch_oauth2::client::Client for crate::HelixClient<'c, C> {
     type Error = CompatError<<C as Client>::Error>;
 
-    fn req(
-        &self,
+    fn req<'this>(
+        &'this self,
         request: http::Request<Vec<u8>>,
-    ) -> BoxedFuture<
-        '_,
-        Result<http::Response<Vec<u8>>, <Self as twitch_oauth2::client::Client>::Error>,
-    > {
+    ) -> impl Future<Output = Result<http::Response<Vec<u8>>, Self::Error>> + Send + use<'c, C>
+    {
         let client = self.get_client();
         {
             let request = request.map(Bytes::from);
             let resp = client.req(request);
-            Box::pin(async {
+            async move {
                 let resp = resp.await?;
                 let (parts, body) = resp.into_parts();
                 Ok(http::Response::from_parts(parts, body.to_vec()))
-            })
+            }
         }
     }
 }
 
 #[cfg(all(feature = "client", feature = "helix"))]
-impl<C: Client + Sync> twitch_oauth2::client::Client for crate::TwitchClient<'_, C> {
+impl<'c, C: Client + Sync> twitch_oauth2::client::Client for crate::TwitchClient<'c, C> {
     type Error = CompatError<<C as Client>::Error>;
 
     fn req(
         &self,
         request: http::Request<Vec<u8>>,
-    ) -> BoxedFuture<
-        '_,
-        Result<http::Response<Vec<u8>>, <Self as twitch_oauth2::client::Client>::Error>,
-    > {
+    ) -> impl Future<Output = Result<http::Response<Vec<u8>>, Self::Error>> + Send + use<'c, C>
+    {
         let client = self.get_client();
         {
             let request = request.map(Bytes::from);
