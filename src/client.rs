@@ -119,6 +119,70 @@ pub trait Client: Send + Sync {
     ) -> impl Future<Output = Result<Response, <Self as Client>::Error>> + Send + use<Self>;
 }
 
+/// A dyn-compatible [Client].
+///
+/// Any [Client] is also a [DynClient].
+/// The only difference is that [req][DynClient::req] returns a boxed (type-erased) future.
+/// This makes it dyn-compatible.
+///
+/// [DynClient] is _not_ a [Client] directly, because that would create a cycle/conflicting implementations.
+/// Instead a [DynClient] should live in an [ErasedClient].
+/// [ErasedClient] is a [Client] if `T` is a [DynClient].
+pub trait DynClient: Send + Sync {
+    /// Error returned by the client
+    type Error: Error + Send + Sync + 'static;
+    /// Send a request
+    fn req(
+        &self,
+        request: Request,
+    ) -> BoxedFuture<'static, Result<Response, <Self as DynClient>::Error>>;
+
+    /// Create a type-erased client through [Box].
+    fn erased_box(self) -> ErasedClient<Box<dyn DynClient<Error = <Self as DynClient>::Error>>>
+    where Self: Sized + 'static {
+        ErasedClient(Box::new(self) as _)
+    }
+
+    /// Create a type-erased client through [Arc][std::sync::Arc].
+    fn erased_arc(
+        self,
+    ) -> ErasedClient<std::sync::Arc<dyn DynClient<Error = <Self as DynClient>::Error>>>
+    where Self: Sized + 'static {
+        ErasedClient(std::sync::Arc::new(self) as _)
+    }
+}
+
+impl<C> DynClient for C
+where C: Client + ?Sized + 'static
+{
+    type Error = C::Error;
+
+    fn req(&self, request: Request) -> BoxedFuture<'static, Result<Response, Self::Error>> {
+        Box::pin(self.req(request))
+    }
+}
+
+/// A type-erased [Client].
+///
+/// Use [DynClient::erased_arc] and [DynClient::erased_box] to create this.
+/// See [DynClient] for more info.
+pub struct ErasedClient<T>(pub T);
+
+impl<T, C: ?Sized> Client for ErasedClient<T>
+where
+    T: std::ops::Deref<Target = C> + Send + Sync,
+    C: DynClient,
+{
+    type Error = C::Error;
+
+    fn req(
+        &self,
+        request: Request,
+    ) -> impl Future<Output = Result<Response, Self::Error>> + Send + use<T, C> {
+        self.0.req(request)
+    }
+}
+
 /// A specific client default for setting some sane defaults for API calls and oauth2 usage
 pub trait ClientDefault<'a>: Clone + Sized {
     /// Errors that can happen when assembling the client

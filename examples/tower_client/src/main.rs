@@ -7,7 +7,10 @@ use tower_http::{
     classify::StatusInRangeAsFailures, decompression::DecompressionLayer,
     set_header::SetRequestHeaderLayer, trace::TraceLayer,
 };
-use twitch_api::{client::TowerService, HelixClient};
+use twitch_api::{
+    client::{DynClient, ErasedClient, TowerService},
+    HelixClient,
+};
 use twitch_oauth2::{AccessToken, UserToken};
 
 fn main() {
@@ -59,7 +62,9 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
         );
 
     tracing::info!("Creating client");
-    let client = HelixClient::with_client(Box::new(TowerService::new(tower_client)));
+    // `client` is now type erased - it doesn't name all the layers of the `tower_client`
+    let client: HelixClient<'_, ErasedClient<Box<dyn DynClient<Error = _>>>> =
+        HelixClient::with_client(TowerService::new(tower_client).erased_box());
 
     tracing::info!("Getting token");
     let token = UserToken::from_existing(
