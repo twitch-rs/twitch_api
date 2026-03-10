@@ -10,6 +10,7 @@
 - Removed http-types dependency
 - The pagination state for helix requests was moved into a separate field (`pagination_data`). The type for this depends on the `Request`. Paginatable requests will use `PaginationState<Self>` while others will use `()`.
 - Bumped MSRV to 1.88.0
+- Updated `reqwest` to 0.13
 
 [Commits](https://github.com/twitch-rs/twitch_api/compare/v0.7.2...Unreleased)
 

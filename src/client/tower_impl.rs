@@ -28,9 +28,12 @@ where
 {
     type Error = TowerError;
 
-    fn req(&self, request: Request) -> BoxedFuture<'static, Result<Response, Self::Error>> {
+    fn req(
+        &self,
+        request: Request,
+    ) -> impl Future<Output = Result<Response, Self::Error>> + Send + use<S, ReqBody, ResBody> {
         let mut service = self.0.clone();
-        Box::pin(async move {
+        async move {
             futures::future::poll_fn(|cx| service.poll_ready(cx))
                 .await
                 .map_err(|e| TowerError::ServiceError(e.into()))?;
@@ -47,7 +50,7 @@ where
                 .to_bytes();
 
             Ok(http::Response::from_parts(parts, b))
-        })
+        }
     }
 }
 

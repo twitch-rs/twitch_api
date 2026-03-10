@@ -59,8 +59,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>
         );
 
     tracing::info!("Creating client");
-    let client: HelixClient<Box<dyn twitch_api::HttpClient<Error = _>>> =
-        HelixClient::with_client(Box::new(TowerService::new(tower_client)));
+    let client = HelixClient::with_client(Box::new(TowerService::new(tower_client)));
 
     tracing::info!("Getting token");
     let token = UserToken::from_existing(
