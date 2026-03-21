@@ -2813,7 +2813,7 @@ dependencies = [
 
 [[package]]
 name = "twitch_oauth2"
-version = "0.17.0"
+version = "0.17.1"
 dependencies = [
  "aliri_braid",
  "base64",
