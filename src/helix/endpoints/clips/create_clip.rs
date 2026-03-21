@@ -17,7 +17,7 @@
 //! Send the request to receive the response with [`HelixClient::req_post()`](helix::HelixClient::req_post).
 //!
 //! ```rust, no_run
-//! use twitch_api::helix::{self, clips::create_clip};
+//! use twitch_api::helix::{self, clips::{self, create_clip}};
 //! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
@@ -26,7 +26,7 @@
 //! # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
 //! let request = create_clip::CreateClipRequest::broadcaster_id("1234");
 //! let body = helix::EmptyBody;
-//! let response: create_clip::CreatedClip = client.req_post(request, body, &token).await?.data;
+//! let response: clips::CreatedClip = client.req_post(request, body, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
@@ -70,20 +70,8 @@ impl<'a> CreateClipRequest<'a> {
     }
 }
 
-/// Return Value for [Create Clip](super::create_clip)
-///
-/// [`create-clip`](https://dev.twitch.tv/docs/api/reference#create-clip)
-#[derive(PartialEq, Deserialize, Serialize, Debug, Clone)]
-#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
-#[non_exhaustive]
-pub struct CreatedClip {
-    /// An ID that uniquely identifies the clip.
-    pub id: types::ClipId,
-    /// A URL that you can use to edit the clip’s title, identify the part of the clip to publish, and publish the clip.
-    ///
-    /// The URL is valid for up to 24 hours or until the clip is published, whichever comes first.
-    pub edit_url: String,
-}
+/// Alias for [super::CreatedClip]
+pub type CreatedClip = super::CreatedClip;
 
 impl Request for CreateClipRequest<'_> {
     type PaginationData = ();

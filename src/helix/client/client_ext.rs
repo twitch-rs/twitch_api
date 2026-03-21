@@ -3,7 +3,7 @@
 use futures::{StreamExt, TryStreamExt};
 use std::borrow::Cow;
 
-use crate::helix::{self, ClientRequestError, HelixClient};
+use crate::helix::{self, ClientRequestError, EmptyBody, HelixClient};
 use crate::types;
 use twitch_oauth2::TwitchToken;
 
@@ -1711,6 +1711,60 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
         )
         .await
         .map(|res| res.data)
+    }
+
+    /// Creates a clip from a broadcaster’s VOD on behalf of the broadcaster or an editor of the channel.
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+    /// use twitch_api::helix;
+    ///
+    /// let clip: helix::clips::CreatedClip = client
+    ///     .create_clip_from_vod(
+    ///         "12345",
+    ///         "67890",
+    ///         "abcde",
+    ///         std::time::Duration::from_mins(10),
+    ///         std::time::Duration::from_secs_f32(10.5),
+    ///         "title",
+    ///         &token
+    ///     ).await?;
+    /// # Ok(()) }
+    /// ```
+    #[expect(
+        clippy::too_many_arguments,
+        reason = "The endpoint requires this many arguments"
+    )]
+    pub async fn create_clip_from_vod<'b, T>(
+        &'client self,
+        editor_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
+        vod_id: impl types::IntoCow<'b, types::VideoIdRef> + 'b,
+        vod_offset: std::time::Duration,
+        duration: impl Into<Option<std::time::Duration>>,
+        title: impl Into<Cow<'b, str>>,
+        token: &'client T,
+    ) -> Result<helix::clips::CreatedClip, ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let mut req = helix::clips::CreateClipFromVodRequest::new(
+            editor_id,
+            broadcaster_id,
+            vod_id,
+            vod_offset.as_secs(),
+            title,
+        );
+        req.duration = duration.into().map(|it| it.as_secs_f32());
+        self.req_post(req, EmptyBody, token)
+            .await
+            .map(|res| res.data)
     }
 
     #[cfg(feature = "eventsub")]
