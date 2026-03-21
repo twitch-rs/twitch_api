@@ -1767,6 +1767,44 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
             .map(|res| res.data)
     }
 
+    /// Provides URLs to download the video file(s) for the specified clips.
+    ///
+    /// # Examples
+    ///
+    /// ```rust, no_run
+    /// # #[tokio::main]
+    /// # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
+    /// # let client: helix::HelixClient<'static, twitch_api::client::DummyHttpClient> = helix::HelixClient::default();
+    /// # let token = twitch_oauth2::AccessToken::new("validtoken".to_string());
+    /// # let token = twitch_oauth2::UserToken::from_existing(&client, token, None, None).await?;
+    /// use twitch_api::helix;
+    ///
+    /// let urls: Vec<helix::clips::DownloadableClip> = client.get_clips_download(
+    ///     "12345",
+    ///     "67890",
+    ///     &["InexpensiveDistinctFoxChefFrank", "SpinelessCloudyLeopardMcaT"],
+    ///     &token
+    /// ).await?;
+    /// # Ok(()) }
+    /// ```
+    pub async fn get_clips_download<'b, T>(
+        &'client self,
+        editor_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + 'b,
+        ids: impl Into<types::Collection<'b, types::ClipId>>,
+        token: &'client T,
+    ) -> Result<Vec<helix::clips::DownloadableClip>, ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        self.req_get(
+            helix::clips::GetClipsDownloadRequest::new(editor_id, broadcaster_id, ids),
+            token,
+        )
+        .await
+        .map(|res| res.data)
+    }
+
     #[cfg(feature = "eventsub")]
     /// Create an [EventSub](crate::eventsub) subscription
     pub async fn create_eventsub_subscription<T, E: crate::eventsub::EventSubscription + Send>(

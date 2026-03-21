@@ -21,14 +21,14 @@
 //!
 //! <!-- generate with "cargo xtask overview" (with a nightly toolchain) -->
 //! <!-- BEGIN-OVERVIEW -->
-//! <details open><summary style="cursor: pointer">Clips 🟡 3/4</summary>
+//! <details open><summary style="cursor: pointer">Clips 🟢 4/4</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
 //! | [Create Clip](https://dev.twitch.tv/docs/api/reference#create-clip) | - | [`create_clip`] |
 //! | [Create Clip From VOD](https://dev.twitch.tv/docs/api/reference#create-clip-from-vod) | [`HelixClient::create_clip_from_vod`](crate::helix::HelixClient::create_clip_from_vod) | [`create_clip_from_vod`] |
 //! | [Get Clips](https://dev.twitch.tv/docs/api/reference#get-clips) | - | [`get_clips`] |
-//! | [Get Clips Download](https://dev.twitch.tv/docs/api/reference#get-clips-download) | - | - |
+//! | [Get Clips Download](https://dev.twitch.tv/docs/api/reference#get-clips-download) | [`HelixClient::get_clips_download`](crate::helix::HelixClient::get_clips_download) | [`get_clips_download`] |
 //!
 //! </details>
 //!
@@ -42,12 +42,17 @@ use std::borrow::Cow;
 
 pub mod get_clips;
 
+pub mod get_clips_download;
+
 pub mod create_clip;
 
 pub mod create_clip_from_vod;
 
 #[doc(inline)]
 pub use get_clips::{Clip, GetClipsRequest};
+
+#[doc(inline)]
+pub use get_clips_download::{DownloadableClip, GetClipsDownloadRequest};
 
 #[doc(inline)]
 pub use create_clip::CreateClipRequest;

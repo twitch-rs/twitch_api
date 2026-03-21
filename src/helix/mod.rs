@@ -127,14 +127,14 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer">Clips 🟡 3/4</summary>
+//! <details><summary style="cursor: pointer">Clips 🟢 4/4</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
 //! | [Create Clip](https://dev.twitch.tv/docs/api/reference#create-clip) | - | [`clips::create_clip`] |
 //! | [Create Clip From VOD](https://dev.twitch.tv/docs/api/reference#create-clip-from-vod) | [`HelixClient::create_clip_from_vod`] | [`clips::create_clip_from_vod`] |
 //! | [Get Clips](https://dev.twitch.tv/docs/api/reference#get-clips) | - | [`clips::get_clips`] |
-//! | [Get Clips Download](https://dev.twitch.tv/docs/api/reference#get-clips-download) | - | - |
+//! | [Get Clips Download](https://dev.twitch.tv/docs/api/reference#get-clips-download) | [`HelixClient::get_clips_download`] | [`clips::get_clips_download`] |
 //!
 //! </details>
 //!
