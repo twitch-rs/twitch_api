@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["create_clip","get_clips"],"struct":["Clip","CreateClipRequest","CreatedClip","GetClipsRequest"]};
+window.SIDEBAR_ITEMS = {"mod":["create_clip","create_clip_from_vod","get_clips","get_clips_download"],"struct":["Clip","CreateClipFromVodRequest","CreateClipRequest","CreatedClip","DownloadableClip","GetClipsDownloadRequest","GetClipsRequest"]};

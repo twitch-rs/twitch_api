@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["CreateClipRequest","CreatedClip"]};
+window.SIDEBAR_ITEMS = {"struct":["CreateClipRequest"],"type":["CreatedClip"]};
