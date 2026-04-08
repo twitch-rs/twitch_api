@@ -1033,6 +1033,24 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
         make_stream(req, token, self, |broadcasts| broadcasts.segments.into())
     }
 
+    /// Gets the broadcaster’s streaming schedule as an [iCalendar](https://datatracker.ietf.org/doc/html/rfc5545).
+    pub async fn get_channel_icalendar<'b, T>(
+        &'client self,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        token: &T,
+    ) -> Result<String, ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        Ok(self
+            .req_get(
+                helix::schedule::GetChannelICalendar::broadcaster_id(broadcaster_id),
+                token,
+            )
+            .await?
+            .data)
+    }
+
     /// Get all global emotes
     pub async fn get_global_emotes<T>(
         &'client self,
