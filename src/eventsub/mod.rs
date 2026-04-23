@@ -909,7 +909,7 @@ pub enum Status {
     /// Twitch revoked your subscription because the users in the [`condition`](EventSubSubscription::condition) object are no longer Twitch users.
     #[serde(rename = "user_removed")]
     UserRemoved,
-    /// Twitch revoked your subscription because the user was banned in the broadcaster's channel
+    /// The user specified in the [`condition`](EventSubSubscription::condition) object was banned from the broadcaster's chat.
     #[serde(rename = "chat_user_banned")]
     ChatUserBanned,
     /// Twitch revoked your subscription because the subscribed to subscription type and version is no longer supported.
