@@ -53,12 +53,13 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer">Bits 🟡 2/3</summary>
+//! <details><summary style="cursor: pointer">Bits 🟡 2/4</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
 //! | [Get Bits Leaderboard](https://dev.twitch.tv/docs/api/reference#get-bits-leaderboard) | - | [`bits::get_bits_leaderboard`] |
 //! | [Get Cheermotes](https://dev.twitch.tv/docs/api/reference#get-cheermotes) | - | [`bits::get_cheermotes`] |
+//! | [Get Custom Power-up](https://dev.twitch.tv/docs/api/reference#get-custom-power-up) | - | - |
 //! | [Get Extension Transactions](https://dev.twitch.tv/docs/api/reference#get-extension-transactions) | - | - |
 //!
 //! </details>
