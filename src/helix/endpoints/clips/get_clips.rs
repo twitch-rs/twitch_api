@@ -177,7 +177,7 @@ pub struct Clip {
     /// ID of the game assigned to the stream when the clip was created.
     pub game_id: types::CategoryId,
     /// ID of the clip being queried.
-    pub id: String,
+    pub id: types::ClipId,
     /// Language of the stream from which the clip was created.
     pub language: String,
     /// URL of the clip thumbnail.
