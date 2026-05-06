@@ -128,20 +128,17 @@ impl<'a> GetClipsRequest<'a> {
         }
     }
 
-    /// Ending date/time for the returned clips
+    /// Starting date/time for the returned clips
     pub fn started_at(
-        &mut self,
+        mut self,
         started_at: impl types::IntoCow<'a, types::TimestampRef> + 'a,
-    ) -> &mut Self {
+    ) -> Self {
         self.started_at = Some(started_at.into_cow());
         self
     }
 
     /// Ending date/time for the returned clips
-    pub fn ended_at(
-        &mut self,
-        ended_at: impl types::IntoCow<'a, types::TimestampRef> + 'a,
-    ) -> &mut Self {
+    pub fn ended_at(mut self, ended_at: impl types::IntoCow<'a, types::TimestampRef> + 'a) -> Self {
         self.ended_at = Some(ended_at.into_cow());
         self
     }
@@ -177,7 +174,7 @@ pub struct Clip {
     /// ID of the game assigned to the stream when the clip was created.
     pub game_id: types::CategoryId,
     /// ID of the clip being queried.
-    pub id: String,
+    pub id: types::ClipId,
     /// Language of the stream from which the clip was created.
     pub language: String,
     /// URL of the clip thumbnail.
