@@ -239,6 +239,13 @@ pub enum HelixRequestDeleteError {
     },
     /// could not parse response as utf8 when calling `DELETE {2}`
     Utf8Error(hyper::body::Bytes, #[source] std::str::Utf8Error, http::Uri),
+    /// deserialization failed when processing request response calling `DELETE {2}` with response: {3} - {0:?}
+    DeserializeError(
+        String,
+        #[source] crate::DeserError,
+        http::Uri,
+        http::StatusCode,
+    ),
     /// invalid or unexpected response from twitch.
     InvalidResponse {
         /// Reason for error
@@ -319,5 +326,6 @@ impl_request_deser_error!(
     HelixRequestGetError,
     HelixRequestPatchError,
     HelixRequestPostError,
-    HelixRequestPutError
+    HelixRequestPutError,
+    HelixRequestDeleteError
 );

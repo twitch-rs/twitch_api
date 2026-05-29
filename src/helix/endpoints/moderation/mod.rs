@@ -5,7 +5,7 @@
 //!
 //! <!-- generate with "cargo xtask overview" (with a nightly toolchain) -->
 //! <!-- BEGIN-OVERVIEW -->
-//! <details open><summary style="cursor: pointer">Moderation 🟡 24/25</summary>
+//! <details open><summary style="cursor: pointer">Moderation 🟢 25/25</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
@@ -33,7 +33,7 @@
 //! | [Get Shield Mode Status](https://dev.twitch.tv/docs/api/reference#get-shield-mode-status) | - | [`get_shield_mode_status`] |
 //! | [Warn Chat User](https://dev.twitch.tv/docs/api/reference#warn-chat-user) | [`HelixClient::warn_chat_user`](crate::helix::HelixClient::warn_chat_user) | [`warn_chat_user`] |
 //! | [Add Suspicious Status to Chat User](https://dev.twitch.tv/docs/api/reference#add-suspicious-status-to-chat-user) | [`HelixClient::add_suspicious_status_to_chat_user`](crate::helix::HelixClient::add_suspicious_status_to_chat_user) | [`add_suspicious_status_to_chat_user`] |
-//! | [Remove Suspicious Status From Chat User](https://dev.twitch.tv/docs/api/reference#remove-suspicious-status-from-chat-user) | - | - |
+//! | [Remove Suspicious Status From Chat User](https://dev.twitch.tv/docs/api/reference#remove-suspicious-status-from-chat-user) | [`HelixClient::remove_suspicious_status_from_chat_user`](crate::helix::HelixClient::remove_suspicious_status_from_chat_user) | [`remove_suspicious_status_from_chat_user`] |
 //!
 //! </details>
 //!
@@ -62,6 +62,7 @@ pub mod get_unban_requests;
 pub mod manage_held_automod_messages;
 pub mod remove_blocked_term;
 pub mod remove_channel_moderator;
+pub mod remove_suspicious_status_from_chat_user;
 pub mod resolve_unban_request;
 pub mod unban_user;
 pub mod update_automod_settings;
@@ -107,6 +108,8 @@ pub use manage_held_automod_messages::{
 pub use remove_blocked_term::{RemoveBlockedTerm, RemoveBlockedTermRequest};
 #[doc(inline)]
 pub use remove_channel_moderator::{RemoveChannelModeratorRequest, RemoveChannelModeratorResponse};
+#[doc(inline)]
+pub use remove_suspicious_status_from_chat_user::RemoveSuspiciousStatusFromChatUserRequest;
 #[doc(inline)]
 pub use resolve_unban_request::ResolveUnbanRequest;
 #[doc(inline)]
