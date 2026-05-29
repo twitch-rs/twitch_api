@@ -238,7 +238,7 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer">Moderation 🟡 23/25</summary>
+//! <details><summary style="cursor: pointer">Moderation 🟡 24/25</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
@@ -265,7 +265,7 @@
 //! | [Update Shield Mode Status](https://dev.twitch.tv/docs/api/reference#update-shield-mode-status) | - | [`moderation::update_shield_mode_status`] |
 //! | [Get Shield Mode Status](https://dev.twitch.tv/docs/api/reference#get-shield-mode-status) | - | [`moderation::get_shield_mode_status`] |
 //! | [Warn Chat User](https://dev.twitch.tv/docs/api/reference#warn-chat-user) | [`HelixClient::warn_chat_user`] | [`moderation::warn_chat_user`] |
-//! | [Add Suspicious Status to Chat User](https://dev.twitch.tv/docs/api/reference#add-suspicious-status-to-chat-user) | - | - |
+//! | [Add Suspicious Status to Chat User](https://dev.twitch.tv/docs/api/reference#add-suspicious-status-to-chat-user) | [`HelixClient::add_suspicious_status_to_chat_user`] | [`moderation::add_suspicious_status_to_chat_user`] |
 //! | [Remove Suspicious Status From Chat User](https://dev.twitch.tv/docs/api/reference#remove-suspicious-status-from-chat-user) | - | - |
 //!
 //! </details>
