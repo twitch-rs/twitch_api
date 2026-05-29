@@ -1324,6 +1324,28 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
         Ok(())
     }
 
+    /// Updates the duration of a pinned chat message.
+    pub async fn update_pinned_chat_message<'b, T>(
+        &'client self,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        moderator_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        message_id: impl types::IntoCow<'b, types::MsgIdRef> + Send + 'b,
+        duration_seconds: impl Into<Option<u32>>,
+        token: &T,
+    ) -> Result<(), ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let req = helix::chat::UpdatePinnedChatMessageRequest::new(
+            broadcaster_id,
+            moderator_id,
+            message_id,
+        )
+        .duration_seconds(duration_seconds);
+        self.req_patch(req, helix::EmptyBody, token).await?;
+        Ok(())
+    }
+
     /// Start a raid
     pub async fn start_a_raid<'b, T>(
         &'client self,
