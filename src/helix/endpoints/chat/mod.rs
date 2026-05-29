@@ -4,7 +4,7 @@
 //!
 //! <!-- generate with "cargo xtask overview" (with a nightly toolchain) -->
 //! <!-- BEGIN-OVERVIEW -->
-//! <details open><summary style="cursor: pointer">Chat 🟡 18/19</summary>
+//! <details open><summary style="cursor: pointer">Chat 🟢 19/19</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
@@ -24,7 +24,7 @@
 //! | [Get Pinned Chat Message](https://dev.twitch.tv/docs/api/reference#get-pinned-chat-message) | [`HelixClient::get_pinned_chat_message`](crate::helix::HelixClient::get_pinned_chat_message) | [`get_pinned_chat_message`] |
 //! | [Pin Chat Message](https://dev.twitch.tv/docs/api/reference#pin-chat-message) | [`HelixClient::pin_chat_message`](crate::helix::HelixClient::pin_chat_message) | [`pin_chat_message`] |
 //! | [Update Pinned Chat Message](https://dev.twitch.tv/docs/api/reference#update-pinned-chat-message) | [`HelixClient::update_pinned_chat_message`](crate::helix::HelixClient::update_pinned_chat_message) | [`update_pinned_chat_message`] |
-//! | [Unpin Chat Message](https://dev.twitch.tv/docs/api/reference#unpin-chat-message) | - | - |
+//! | [Unpin Chat Message](https://dev.twitch.tv/docs/api/reference#unpin-chat-message) | [`HelixClient::unpin_chat_message`](crate::helix::HelixClient::unpin_chat_message) | [`unpin_chat_message`] |
 //! | [Get User Chat Color](https://dev.twitch.tv/docs/api/reference#get-user-chat-color) | [`HelixClient::get_user_chat_color`](crate::helix::HelixClient::get_user_chat_color), [`HelixClient::get_users_chat_colors`](crate::helix::HelixClient::get_users_chat_colors) | [`get_user_chat_color`] |
 //! | [Update User Chat Color](https://dev.twitch.tv/docs/api/reference#update-user-chat-color) | [`HelixClient::update_user_chat_color`](crate::helix::HelixClient::update_user_chat_color) | [`update_user_chat_color`] |
 //!
@@ -54,6 +54,7 @@ pub mod pin_chat_message;
 pub mod send_a_shoutout;
 pub mod send_chat_announcement;
 pub mod send_chat_message;
+pub mod unpin_chat_message;
 pub mod update_chat_settings;
 pub mod update_pinned_chat_message;
 pub mod update_user_chat_color;
@@ -95,6 +96,8 @@ pub use send_chat_message::{
     ChatMessageDropCode, ChatMessageDropReason, SendChatMessageBody, SendChatMessageRequest,
     SendChatMessageResponse,
 };
+#[doc(inline)]
+pub use unpin_chat_message::{UnpinChatMessageRequest, UnpinChatMessageResponse};
 #[doc(inline)]
 pub use update_chat_settings::{UpdateChatSettingsBody, UpdateChatSettingsRequest};
 #[doc(inline)]

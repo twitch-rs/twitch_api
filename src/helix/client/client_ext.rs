@@ -1346,6 +1346,23 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
         Ok(())
     }
 
+    /// Unpins a pinned chat message from the broadcaster’s chat room.
+    pub async fn unpin_chat_message<'b, T>(
+        &'client self,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        moderator_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        message_id: impl types::IntoCow<'b, types::MsgIdRef> + Send + 'b,
+        token: &T,
+    ) -> Result<(), ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let req =
+            helix::chat::UnpinChatMessageRequest::new(broadcaster_id, moderator_id, message_id);
+        self.req_delete(req, token).await?;
+        Ok(())
+    }
+
     /// Start a raid
     pub async fn start_a_raid<'b, T>(
         &'client self,

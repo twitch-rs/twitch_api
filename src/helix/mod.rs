@@ -106,7 +106,7 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer">Chat 🟡 18/19</summary>
+//! <details><summary style="cursor: pointer">Chat 🟢 19/19</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
@@ -126,7 +126,7 @@
 //! | [Get Pinned Chat Message](https://dev.twitch.tv/docs/api/reference#get-pinned-chat-message) | [`HelixClient::get_pinned_chat_message`] | [`chat::get_pinned_chat_message`] |
 //! | [Pin Chat Message](https://dev.twitch.tv/docs/api/reference#pin-chat-message) | [`HelixClient::pin_chat_message`] | [`chat::pin_chat_message`] |
 //! | [Update Pinned Chat Message](https://dev.twitch.tv/docs/api/reference#update-pinned-chat-message) | [`HelixClient::update_pinned_chat_message`] | [`chat::update_pinned_chat_message`] |
-//! | [Unpin Chat Message](https://dev.twitch.tv/docs/api/reference#unpin-chat-message) | - | - |
+//! | [Unpin Chat Message](https://dev.twitch.tv/docs/api/reference#unpin-chat-message) | [`HelixClient::unpin_chat_message`] | [`chat::unpin_chat_message`] |
 //! | [Get User Chat Color](https://dev.twitch.tv/docs/api/reference#get-user-chat-color) | [`HelixClient::get_user_chat_color`], [`HelixClient::get_users_chat_colors`] | [`chat::get_user_chat_color`] |
 //! | [Update User Chat Color](https://dev.twitch.tv/docs/api/reference#update-user-chat-color) | [`HelixClient::update_user_chat_color`] | [`chat::update_user_chat_color`] |
 //!
