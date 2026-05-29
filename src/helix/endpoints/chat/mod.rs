@@ -4,7 +4,7 @@
 //!
 //! <!-- generate with "cargo xtask overview" (with a nightly toolchain) -->
 //! <!-- BEGIN-OVERVIEW -->
-//! <details open><summary style="cursor: pointer">Chat 🟡 15/19</summary>
+//! <details open><summary style="cursor: pointer">Chat 🟡 16/19</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
@@ -21,7 +21,7 @@
 //! | [Send Chat Announcement](https://dev.twitch.tv/docs/api/reference#send-chat-announcement) | [`HelixClient::send_chat_announcement`](crate::helix::HelixClient::send_chat_announcement) | [`send_chat_announcement`] |
 //! | [Send a Shoutout](https://dev.twitch.tv/docs/api/reference#send-a-shoutout) | - | [`send_a_shoutout`] |
 //! | [Send Chat Message](https://dev.twitch.tv/docs/api/reference#send-chat-message) | [`HelixClient::send_chat_message`](crate::helix::HelixClient::send_chat_message), [`HelixClient::send_chat_message_reply`](crate::helix::HelixClient::send_chat_message_reply) | [`send_chat_message`] |
-//! | [Get Pinned Chat Message](https://dev.twitch.tv/docs/api/reference#get-pinned-chat-message) | - | - |
+//! | [Get Pinned Chat Message](https://dev.twitch.tv/docs/api/reference#get-pinned-chat-message) | [`HelixClient::get_pinned_chat_message`](crate::helix::HelixClient::get_pinned_chat_message) | [`get_pinned_chat_message`] |
 //! | [Pin Chat Message](https://dev.twitch.tv/docs/api/reference#pin-chat-message) | - | - |
 //! | [Update Pinned Chat Message](https://dev.twitch.tv/docs/api/reference#update-pinned-chat-message) | - | - |
 //! | [Unpin Chat Message](https://dev.twitch.tv/docs/api/reference#unpin-chat-message) | - | - |
@@ -46,6 +46,7 @@ pub mod get_chatters;
 pub mod get_emote_sets;
 pub mod get_global_chat_badges;
 pub mod get_global_emotes;
+pub mod get_pinned_chat_message;
 pub mod get_shared_chat_session;
 pub mod get_user_chat_color;
 pub mod get_user_emotes;
@@ -69,6 +70,8 @@ pub use get_emote_sets::GetEmoteSetsRequest;
 pub use get_global_chat_badges::GetGlobalChatBadgesRequest;
 #[doc(inline)]
 pub use get_global_emotes::GetGlobalEmotesRequest;
+#[doc(inline)]
+pub use get_pinned_chat_message::{GetPinnedChatMessageRequest, PinnedChatMessage};
 #[doc(inline)]
 pub use get_shared_chat_session::{
     GetSharedChatSessionRequest, SharedChatParticipant, SharedChatSession,

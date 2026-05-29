@@ -106,7 +106,7 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer">Chat 🟡 15/19</summary>
+//! <details><summary style="cursor: pointer">Chat 🟡 16/19</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
@@ -123,7 +123,7 @@
 //! | [Send Chat Announcement](https://dev.twitch.tv/docs/api/reference#send-chat-announcement) | [`HelixClient::send_chat_announcement`] | [`chat::send_chat_announcement`] |
 //! | [Send a Shoutout](https://dev.twitch.tv/docs/api/reference#send-a-shoutout) | - | [`chat::send_a_shoutout`] |
 //! | [Send Chat Message](https://dev.twitch.tv/docs/api/reference#send-chat-message) | [`HelixClient::send_chat_message`], [`HelixClient::send_chat_message_reply`] | [`chat::send_chat_message`] |
-//! | [Get Pinned Chat Message](https://dev.twitch.tv/docs/api/reference#get-pinned-chat-message) | - | - |
+//! | [Get Pinned Chat Message](https://dev.twitch.tv/docs/api/reference#get-pinned-chat-message) | [`HelixClient::get_pinned_chat_message`] | [`chat::get_pinned_chat_message`] |
 //! | [Pin Chat Message](https://dev.twitch.tv/docs/api/reference#pin-chat-message) | - | - |
 //! | [Update Pinned Chat Message](https://dev.twitch.tv/docs/api/reference#update-pinned-chat-message) | - | - |
 //! | [Unpin Chat Message](https://dev.twitch.tv/docs/api/reference#unpin-chat-message) | - | - |
