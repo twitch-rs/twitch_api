@@ -4,7 +4,7 @@
 //!
 //! <!-- generate with "cargo xtask overview" (with a nightly toolchain) -->
 //! <!-- BEGIN-OVERVIEW -->
-//! <details open><summary style="cursor: pointer">Chat 🟡 16/19</summary>
+//! <details open><summary style="cursor: pointer">Chat 🟡 17/19</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
@@ -22,7 +22,7 @@
 //! | [Send a Shoutout](https://dev.twitch.tv/docs/api/reference#send-a-shoutout) | - | [`send_a_shoutout`] |
 //! | [Send Chat Message](https://dev.twitch.tv/docs/api/reference#send-chat-message) | [`HelixClient::send_chat_message`](crate::helix::HelixClient::send_chat_message), [`HelixClient::send_chat_message_reply`](crate::helix::HelixClient::send_chat_message_reply) | [`send_chat_message`] |
 //! | [Get Pinned Chat Message](https://dev.twitch.tv/docs/api/reference#get-pinned-chat-message) | [`HelixClient::get_pinned_chat_message`](crate::helix::HelixClient::get_pinned_chat_message) | [`get_pinned_chat_message`] |
-//! | [Pin Chat Message](https://dev.twitch.tv/docs/api/reference#pin-chat-message) | - | - |
+//! | [Pin Chat Message](https://dev.twitch.tv/docs/api/reference#pin-chat-message) | [`HelixClient::pin_chat_message`](crate::helix::HelixClient::pin_chat_message) | [`pin_chat_message`] |
 //! | [Update Pinned Chat Message](https://dev.twitch.tv/docs/api/reference#update-pinned-chat-message) | - | - |
 //! | [Unpin Chat Message](https://dev.twitch.tv/docs/api/reference#unpin-chat-message) | - | - |
 //! | [Get User Chat Color](https://dev.twitch.tv/docs/api/reference#get-user-chat-color) | [`HelixClient::get_user_chat_color`](crate::helix::HelixClient::get_user_chat_color), [`HelixClient::get_users_chat_colors`](crate::helix::HelixClient::get_users_chat_colors) | [`get_user_chat_color`] |
@@ -50,6 +50,7 @@ pub mod get_pinned_chat_message;
 pub mod get_shared_chat_session;
 pub mod get_user_chat_color;
 pub mod get_user_emotes;
+pub mod pin_chat_message;
 pub mod send_a_shoutout;
 pub mod send_chat_announcement;
 pub mod send_chat_message;
@@ -80,6 +81,8 @@ pub use get_shared_chat_session::{
 pub use get_user_chat_color::{GetUserChatColorRequest, UserChatColor};
 #[doc(inline)]
 pub use get_user_emotes::{GetUserEmotesRequest, UserEmote};
+#[doc(inline)]
+pub use pin_chat_message::{PinChatMessageRequest, PinChatMessageResponse};
 #[doc(inline)]
 pub use send_a_shoutout::{SendAShoutoutRequest, SendAShoutoutResponse};
 #[doc(inline)]
