@@ -56,8 +56,8 @@ fn install_tracing() {
 
 /// Create a new [UserToken] from an [AccessToken]
 #[tracing::instrument(skip(client, token))]
-pub async fn make_token<'a>(
-    client: &'a impl twitch_oauth2::client::Client,
+pub async fn make_token(
+    client: &impl twitch_oauth2::client::Client,
     token: impl Into<twitch_oauth2::AccessToken>,
 ) -> Result<UserToken, eyre::Report> {
     UserToken::from_token(client, token.into())

@@ -326,7 +326,7 @@ pub struct TwitchResponse {
 
 impl TwitchResponse {
     /// Whether response indicates success or not
-    pub fn is_successful(&self) -> bool { self.error.as_ref().map_or(true, |s| s.is_empty()) }
+    pub fn is_successful(&self) -> bool { self.error.as_ref().is_none_or(|s| s.is_empty()) }
 }
 
 // FIXME: Add example
