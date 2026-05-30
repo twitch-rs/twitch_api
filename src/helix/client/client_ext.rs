@@ -883,6 +883,24 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
             .try_flatten_unordered(None)
     }
 
+    /// Get the status of a Hype Train for the specified broadcaster.
+    pub async fn get_hype_train_status<'b, T>(
+        &'client self,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        token: &T,
+    ) -> Result<helix::hypetrain::HypeTrainStatus, ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        Ok(self
+            .req_get(
+                helix::hypetrain::GetHypeTrainStatusRequest::new(broadcaster_id),
+                token,
+            )
+            .await?
+            .data)
+    }
+
     /// Block a user
     pub async fn block_user<'b, T>(
         &'client self,
