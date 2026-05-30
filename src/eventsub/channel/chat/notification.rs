@@ -74,6 +74,8 @@ pub struct ChannelChatNotificationV1Payload {
     pub source_message_id: Option<types::MsgId>,
     /// Only present when in a shared chat session. The list of chat badges for the chatter in the channel the message was sent from.
     pub source_badges: Option<Vec<Badge>>,
+    /// Whether the notification is only sent to the source channel. Is [None] if the notification is not in a shared chat session.
+    pub is_source_only: Option<bool>,
 }
 
 /// Information about the user that triggered this notification
