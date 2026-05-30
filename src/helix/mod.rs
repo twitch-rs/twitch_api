@@ -230,11 +230,11 @@
 //!
 //! </details>
 //!
-//! <details><summary style="cursor: pointer">Hype Train 🔴 0/1</summary>
+//! <details><summary style="cursor: pointer">Hype Train 🟢 1/1</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
-//! | [Get Hype Train Status](https://dev.twitch.tv/docs/api/reference#get-hype-train-status) | - | - |
+//! | [Get Hype Train Status](https://dev.twitch.tv/docs/api/reference#get-hype-train-status) | [`HelixClient::get_hype_train_status`] | [`hypetrain::get_hype_train_status`] |
 //!
 //! </details>
 //!
