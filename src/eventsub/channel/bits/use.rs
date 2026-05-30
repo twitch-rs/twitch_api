@@ -57,6 +57,8 @@ pub struct ChannelBitsUseV1Payload {
     pub type_: BitsType,
     /// Data about Power-up.
     pub power_up: Option<BitsPowerUp>,
+    /// Data about a custom Power-up.
+    pub custom_power_up: Option<BitsCustomPowerUp>,
     /// An object that contains the user message and emote information needed to recreate the message.
     pub message: Option<crate::eventsub::channel::chat::Message>,
 }

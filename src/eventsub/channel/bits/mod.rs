@@ -14,10 +14,12 @@ pub use r#use::{ChannelBitsUseV1, ChannelBitsUseV1Payload};
 #[non_exhaustive]
 #[serde(rename_all = "snake_case")]
 pub enum BitsType {
-    /// Bits send via Cheer
+    /// Bits sent via Cheer
     Cheer,
-    /// Bits send via Power-Up
+    /// Bits sent via Power-Up
     PowerUp,
+    /// Bits sent via a custom Power-Up
+    CustomPowerUp,
 }
 
 /// Data about Power-up
@@ -31,6 +33,16 @@ pub struct BitsPowerUp {
     pub emote: Option<crate::eventsub::channel::chat::Emote>,
     /// The ID of the message effect.
     pub message_effect_id: Option<String>,
+}
+
+/// Data about a custom Power-up
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[non_exhaustive]
+pub struct BitsCustomPowerUp {
+    /// The title of the custom Power-up.
+    pub title: String,
+    /// The ID of the custom Power-up.
+    pub reward_id: types::RewardId,
 }
 
 /// The type of Power Up used.

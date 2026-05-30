@@ -40,7 +40,7 @@ use helix::RequestPost;
 /// Query Parameters for [Create Clip](super::create_clip)
 ///
 /// [`create-clip`](https://dev.twitch.tv/docs/api/reference/#create-clip)
-#[derive(PartialEq, Eq, Deserialize, Serialize, Clone, Debug)]
+#[derive(PartialEq, Deserialize, Serialize, Clone, Debug)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]
 #[must_use]
 #[non_exhaustive]
@@ -49,9 +49,15 @@ pub struct CreateClipRequest<'a> {
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub broadcaster_id: Cow<'a, types::UserIdRef>,
-    /// A Boolean value that determines whether the API captures the clip at the moment the viewer requests it or after a delay. If false (default), Twitch captures the clip at the moment the viewer requests it (this is the same clip experience as the Twitch UX). If true, Twitch adds a delay before capturing the clip (this basically shifts the capture window to the right slightly).
+
+    /// The length of the clip in seconds. Possible values range from 5 to 60 inclusively with a precision of 0.1. The default is 30.
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
-    pub has_delay: Option<bool>,
+    pub duration: Option<f32>,
+
+    /// The title of the clip.
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
+    pub title: Option<Cow<'a, str>>,
 }
 
 impl<'a> CreateClipRequest<'a> {
@@ -59,13 +65,20 @@ impl<'a> CreateClipRequest<'a> {
     pub fn broadcaster_id(broadcaster_id: impl types::IntoCow<'a, types::UserIdRef> + 'a) -> Self {
         Self {
             broadcaster_id: broadcaster_id.into_cow(),
-            has_delay: None,
+            duration: None,
+            title: None,
         }
     }
 
-    /// Sets the has_delay parameter
-    pub const fn has_delay(mut self, has_delay: bool) -> Self {
-        self.has_delay = Some(has_delay);
+    /// Sets the `duration` parameter
+    pub fn duration(mut self, duration: f32) -> Self {
+        self.duration = Some(duration);
+        self
+    }
+
+    /// Sets the `title` parameter
+    pub fn title(mut self, title: impl Into<Cow<'a, str>>) -> Self {
+        self.title = Some(title.into());
         self
     }
 }

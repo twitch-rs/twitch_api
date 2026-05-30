@@ -73,6 +73,17 @@ pub struct SendChatAnnouncementRequest<'a> {
     #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub moderator_id: Cow<'a, types::UserIdRef>,
+    /// Determines if the chat announcement is sent only to the source channel (defined by broadcaster_id) during a shared chat session.
+    ///
+    /// This has no effect if the announcement is not sent during a shared chat session.
+    ///
+    /// The default value when using an App Access Token is `true``.
+    /// If you prefer to send an announcement to all channels in a shared chat session, set this parameter to `false`.
+    ///
+    /// **NOTE**: This parameter can only be set when utilizing an App Access Token.
+    /// It cannot be specified when a User Access Token is used, and will instead result in an HTTP 400 error.
+    #[cfg_attr(feature = "typed-builder", builder(setter(into)))]
+    pub for_source_only: Option<bool>,
 }
 
 impl<'a> SendChatAnnouncementRequest<'a> {
@@ -84,7 +95,14 @@ impl<'a> SendChatAnnouncementRequest<'a> {
         Self {
             broadcaster_id: broadcaster_id.into_cow(),
             moderator_id: moderator_id.into_cow(),
+            for_source_only: None,
         }
+    }
+
+    /// Set the `for_source_only` parameter.
+    pub fn for_source_only(mut self, for_source_only: bool) -> Self {
+        self.for_source_only = Some(for_source_only);
+        self
     }
 }
 

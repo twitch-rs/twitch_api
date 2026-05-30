@@ -74,6 +74,8 @@ pub struct ChannelChatNotificationV1Payload {
     pub source_message_id: Option<types::MsgId>,
     /// Only present when in a shared chat session. The list of chat badges for the chatter in the channel the message was sent from.
     pub source_badges: Option<Vec<Badge>>,
+    /// Whether the notification is only sent to the source channel. Is [None] if the notification is not in a shared chat session.
+    pub is_source_only: Option<bool>,
 }
 
 /// Information about the user that triggered this notification
@@ -229,6 +231,9 @@ pub enum Notification {
     /// Information about the bits badge tier event.
     #[serde(with = "crate::eventsub::enum_field_as_inner")]
     BitsBadgeTier(BitsBadgeTier),
+    /// Information about the watch streak event.
+    #[serde(with = "crate::eventsub::enum_field_as_inner")]
+    WatchStreak(WatchStreak),
 
     // Shared chat notifications
     /// Information about the sub event that happened in a shared chat.
@@ -306,6 +311,10 @@ impl crate::eventsub::NamedField for CharityDonation {
 }
 impl crate::eventsub::NamedField for BitsBadgeTier {
     const NAME: &'static str = "bits_badge_tier";
+    const OPT_PREFIX: Option<&'static str> = Some("shared_chat_");
+}
+impl crate::eventsub::NamedField for WatchStreak {
+    const NAME: &'static str = "watch_streak";
     const OPT_PREFIX: Option<&'static str> = Some("shared_chat_");
 }
 
@@ -586,6 +595,17 @@ pub struct CharityDonation {
 pub struct BitsBadgeTier {
     /// The tier of the Bits badge the user just earned. For example, 100, 1000, or 10000.
     pub tier: i32,
+}
+
+/// A watch streak notification
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct WatchStreak {
+    /// The number of consecutive broadcasts for which the user has been watching.
+    pub streak_count: u32,
+    /// The number of channel points awarded for the Watch Streak milestone.
+    pub channel_points_awarded: u32,
 }
 
 #[cfg(test)]
