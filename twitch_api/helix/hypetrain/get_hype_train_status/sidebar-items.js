@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["HypeTrainContributionType","HypeTrainType"],"struct":["GetHypeTrainStatusRequest","HypeTrain","HypeTrainRecord","HypeTrainStatus","SharedTrainParticipant","TopContribution"]};

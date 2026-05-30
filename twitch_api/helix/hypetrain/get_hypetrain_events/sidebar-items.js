@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["HypeTrainEventType"],"struct":["GetHypeTrainEventsRequest","HypeTrainEvent","HypeTrainEventData"]};

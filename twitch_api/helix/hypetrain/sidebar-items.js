@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["ContributionType"],"mod":["get_hypetrain_events"],"struct":["Contribution","GetHypeTrainEventsRequest"]};
+window.SIDEBAR_ITEMS = {"enum":["HypeTrainContributionType","HypeTrainType"],"mod":["get_hype_train_status"],"struct":["GetHypeTrainStatusRequest","HypeTrain","HypeTrainRecord","HypeTrainStatus","SharedTrainParticipant"]};
