@@ -1902,6 +1902,8 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
             user_id: user_id.map(|c| c.as_cow()),
             after: None,
             first: None,
+            conduit_id: None,
+            subscription_id: None,
         };
 
         make_stream(req, token, self, |r| {

@@ -25,6 +25,14 @@ pub struct GetEventSubSubscriptionsRequest<'a> {
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
     #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
     pub user_id: Option<Cow<'a, types::UserIdRef>>,
+    /// Filter subscriptions by conduit ID.
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
+    pub conduit_id: Option<Cow<'a, types::ConduitIdRef>>,
+    /// Returns an array with the subscription matching the ID (as long as it is owned by the client making the request), or an empty array if there is no matching subscription.
+    #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "deser_borrow", serde(borrow = "'a"))]
+    pub subscription_id: Option<Cow<'a, types::EventSubId>>,
     // FIXME: https://github.com/twitchdev/issues/issues/272
     /// Cursor for forward pagination
     #[cfg_attr(feature = "typed-builder", builder(default, setter(into)))]
