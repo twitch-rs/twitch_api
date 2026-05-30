@@ -1823,6 +1823,20 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
         .map(|res| res.data)
     }
 
+    /// Get the authorization scopes that the specified user has granted the application.
+    pub async fn get_authorization_by_user<'b, T>(
+        &'client self,
+        ids: impl Into<types::Collection<'b, types::UserId>>,
+        token: &'client T,
+    ) -> Result<Vec<helix::users::AuthorizedUser>, ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        self.req_get(helix::users::GetAuthorizationByUserRequest::new(ids), token)
+            .await
+            .map(|res| res.data)
+    }
+
     #[cfg(feature = "eventsub")]
     /// Create an [EventSub](crate::eventsub) subscription
     pub async fn create_eventsub_subscription<T, E: crate::eventsub::EventSubscription + Send>(
