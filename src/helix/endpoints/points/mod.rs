@@ -66,9 +66,7 @@ pub use get_custom_reward_redemption::{CustomRewardRedemption, GetCustomRewardRe
 #[doc(inline)]
 pub use update_custom_reward::{UpdateCustomRewardBody, UpdateCustomRewardRequest};
 #[doc(inline)]
-pub use update_redemption_status::{
-    UpdateRedemptionStatusBody, UpdateRedemptionStatusInformation, UpdateRedemptionStatusRequest,
-};
+pub use update_redemption_status::{UpdateRedemptionStatusBody, UpdateRedemptionStatusRequest};
 /// Custom reward redemption statuses: UNFULFILLED, FULFILLED or CANCELED
 #[derive(PartialEq, Eq, Serialize, Deserialize, Copy, Clone, Debug)]
 #[non_exhaustive]

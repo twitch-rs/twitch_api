@@ -26,14 +26,14 @@
 //! );
 //! ```
 //!
-//! ## Response: [EndPoll]
+//! ## Response: [Poll]
 //!
 //!
 //! Send the request to receive the response with [`HelixClient::req_patch()`](helix::HelixClient::req_patch).
 //!
 //!
 //! ```rust, no_run
-//! use twitch_api::helix::{self, polls::end_poll};
+//! use twitch_api::helix::{self, polls::{self, end_poll}};
 //! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
@@ -46,7 +46,7 @@
 //!     "92af127c-7326-4483-a52b-b0da0be61c01",
 //!     end_poll::PollStatus::Terminated,
 //! );
-//! let response: end_poll::EndPoll = client.req_patch(request, body, &token).await?.data;
+//! let response: polls::Poll = client.req_patch(request, body, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
@@ -55,8 +55,6 @@
 //! and parse the [`http::Response`] with [`EndPollRequest::parse_response(None, &request.get_uri(), response)`](EndPollRequest::parse_response)
 
 use std::marker::PhantomData;
-
-use crate::helix::{parse_json, HelixRequestPatchError};
 
 use super::*;
 use helix::RequestPatch;
@@ -118,25 +116,9 @@ impl<'a> EndPollBody<'a> {
 
 impl helix::private::SealedSerialize for EndPollBody<'_> {}
 
-/// Return Values for [Update CustomReward](super::end_poll)
-///
-/// [`end-poll`](https://dev.twitch.tv/docs/api/reference#end-poll)
-#[derive(PartialEq, Eq, Deserialize, Debug, Clone)]
-#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
-#[non_exhaustive]
-#[allow(clippy::large_enum_variant)]
-pub enum EndPoll {
-    /// Poll ended successfully.
-    Success(Poll),
-    /// Bad Request: Query/Body Parameter missing or invalid
-    MissingQuery,
-    /// Unauthenticated: Missing/invalid Token
-    AuthFailed,
-}
-
 impl Request for EndPollRequest<'_> {
     type PaginationData = ();
-    type Response = EndPoll;
+    type Response = Poll;
 
     const PATH: &'static str = "polls";
     #[cfg(feature = "twitch_oauth2")]
@@ -156,32 +138,7 @@ impl<'a> RequestPatch for EndPollRequest<'a> {
     where
         Self: Sized,
     {
-        let resp = match status {
-            http::StatusCode::OK => {
-                let resp: helix::InnerResponse<[Poll; 1]> =
-                    parse_json(response, true).map_err(|e| {
-                        HelixRequestPatchError::DeserializeError(
-                            response.to_string(),
-                            e,
-                            uri.clone(),
-                            status,
-                        )
-                    })?;
-                let [data] = resp.data;
-                EndPoll::Success(data)
-            }
-            http::StatusCode::BAD_REQUEST => EndPoll::MissingQuery,
-            http::StatusCode::UNAUTHORIZED => EndPoll::AuthFailed,
-            _ => {
-                return Err(helix::HelixRequestPatchError::InvalidResponse {
-                    reason: "unexpected status code",
-                    response: response.to_string(),
-                    status,
-                    uri: uri.clone(),
-                })
-            }
-        };
-        Ok(helix::Response::with_data(resp, request))
+        helix::parse_single_return(request, uri, response, status)
     }
 }
 

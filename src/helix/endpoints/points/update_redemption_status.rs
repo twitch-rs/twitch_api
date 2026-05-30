@@ -31,7 +31,7 @@
 //! );
 //! ```
 //!
-//! ## Response: [UpdateRedemptionStatusInformation]
+//! ## Response: [CustomRewardRedemption]
 //!
 //! Send the request to receive the response with [`HelixClient::req_get()`](helix::HelixClient::req_get).
 //!
@@ -39,7 +39,7 @@
 //! use twitch_api::helix;
 //! use twitch_api::helix::points::{
 //!     CustomRewardRedemptionStatus, UpdateRedemptionStatusBody,
-//!     UpdateRedemptionStatusInformation, UpdateRedemptionStatusRequest,
+//!     CustomRewardRedemption, UpdateRedemptionStatusRequest,
 //! };
 //! # use twitch_api::client;
 //! # #[tokio::main]
@@ -54,7 +54,7 @@
 //!     "17fa2df1-ad76-4804-bfa5-a40ef63efe63",
 //! );
 //! let body = UpdateRedemptionStatusBody::status(CustomRewardRedemptionStatus::Canceled);
-//! let response: UpdateRedemptionStatusInformation =
+//! let response: CustomRewardRedemption =
 //!     client.req_patch(request, body, &token).await?.data;
 //! # Ok(())
 //! # }
@@ -62,8 +62,6 @@
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(body, &token, &client_id)`](helix::RequestPatch::create_request)
 //! and parse the [`http::Response`] with [`UpdateRedemptionStatusRequest::parse_response(None, &request.get_uri(), response)`](UpdateRedemptionStatusRequest::parse_response)
-
-use crate::helix::{parse_json, HelixRequestPatchError};
 
 pub use super::CustomRewardRedemption;
 use super::*;
@@ -125,20 +123,9 @@ impl UpdateRedemptionStatusBody {
     pub const fn status(status: CustomRewardRedemptionStatus) -> Self { Self { status } }
 }
 
-/// FIXME: Returns an object.
-/// Return Values for [Update Redemption Status](super::update_redemption_status)
-///
-/// [`update-redemption-status`](https://dev.twitch.tv/docs/api/reference#update-redemption-status)
-#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
-#[non_exhaustive]
-pub enum UpdateRedemptionStatusInformation {
-    /// 200 - OK
-    Success(CustomRewardRedemption),
-}
-
 impl Request for UpdateRedemptionStatusRequest<'_> {
     type PaginationData = ();
-    type Response = UpdateRedemptionStatusInformation;
+    type Response = CustomRewardRedemption;
 
     const PATH: &'static str = "channel_points/custom_rewards/redemptions";
     #[cfg(feature = "twitch_oauth2")]
@@ -158,30 +145,7 @@ impl RequestPatch for UpdateRedemptionStatusRequest<'_> {
     where
         Self: Sized,
     {
-        let resp = match status {
-            http::StatusCode::OK => {
-                let resp: helix::InnerResponse<[CustomRewardRedemption; 1]> =
-                    parse_json(response, true).map_err(|e| {
-                        HelixRequestPatchError::DeserializeError(
-                            response.to_string(),
-                            e,
-                            uri.clone(),
-                            status,
-                        )
-                    })?;
-                let [data] = resp.data;
-                UpdateRedemptionStatusInformation::Success(data)
-            }
-            _ => {
-                return Err(helix::HelixRequestPatchError::InvalidResponse {
-                    reason: "unexpected status code",
-                    response: response.to_string(),
-                    status,
-                    uri: uri.clone(),
-                })
-            }
-        };
-        Ok(helix::Response::with_data(resp, request))
+        helix::parse_single_return(request, uri, response, status)
     }
 }
 

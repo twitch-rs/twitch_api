@@ -28,14 +28,14 @@
 //! body.title = Some("hydrate but differently now!".into());
 //! ```
 //!
-//! ## Response: [UpdateCustomReward]
+//! ## Response: [CustomReward]
 //!
 //!
 //! Send the request to receive the response with [`HelixClient::req_patch()`](helix::HelixClient::req_patch).
 //!
 //!
 //! ```rust, no_run
-//! use twitch_api::helix::{self, points::update_custom_reward};
+//! use twitch_api::helix::{self, points::{self, update_custom_reward}};
 //! # use twitch_api::client;
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
@@ -46,15 +46,13 @@
 //! let mut body = update_custom_reward::UpdateCustomRewardBody::default();
 //! body.cost = Some(501);
 //! body.title = Some("hydrate but differently now!".into());
-//! let response: update_custom_reward::UpdateCustomReward = client.req_patch(request, body, &token).await?.data;
+//! let response: points::CustomReward = client.req_patch(request, body, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
 //!
 //! You can also get the [`http::Request`] with [`request.create_request(&token, &client_id)`](helix::RequestPost::create_request)
 //! and parse the [`http::Response`] with [`UpdateCustomRewardRequest::parse_response(None, &request.get_uri(), response)`](UpdateCustomRewardRequest::parse_response)
-
-use crate::helix::{parse_json, HelixRequestPatchError};
 
 use super::*;
 use helix::RequestPatch;
@@ -159,20 +157,9 @@ pub struct UpdateCustomRewardBody<'a> {
 
 impl helix::private::SealedSerialize for UpdateCustomRewardBody<'_> {}
 
-/// Return Values for [Update CustomReward](super::update_custom_reward)
-///
-/// [`update-custom-reward`](https://dev.twitch.tv/docs/api/reference#update-custom-reward)
-#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
-#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
-#[non_exhaustive]
-pub enum UpdateCustomReward {
-    /// Reward updated
-    Success(CustomReward),
-}
-
 impl Request for UpdateCustomRewardRequest<'_> {
     type PaginationData = ();
-    type Response = UpdateCustomReward;
+    type Response = CustomReward;
 
     const PATH: &'static str = "channel_points/custom_rewards";
     #[cfg(feature = "twitch_oauth2")]
@@ -192,30 +179,7 @@ impl<'a> RequestPatch for UpdateCustomRewardRequest<'a> {
     where
         Self: Sized,
     {
-        let resp = match status {
-            http::StatusCode::OK => {
-                let resp: helix::InnerResponse<[CustomReward; 1]> = parse_json(response, true)
-                    .map_err(|e| {
-                        HelixRequestPatchError::DeserializeError(
-                            response.to_string(),
-                            e,
-                            uri.clone(),
-                            status,
-                        )
-                    })?;
-                let [data] = resp.data;
-                UpdateCustomReward::Success(data)
-            }
-            _ => {
-                return Err(helix::HelixRequestPatchError::InvalidResponse {
-                    reason: "unexpected status code",
-                    response: response.to_string(),
-                    status,
-                    uri: uri.clone(),
-                })
-            }
-        };
-        Ok(helix::Response::with_data(resp, request))
+        helix::parse_single_return(request, uri, response, status)
     }
 }
 
