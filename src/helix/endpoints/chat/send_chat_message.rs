@@ -116,6 +116,15 @@ pub struct SendChatMessageBody<'a> {
     /// Has no effect if the message is not sent during a shared chat session.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub for_source_only: Option<bool>,
+
+    /// If true, the message will be sent and immediately pinned.
+    ///
+    /// Cannot be combined with `reply_parent_message_id` or `for_source_only`.
+    /// When pin is true, additionally requires the `moderator:manage:chat_messages` scope and the sender must be the broadcaster or a moderator.
+    /// Messages pinned via this endpoint are always pinned for 20 minutes.
+    /// If the pin fails, the message is not sent.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub pin: Option<bool>,
 }
 
 impl<'a> SendChatMessageBody<'a> {
@@ -131,6 +140,7 @@ impl<'a> SendChatMessageBody<'a> {
             message: message.into_cow(),
             reply_parent_message_id: None,
             for_source_only: None,
+            pin: None,
         }
     }
 
@@ -151,6 +161,17 @@ impl<'a> SendChatMessageBody<'a> {
     /// Has no effect if the message is not sent during a shared chat session.
     pub fn for_source_only(mut self, source_only: bool) -> Self {
         self.for_source_only = Some(source_only);
+        self
+    }
+
+    /// If true, the message will be sent and immediately pinned.
+    ///
+    /// Cannot be combined with `reply_parent_message_id` or `for_source_only`.
+    /// When pin is true, additionally requires the `moderator:manage:chat_messages` scope and the sender must be the broadcaster or a moderator.
+    /// Messages pinned via this endpoint are always pinned for 20 minutes.
+    /// If the pin fails, the message is not sent.
+    pub fn pin(mut self, pin: bool) -> Self {
+        self.pin = Some(pin);
         self
     }
 }

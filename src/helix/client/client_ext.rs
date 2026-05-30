@@ -1359,6 +1359,77 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
         Ok(self.req_delete(req, token).await?.data)
     }
 
+    /// Gets the currently pinned message for the broadcaster’s chat room.
+    pub async fn get_pinned_chat_message<'b, T>(
+        &'client self,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        moderator_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        token: &T,
+    ) -> Result<Option<helix::chat::PinnedChatMessage>, ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let req = helix::chat::GetPinnedChatMessageRequest::new(broadcaster_id, moderator_id);
+        Ok(self.req_get(req, token).await?.data)
+    }
+
+    /// Pins a chat message to the specified broadcaster’s chat room.
+    pub async fn pin_chat_message<'b, T>(
+        &'client self,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        moderator_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        message_id: impl types::IntoCow<'b, types::MsgIdRef> + Send + 'b,
+        duration_seconds: impl Into<Option<u32>>,
+        token: &T,
+    ) -> Result<(), ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let req = helix::chat::PinChatMessageRequest::new(broadcaster_id, moderator_id, message_id)
+            .duration_seconds(duration_seconds);
+        self.req_put(req, helix::EmptyBody, token).await?;
+        Ok(())
+    }
+
+    /// Updates the duration of a pinned chat message.
+    pub async fn update_pinned_chat_message<'b, T>(
+        &'client self,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        moderator_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        message_id: impl types::IntoCow<'b, types::MsgIdRef> + Send + 'b,
+        duration_seconds: impl Into<Option<u32>>,
+        token: &T,
+    ) -> Result<(), ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let req = helix::chat::UpdatePinnedChatMessageRequest::new(
+            broadcaster_id,
+            moderator_id,
+            message_id,
+        )
+        .duration_seconds(duration_seconds);
+        self.req_patch(req, helix::EmptyBody, token).await?;
+        Ok(())
+    }
+
+    /// Unpins a pinned chat message from the broadcaster’s chat room.
+    pub async fn unpin_chat_message<'b, T>(
+        &'client self,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        moderator_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        message_id: impl types::IntoCow<'b, types::MsgIdRef> + Send + 'b,
+        token: &T,
+    ) -> Result<(), ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        let req =
+            helix::chat::UnpinChatMessageRequest::new(broadcaster_id, moderator_id, message_id);
+        self.req_delete(req, token).await?;
+        Ok(())
+    }
+
     /// Start a raid
     pub async fn start_a_raid<'b, T>(
         &'client self,

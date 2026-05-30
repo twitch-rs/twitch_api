@@ -118,6 +118,9 @@ pub struct ReadmeDoctests;
 
 pub use twitch_types as types;
 
+#[cfg(any(feature = "helix", feature = "eventsub"))]
+pub mod common;
+
 #[cfg(feature = "helix")]
 pub mod helix;
 
