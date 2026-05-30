@@ -5,7 +5,7 @@
 //!
 //! <!-- generate with "cargo xtask overview" (with a nightly toolchain) -->
 //! <!-- BEGIN-OVERVIEW -->
-//! <details open><summary style="cursor: pointer">Moderation 🟡 23/25</summary>
+//! <details open><summary style="cursor: pointer">Moderation 🟢 25/25</summary>
 //!
 //! | Endpoint | Helper | Module |
 //! |---|---|---|
@@ -32,8 +32,8 @@
 //! | [Update Shield Mode Status](https://dev.twitch.tv/docs/api/reference#update-shield-mode-status) | - | [`update_shield_mode_status`] |
 //! | [Get Shield Mode Status](https://dev.twitch.tv/docs/api/reference#get-shield-mode-status) | - | [`get_shield_mode_status`] |
 //! | [Warn Chat User](https://dev.twitch.tv/docs/api/reference#warn-chat-user) | [`HelixClient::warn_chat_user`](crate::helix::HelixClient::warn_chat_user) | [`warn_chat_user`] |
-//! | [Add Suspicious Status to Chat User](https://dev.twitch.tv/docs/api/reference#add-suspicious-status-to-chat-user) | - | - |
-//! | [Remove Suspicious Status From Chat User](https://dev.twitch.tv/docs/api/reference#remove-suspicious-status-from-chat-user) | - | - |
+//! | [Add Suspicious Status to Chat User](https://dev.twitch.tv/docs/api/reference#add-suspicious-status-to-chat-user) | [`HelixClient::add_suspicious_status_to_chat_user`](crate::helix::HelixClient::add_suspicious_status_to_chat_user) | [`add_suspicious_status_to_chat_user`] |
+//! | [Remove Suspicious Status From Chat User](https://dev.twitch.tv/docs/api/reference#remove-suspicious-status-from-chat-user) | [`HelixClient::remove_suspicious_status_from_chat_user`](crate::helix::HelixClient::remove_suspicious_status_from_chat_user) | [`remove_suspicious_status_from_chat_user`] |
 //!
 //! </details>
 //!
@@ -48,6 +48,7 @@ use std::borrow::Cow;
 
 pub mod add_blocked_term;
 pub mod add_channel_moderator;
+pub mod add_suspicious_status_to_chat_user;
 pub mod ban_user;
 pub mod check_automod_status;
 pub mod delete_chat_messages;
@@ -61,6 +62,7 @@ pub mod get_unban_requests;
 pub mod manage_held_automod_messages;
 pub mod remove_blocked_term;
 pub mod remove_channel_moderator;
+pub mod remove_suspicious_status_from_chat_user;
 pub mod resolve_unban_request;
 pub mod unban_user;
 pub mod update_automod_settings;
@@ -72,6 +74,11 @@ pub mod warn_chat_user;
 pub use add_blocked_term::{AddBlockedTermBody, AddBlockedTermRequest};
 #[doc(inline)]
 pub use add_channel_moderator::{AddChannelModeratorRequest, AddChannelModeratorResponse};
+#[doc(inline)]
+pub use add_suspicious_status_to_chat_user::{
+    AddSuspiciousStatusToChatUserBody, AddSuspiciousStatusToChatUserRequest,
+    AddedSuspiciousUserStatus,
+};
 #[doc(inline)]
 pub use ban_user::{BanUser, BanUserBody, BanUserRequest};
 #[doc(inline)]
@@ -101,6 +108,8 @@ pub use manage_held_automod_messages::{
 pub use remove_blocked_term::{RemoveBlockedTerm, RemoveBlockedTermRequest};
 #[doc(inline)]
 pub use remove_channel_moderator::{RemoveChannelModeratorRequest, RemoveChannelModeratorResponse};
+#[doc(inline)]
+pub use remove_suspicious_status_from_chat_user::RemoveSuspiciousStatusFromChatUserRequest;
 #[doc(inline)]
 pub use resolve_unban_request::ResolveUnbanRequest;
 #[doc(inline)]
@@ -142,4 +151,58 @@ pub struct BlockedTerm {
     ///
     /// When the term is added, this timestamp is the same as created_at. The timestamp changes as AutoMod continues to deny the term.
     pub updated_at: types::Timestamp,
+}
+
+/// A user's suspicious status
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[non_exhaustive]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum SuspiciousUserStatus {
+    /// The user isn't suspicious.
+    NoTreatment,
+    /// The user is actively monitored.
+    ActiveMonitoring,
+    /// The user is restricted.
+    Restricted,
+
+    /// An unknown suspicious user status, contains the raw string provided by Twitch.
+    #[serde(untagged)]
+    Unknown(String),
+}
+
+/// Traits of a suspicious user
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[non_exhaustive]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum SuspiciousUserType {
+    /// A manually added user.
+    ManuallyAdded,
+    /// A detected ban evader.
+    DetectedBanEvader,
+    /// A detected suspicious user.
+    DetectedSusChatter,
+    /// A user banned in another channel that shares ban information.
+    BannedInSharedChannel,
+    /// An unknown user type, contains the raw string provided by Twitch.
+    #[serde(untagged)]
+    Unknown(String),
+}
+
+/// Info about a suspicious user.
+#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct SuspiciousUserInfo {
+    /// The ID of the user being given the suspicious status.
+    pub user_id: types::UserId,
+    /// The user ID of the broadcaster indicating in which channel the status is being applied.
+    pub broadcaster_id: types::UserId,
+    /// The user ID of the moderator who applied the last status.
+    pub moderator_id: types::UserId,
+    /// The timestamp of the last time this user’s status was updated.
+    pub updated_at: types::Timestamp,
+    /// The type of suspicious status.
+    pub status: SuspiciousUserStatus,
+    /// An array of strings representing the type(s) of suspicious user this is.
+    pub types: Vec<SuspiciousUserType>,
 }

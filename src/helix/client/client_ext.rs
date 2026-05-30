@@ -1008,6 +1008,55 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
             .data)
     }
 
+    /// Add a suspicious user status to a chatter on the broadcaster’s channel.
+    pub async fn add_suspicious_status_to_chat_user<'b, T>(
+        &'client self,
+        user_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        status: helix::moderation::AddedSuspiciousUserStatus,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        moderator_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        token: &T,
+    ) -> Result<helix::moderation::SuspiciousUserInfo, ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        Ok(self
+            .req_post(
+                helix::moderation::AddSuspiciousStatusToChatUserRequest::new(
+                    broadcaster_id,
+                    moderator_id,
+                ),
+                helix::moderation::AddSuspiciousStatusToChatUserBody::new(user_id, status),
+                token,
+            )
+            .await?
+            .data)
+    }
+
+    /// Remove a suspicious user status from a chatter on broadcaster’s channel.
+    pub async fn remove_suspicious_status_from_chat_user<'b, T>(
+        &'client self,
+        user_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        broadcaster_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        moderator_id: impl types::IntoCow<'b, types::UserIdRef> + Send + 'b,
+        token: &T,
+    ) -> Result<helix::moderation::SuspiciousUserInfo, ClientError<C>>
+    where
+        T: TwitchToken + Send + Sync + ?Sized,
+    {
+        Ok(self
+            .req_delete(
+                helix::moderation::RemoveSuspiciousStatusFromChatUserRequest::new(
+                    broadcaster_id,
+                    moderator_id,
+                    user_id,
+                ),
+                token,
+            )
+            .await?
+            .data)
+    }
+
     // FIXME: Example should use https://github.com/twitch-rs/twitch_api/issues/162
     /// Get all scheduled streams in a channel.
     ///
