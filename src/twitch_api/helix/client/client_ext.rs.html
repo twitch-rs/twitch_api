@@ -1554,7 +1554,7 @@
 <a href=#1554 id=1554 data-nosnippet>1554</a>    <span class="doccomment">/// Gets a list of all extensions (both active and inactive) that the broadcaster has installed.
 <a href=#1555 id=1555 data-nosnippet>1555</a>    ///
 <a href=#1556 id=1556 data-nosnippet>1556</a>    /// The user ID in the access token identifies the broadcaster.
-<a href=#1557 id=1557 data-nosnippet>1557</a>    </span><span class="kw">pub async fn </span>get_user_extensions&lt;<span class="lifetime">'b</span>, T&gt;(
+<a href=#1557 id=1557 data-nosnippet>1557</a>    </span><span class="kw">pub async fn </span>get_user_extensions&lt;T&gt;(
 <a href=#1558 id=1558 data-nosnippet>1558</a>        <span class="kw-2">&amp;</span><span class="lifetime">'client </span><span class="self">self</span>,
 <a href=#1559 id=1559 data-nosnippet>1559</a>        token: <span class="kw-2">&amp;</span>T,
 <a href=#1560 id=1560 data-nosnippet>1560</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;helix::users::Extension&gt;, ClientError&lt;C&gt;&gt;
@@ -1569,7 +1569,7 @@
 <a href=#1569 id=1569 data-nosnippet>1569</a>    <span class="doccomment">/// Gets the active extensions that the broadcaster has installed for each configuration.
 <a href=#1570 id=1570 data-nosnippet>1570</a>    ///
 <a href=#1571 id=1571 data-nosnippet>1571</a>    /// The user ID in the access token identifies the broadcaster.
-<a href=#1572 id=1572 data-nosnippet>1572</a>    </span><span class="kw">pub async fn </span>get_user_active_extensions&lt;<span class="lifetime">'b</span>, T&gt;(
+<a href=#1572 id=1572 data-nosnippet>1572</a>    </span><span class="kw">pub async fn </span>get_user_active_extensions&lt;T&gt;(
 <a href=#1573 id=1573 data-nosnippet>1573</a>        <span class="kw-2">&amp;</span><span class="lifetime">'client </span><span class="self">self</span>,
 <a href=#1574 id=1574 data-nosnippet>1574</a>        token: <span class="kw-2">&amp;</span>T,
 <a href=#1575 id=1575 data-nosnippet>1575</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;helix::users::ExtensionConfiguration, ClientError&lt;C&gt;&gt;
@@ -1803,7 +1803,7 @@
 <a href=#1803 id=1803 data-nosnippet>1803</a>    ///     .await?;
 <a href=#1804 id=1804 data-nosnippet>1804</a>    /// # Ok(()) }
 <a href=#1805 id=1805 data-nosnippet>1805</a>    /// ```
-<a href=#1806 id=1806 data-nosnippet>1806</a>    </span><span class="kw">pub async fn </span>get_content_classification_labels&lt;<span class="lifetime">'b</span>, T&gt;(
+<a href=#1806 id=1806 data-nosnippet>1806</a>    </span><span class="kw">pub async fn </span>get_content_classification_labels&lt;T&gt;(
 <a href=#1807 id=1807 data-nosnippet>1807</a>        <span class="kw-2">&amp;</span><span class="lifetime">'client </span><span class="self">self</span>,
 <a href=#1808 id=1808 data-nosnippet>1808</a>        token: <span class="kw-2">&amp;</span><span class="lifetime">'client </span>T,
 <a href=#1809 id=1809 data-nosnippet>1809</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;helix::ccls::ContentClassificationLabel&gt;, ClientError&lt;C&gt;&gt;
