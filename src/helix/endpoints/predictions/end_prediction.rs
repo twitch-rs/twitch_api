@@ -26,7 +26,7 @@
 //! );
 //! ```
 //!
-//! ## Response: [EndPrediction]
+//! ## Response: [Prediction]
 //!
 //!
 //! Send the request to receive the response with [`HelixClient::req_patch()`](helix::HelixClient::req_patch).
@@ -46,7 +46,7 @@
 //!     "ed961efd-8a3f-4cf5-a9d0-e616c590cd2a",
 //!     twitch_types::PredictionStatus::Resolved
 //! );
-//! let response: end_prediction::EndPrediction = client.req_patch(request, body, &token).await?.data;
+//! let response: predictions::Prediction = client.req_patch(request, body, &token).await?.data;
 //! # Ok(())
 //! # }
 //! ```
@@ -55,8 +55,6 @@
 //! and parse the [`http::Response`] with [`EndPredictionRequest::parse_response(None, &request.get_uri(), response)`](EndPredictionRequest::parse_response)
 
 use std::marker::PhantomData;
-
-use crate::helix::{parse_json, HelixRequestPatchError};
 
 use super::*;
 use helix::RequestPatch;
@@ -133,25 +131,9 @@ impl<'a> EndPredictionBody<'a> {
 
 impl helix::private::SealedSerialize for EndPredictionBody<'_> {}
 
-/// Return Values for [Update CustomReward](super::end_prediction)
-///
-/// [`end-prediction`](https://dev.twitch.tv/docs/api/reference#end-prediction)
-#[derive(PartialEq, Eq, Deserialize, Debug, Clone)]
-#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
-#[non_exhaustive]
-#[allow(clippy::large_enum_variant)]
-pub enum EndPrediction {
-    /// Prediction ended successfully.
-    Success(Prediction),
-    /// Bad Request: Query/Body Parameter missing or invalid
-    MissingQuery,
-    /// Unauthenticated: Missing/invalid Token
-    AuthFailed,
-}
-
 impl Request for EndPredictionRequest<'_> {
     type PaginationData = ();
-    type Response = EndPrediction;
+    type Response = Prediction;
 
     const PATH: &'static str = "predictions";
     #[cfg(feature = "twitch_oauth2")]
@@ -171,32 +153,7 @@ impl<'a> RequestPatch for EndPredictionRequest<'a> {
     where
         Self: Sized,
     {
-        let resp = match status {
-            http::StatusCode::OK => {
-                let resp: helix::InnerResponse<[Prediction; 1]> = parse_json(response, true)
-                    .map_err(|e| {
-                        HelixRequestPatchError::DeserializeError(
-                            response.to_string(),
-                            e,
-                            uri.clone(),
-                            status,
-                        )
-                    })?;
-                let [data] = resp.data;
-                EndPrediction::Success(data)
-            }
-            http::StatusCode::BAD_REQUEST => EndPrediction::MissingQuery,
-            http::StatusCode::UNAUTHORIZED => EndPrediction::AuthFailed,
-            _ => {
-                return Err(helix::HelixRequestPatchError::InvalidResponse {
-                    reason: "unexpected status code",
-                    response: response.to_string(),
-                    status,
-                    uri: uri.clone(),
-                })
-            }
-        };
-        Ok(helix::Response::with_data(resp, request))
+        helix::parse_single_return(request, uri, response, status)
     }
 }
 
