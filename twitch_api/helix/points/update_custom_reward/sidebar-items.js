@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["UpdateCustomReward"],"struct":["UpdateCustomRewardBody","UpdateCustomRewardRequest"]};
+window.SIDEBAR_ITEMS = {"struct":["UpdateCustomRewardBody","UpdateCustomRewardRequest"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["UpdateRedemptionStatusInformation"],"struct":["CustomRewardRedemption","UpdateRedemptionStatusBody","UpdateRedemptionStatusRequest"]};
+window.SIDEBAR_ITEMS = {"struct":["CustomRewardRedemption","UpdateRedemptionStatusBody","UpdateRedemptionStatusRequest"]};

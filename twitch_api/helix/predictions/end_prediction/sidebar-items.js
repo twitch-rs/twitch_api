@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["EndPrediction"],"struct":["EndPredictionBody","EndPredictionRequest"]};
+window.SIDEBAR_ITEMS = {"struct":["EndPredictionBody","EndPredictionRequest"]};
