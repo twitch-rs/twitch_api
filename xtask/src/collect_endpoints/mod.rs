@@ -42,7 +42,7 @@ pub fn run(sh: &Shell, build_json_docs: bool, all_features: &str) -> Result<()> 
     }
     let json = sh.read_file("target/doc/twitch_api.json")?;
     let rustdoc = serde_json::from_str(&json)?;
-    let (mut helix_rustdoc, eventsub_rustdoc) = rustdoc::parse(&rustdoc)?;
+    let (helix_rustdoc, eventsub_rustdoc) = rustdoc::parse(&rustdoc)?;
 
     let (helix, eventsub) = (
         helix_h.join().expect("failed to join helix thread")?,
@@ -52,7 +52,7 @@ pub fn run(sh: &Shell, build_json_docs: bool, all_features: &str) -> Result<()> 
     std::thread::scope(|s| -> Result<()> {
         let h1 = s.spawn(|| -> Result<()> {
             let overview =
-                helix::make_overview(&Url::parse(HELIX_URL).unwrap(), &helix, &mut helix_rustdoc)?;
+                helix::make_overview(&Url::parse(HELIX_URL).unwrap(), &helix, &helix_rustdoc)?;
             paste_in_file(HELIX_SOURCE_FILE, overview.0)?;
             for (module, doc) in overview.1 {
                 let path = format!("{}{}/mod.rs", HELIX_ENDPOINTS_FOLDER, module);
@@ -117,12 +117,12 @@ pub fn levenshtein(src: &str, tar: &str) -> usize {
     // initialize the matrix
     let mut matrix: Vec<Vec<usize>> = vec![vec![0; tar_len + 1]; src_len + 1];
 
-    for i in 1..(src_len + 1) {
-        matrix[i][0] = i;
+    for (i, row) in matrix.iter_mut().enumerate().skip(1) {
+        row[0] = i;
     }
 
-    for i in 1..(tar_len + 1) {
-        matrix[0][i] = i;
+    for (i, v) in matrix[0].iter_mut().enumerate().skip(1) {
+        *v = i;
     }
 
     // apply edit operations

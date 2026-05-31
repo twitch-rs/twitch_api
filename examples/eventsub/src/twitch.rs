@@ -257,8 +257,8 @@ pub async fn refresher(
 }
 
 #[tracing::instrument(skip(client, token))]
-pub async fn is_live<'a>(
-    config: &'a Config,
+pub async fn is_live(
+    config: &Config,
     client: &HelixClient<'_, reqwest::Client>,
     token: &AppAccessToken,
 ) -> eyre::Result<LiveStatus> {

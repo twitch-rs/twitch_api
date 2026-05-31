@@ -1554,7 +1554,7 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     /// Gets a list of all extensions (both active and inactive) that the broadcaster has installed.
     ///
     /// The user ID in the access token identifies the broadcaster.
-    pub async fn get_user_extensions<'b, T>(
+    pub async fn get_user_extensions<T>(
         &'client self,
         token: &T,
     ) -> Result<Vec<helix::users::Extension>, ClientError<C>>
@@ -1569,7 +1569,7 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     /// Gets the active extensions that the broadcaster has installed for each configuration.
     ///
     /// The user ID in the access token identifies the broadcaster.
-    pub async fn get_user_active_extensions<'b, T>(
+    pub async fn get_user_active_extensions<T>(
         &'client self,
         token: &T,
     ) -> Result<helix::users::ExtensionConfiguration, ClientError<C>>
@@ -1803,7 +1803,7 @@ impl<'client, C: crate::HttpClient + Sync + 'client> HelixClient<'client, C> {
     ///     .await?;
     /// # Ok(()) }
     /// ```
-    pub async fn get_content_classification_labels<'b, T>(
+    pub async fn get_content_classification_labels<T>(
         &'client self,
         token: &'client T,
     ) -> Result<Vec<helix::ccls::ContentClassificationLabel>, ClientError<C>>
