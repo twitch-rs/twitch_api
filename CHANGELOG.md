@@ -4,6 +4,8 @@
 
 ## [Unreleased] - ReleaseDate
 
+[Commits](https://github.com/twitch-rs/twitch_api/compare/v0.7.2...Unreleased)
+
 ### Breaking
 
 - Removed surf dependency and related feature flags
@@ -12,13 +14,16 @@
 - Bumped MSRV to 1.88.0
 - Updated `reqwest` to 0.13
 
-[Commits](https://github.com/twitch-rs/twitch_api/compare/v0.7.2...Unreleased)
-
 ### Added
 
 - Added `conduit_deleted` to `eventsub::Status`
 - Added `for_source_only` to helix endpoint `Send Chat Message`
 - Added `is_source_only` to EventSub `Channel Chat Message`
+- Added new Helix endpoints for pinning and suspicious chatters
+
+### Changed
+
+- Incorporated changes to Helix endpoints and EventSub events. Notably the source-only parameters.
 
 ### Fixed
 
