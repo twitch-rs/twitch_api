@@ -4,7 +4,11 @@
 
 ## [Unreleased] - ReleaseDate
 
-[Commits](https://github.com/twitch-rs/twitch_api/compare/v0.7.2...Unreleased)
+[Commits](https://github.com/twitch-rs/twitch_api/compare/v0.8.0...Unreleased)
+
+## [v0.8.0] - 2026-06-02
+
+[Commits](https://github.com/twitch-rs/twitch_api/compare/v0.7.2...v0.8.0)
 
 ### Breaking
 
