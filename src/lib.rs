@@ -2,8 +2,8 @@
 #![allow(clippy::needless_raw_string_hashes)]
 #![cfg_attr(test, allow(deprecated))] // for pubsub tests
 #![cfg_attr(nightly, feature(doc_cfg))]
-#![doc(html_root_url = "https://docs.rs/twitch_api/0.7.2")]
-//! [![github]](https://github.com/twitch-rs/twitch_api)&ensp;[![crates-io]](https://crates.io/crates/twitch_api)&ensp;[![docs-rs-big]](https://docs.rs/twitch_api/0.7.2/twitch_api)
+#![doc(html_root_url = "https://docs.rs/twitch_api/0.8.0")]
+//! [![github]](https://github.com/twitch-rs/twitch_api)&ensp;[![crates-io]](https://crates.io/crates/twitch_api)&ensp;[![docs-rs-big]](https://docs.rs/twitch_api/0.8.0/twitch_api)
 //!
 //! [github]: https://img.shields.io/badge/github-twitch--rs/twitch__api-8da0cb?style=for-the-badge&labelColor=555555&logo=github"
 //! [crates-io]: https://img.shields.io/crates/v/twitch_api.svg?style=for-the-badge&color=fc8d62&logo=rust"
