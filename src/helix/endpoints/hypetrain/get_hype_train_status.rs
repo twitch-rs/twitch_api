@@ -36,6 +36,12 @@
 use super::*;
 use helix::RequestGet;
 
+// Re-exported from common for backwards compatability
+#[doc(inline)]
+pub use crate::common::hypetrain::{
+    HypeTrainContributionType, HypeTrainType, SharedTrainParticipant,
+};
+
 /// Query Parameters for [Get Hype Train Status](super::get_hype_train_status)
 ///
 /// [`get-hype-train-status`](https://dev.twitch.tv/docs/api/reference#get-hype-train-status)
@@ -132,19 +138,6 @@ pub struct TopContribution {
     pub total: u64,
 }
 
-/// A broadcaster participating in a hype train.
-#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
-#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
-#[non_exhaustive]
-pub struct SharedTrainParticipant {
-    /// The broadcaster ID.
-    pub broadcaster_user_id: types::UserId,
-    /// The broadcaster login.
-    pub broadcaster_user_login: types::UserName,
-    ///The broadcaster display name.
-    pub broadcaster_user_name: types::DisplayName,
-}
-
 /// Information about a channel’s Hype Train records.
 #[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
@@ -156,38 +149,6 @@ pub struct HypeTrainRecord {
     pub total: u64,
     /// The time when the record was achieved.
     pub achieved_at: types::Timestamp,
-}
-
-/// Type of Hype Train event
-#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
-#[non_exhaustive]
-#[serde(rename_all = "snake_case")]
-pub enum HypeTrainType {
-    /// A treasure train.
-    Treasure,
-    /// A golden Kappa train.
-    GoldenKappa,
-    /// A regular train.
-    Regular,
-    /// An unknown hype train type, contains the raw string provided by Twitch.
-    #[serde(untagged)]
-    Unknown(String),
-}
-
-/// Type of Hype Train event
-#[derive(PartialEq, Eq, Deserialize, Serialize, Debug, Clone)]
-#[non_exhaustive]
-#[serde(rename_all = "snake_case")]
-pub enum HypeTrainContributionType {
-    /// Cheering with bits
-    Bits,
-    /// Subscription activity like subscribing or gifting subscriptions.
-    Subscription,
-    /// Covers other contribution methods not listed.
-    Other,
-    /// An unknown contribution type, contains the raw string provided by Twitch.
-    #[serde(untagged)]
-    Unknown(String),
 }
 
 impl Request for GetHypeTrainStatusRequest<'_> {

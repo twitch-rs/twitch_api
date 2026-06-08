@@ -22,8 +22,13 @@ use std::borrow::Cow;
 
 pub mod get_hype_train_status;
 
+// Re-exported from common for backwards compatability
+#[doc(inline)]
+pub use crate::common::hypetrain::{
+    HypeTrainContributionType, HypeTrainType, SharedTrainParticipant,
+};
+
 #[doc(inline)]
 pub use get_hype_train_status::{
-    GetHypeTrainStatusRequest, HypeTrain, HypeTrainContributionType, HypeTrainRecord,
-    HypeTrainStatus, HypeTrainType, SharedTrainParticipant,
+    GetHypeTrainStatusRequest, HypeTrain, HypeTrainRecord, HypeTrainStatus,
 };
