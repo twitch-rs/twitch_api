@@ -1,6 +1,7 @@
 #![doc(alias = "channel.hype_train")]
 //! A hype train has started, progressed or ended.
 use super::{EventSubscription, EventType};
+use crate::common::hypetrain::{HypeTrainType, SharedTrainParticipant};
 use crate::types;
 use serde_derive::{Deserialize, Serialize};
 
@@ -9,25 +10,24 @@ pub mod end;
 pub mod progress;
 
 #[doc(inline)]
-pub use begin::{ChannelHypeTrainBeginV1, ChannelHypeTrainBeginV1Payload};
+pub use begin::{
+    ChannelHypeTrainBeginV1, ChannelHypeTrainBeginV1Payload, ChannelHypeTrainBeginV2,
+    ChannelHypeTrainBeginV2Payload,
+};
 #[doc(inline)]
-pub use end::{ChannelHypeTrainEndV1, ChannelHypeTrainEndV1Payload};
+pub use end::{
+    ChannelHypeTrainEndV1, ChannelHypeTrainEndV1Payload, ChannelHypeTrainEndV2,
+    ChannelHypeTrainEndV2Payload,
+};
 #[doc(inline)]
-pub use progress::{ChannelHypeTrainProgressV1, ChannelHypeTrainProgressV1Payload};
+pub use progress::{
+    ChannelHypeTrainProgressV1, ChannelHypeTrainProgressV1Payload, ChannelHypeTrainProgressV2,
+    ChannelHypeTrainProgressV2Payload,
+};
 
-// FIXME: Is this always the same as helix::endpoints::hypetrain::ContributionType?
-/// Type of contribution
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[non_exhaustive]
-#[serde(rename_all = "lowercase")]
-pub enum ContributionType {
-    /// Bits
-    Bits,
-    /// Channel Subscriptions. Either gifted or not.
-    Subscription,
-    /// Covers other contribution methods not listed.
-    Other,
-}
+// Re-exported from common for backwards compatability
+#[doc(inline)]
+pub use crate::common::hypetrain::HypeTrainContributionType as ContributionType;
 
 /// A contribution to hype train
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

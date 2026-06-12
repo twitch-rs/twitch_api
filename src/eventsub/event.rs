@@ -47,8 +47,11 @@ macro_rules! fill_events {
             #[cfg(feature = "beta")]
             channel::ChannelGuestStarSettingsUpdateBeta;
             channel::ChannelHypeTrainBeginV1;
+            channel::ChannelHypeTrainBeginV2;
             channel::ChannelHypeTrainEndV1;
+            channel::ChannelHypeTrainEndV2;
             channel::ChannelHypeTrainProgressV1;
+            channel::ChannelHypeTrainProgressV2;
             channel::ChannelModerateV1;
             channel::ChannelModerateV2;
             channel::ChannelModeratorAddV1;
@@ -485,11 +488,20 @@ pub enum Event {
     #[cfg(feature = "beta")]
     ChannelGuestStarGuestUpdateBeta(Payload<channel::ChannelGuestStarGuestUpdateBeta>),
     /// Channel Hype Train Begin V1 Event
+    #[deprecated(note = "use `Event::ChannelHypeTrainBeginV2` instead")]
     ChannelHypeTrainBeginV1(Payload<channel::ChannelHypeTrainBeginV1>),
+    /// Channel Hype Train Begin V2 Event
+    ChannelHypeTrainBeginV2(Payload<channel::ChannelHypeTrainBeginV2>),
     /// Channel Hype Train Progress V1 Event
+    #[deprecated(note = "use `Event::ChannelHypeTrainProgressV2` instead")]
     ChannelHypeTrainProgressV1(Payload<channel::ChannelHypeTrainProgressV1>),
+    /// Channel Hype Train Progress V2 Event
+    ChannelHypeTrainProgressV2(Payload<channel::ChannelHypeTrainProgressV2>),
     /// Channel Hype Train End V1 Event
+    #[deprecated(note = "use `Event::ChannelHypeTrainEndV2` instead")]
     ChannelHypeTrainEndV1(Payload<channel::ChannelHypeTrainEndV1>),
+    /// Channel Hype Train End V2 Event
+    ChannelHypeTrainEndV2(Payload<channel::ChannelHypeTrainEndV2>),
     /// Channel Moderate V1 Event
     ChannelModerateV1(Payload<channel::ChannelModerateV1>),
     /// Channel Moderate V2 Event

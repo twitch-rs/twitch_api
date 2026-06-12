@@ -130,11 +130,20 @@ pub use guest_star_settings::{
     ChannelGuestStarSettingsUpdateBeta, ChannelGuestStarSettingsUpdateBetaPayload,
 };
 #[doc(inline)]
-pub use hypetrain::{ChannelHypeTrainBeginV1, ChannelHypeTrainBeginV1Payload};
+pub use hypetrain::{
+    ChannelHypeTrainBeginV1, ChannelHypeTrainBeginV1Payload, ChannelHypeTrainBeginV2,
+    ChannelHypeTrainBeginV2Payload,
+};
 #[doc(inline)]
-pub use hypetrain::{ChannelHypeTrainEndV1, ChannelHypeTrainEndV1Payload};
+pub use hypetrain::{
+    ChannelHypeTrainEndV1, ChannelHypeTrainEndV1Payload, ChannelHypeTrainEndV2,
+    ChannelHypeTrainEndV2Payload,
+};
 #[doc(inline)]
-pub use hypetrain::{ChannelHypeTrainProgressV1, ChannelHypeTrainProgressV1Payload};
+pub use hypetrain::{
+    ChannelHypeTrainProgressV1, ChannelHypeTrainProgressV1Payload, ChannelHypeTrainProgressV2,
+    ChannelHypeTrainProgressV2Payload,
+};
 #[doc(inline)]
 pub use moderate::{ChannelModerateV1, ChannelModerateV1Payload};
 #[doc(inline)]
