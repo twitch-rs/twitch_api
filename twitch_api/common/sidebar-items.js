@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["chat"]};
+window.SIDEBAR_ITEMS = {"mod":["chat","hypetrain"]};

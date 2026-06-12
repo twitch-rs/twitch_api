@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["ChannelHypeTrainProgressV1","ChannelHypeTrainProgressV1Payload"]};
+window.SIDEBAR_ITEMS = {"struct":["ChannelHypeTrainProgressV1","ChannelHypeTrainProgressV1Payload","ChannelHypeTrainProgressV2","ChannelHypeTrainProgressV2Payload"]};
