@@ -234,6 +234,9 @@ pub enum Notification {
     /// Information about the watch streak event.
     #[serde(with = "crate::eventsub::enum_field_as_inner")]
     WatchStreak(WatchStreak),
+    /// Information about the modiversary event.
+    #[serde(with = "crate::eventsub::enum_field_as_inner")]
+    Modiversary(Modiversary),
 
     // Shared chat notifications
     /// Information about the sub event that happened in a shared chat.
@@ -263,6 +266,12 @@ pub enum Notification {
     /// Information about the announcement event that happened in a shared chat.
     #[serde(with = "crate::eventsub::enum_field_as_inner_prefixed")]
     SharedChatAnnouncement(Announcement),
+    /// Information about the modiversary event that happened in a shared chat.
+    #[serde(with = "crate::eventsub::enum_field_as_inner_prefixed")]
+    SharedChatModiversary(Modiversary),
+
+    /// An unknown event.
+    Unknown,
 }
 
 impl crate::eventsub::NamedField for Subscription {
@@ -315,6 +324,10 @@ impl crate::eventsub::NamedField for BitsBadgeTier {
 }
 impl crate::eventsub::NamedField for WatchStreak {
     const NAME: &'static str = "watch_streak";
+    const OPT_PREFIX: Option<&'static str> = Some("shared_chat_");
+}
+impl crate::eventsub::NamedField for Modiversary {
+    const NAME: &'static str = "modiversary";
     const OPT_PREFIX: Option<&'static str> = Some("shared_chat_");
 }
 
@@ -608,6 +621,15 @@ pub struct WatchStreak {
     pub channel_points_awarded: u32,
 }
 
+/// A mod anniversary notification
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
+#[non_exhaustive]
+pub struct Modiversary {
+    /// The number of months the user has been a moderator in this channel.
+    pub months: u32,
+}
+
 #[cfg(test)]
 #[test]
 fn parse_payload() {
@@ -688,7 +710,19 @@ fn parse_payload() {
     "##;
 
     let val = dbg!(crate::eventsub::Event::parse(payload).unwrap());
-    crate::tests::roundtrip(&val)
+    crate::tests::roundtrip(&val);
+
+    use crate::eventsub::{Event, Message, Payload};
+    assert!(matches!(
+        val,
+        Event::ChannelChatNotificationV1(Payload {
+            message: Message::Notification(ChannelChatNotificationV1Payload {
+                notification: Notification::Resubscription(_),
+                ..
+            }),
+            ..
+        })
+    ));
 }
 
 #[cfg(test)]
@@ -768,7 +802,19 @@ fn parse_payload_resub_without_message() {
     "##;
 
     let val = dbg!(crate::eventsub::Event::parse(payload).unwrap());
-    crate::tests::roundtrip(&val)
+    crate::tests::roundtrip(&val);
+
+    use crate::eventsub::{Event, Message, Payload};
+    assert!(matches!(
+        val,
+        Event::ChannelChatNotificationV1(Payload {
+            message: Message::Notification(ChannelChatNotificationV1Payload {
+                notification: Notification::Resubscription(_),
+                ..
+            }),
+            ..
+        })
+    ));
 }
 
 #[cfg(test)]
@@ -861,7 +907,19 @@ fn parse_payload_cheer_just_text() {
     "##;
 
     let val = dbg!(crate::eventsub::Event::parse(payload).unwrap());
-    crate::tests::roundtrip(&val)
+    crate::tests::roundtrip(&val);
+
+    use crate::eventsub::{Event, Message, Payload};
+    assert!(matches!(
+        val,
+        Event::ChannelChatNotificationV1(Payload {
+            message: Message::Notification(ChannelChatNotificationV1Payload {
+                notification: Notification::Resubscription(_),
+                ..
+            }),
+            ..
+        })
+    ));
 }
 
 #[cfg(test)]
@@ -924,7 +982,19 @@ fn parse_payload_sub_gift_anon() {
     "##;
 
     let val = dbg!(crate::eventsub::Event::parse(payload).unwrap());
-    crate::tests::roundtrip(&val)
+    crate::tests::roundtrip(&val);
+
+    use crate::eventsub::{Event, Message, Payload};
+    assert!(matches!(
+        val,
+        Event::ChannelChatNotificationV1(Payload {
+            message: Message::Notification(ChannelChatNotificationV1Payload {
+                notification: Notification::CommunitySubGift(_),
+                ..
+            }),
+            ..
+        })
+    ));
 }
 
 #[cfg(test)]
@@ -1019,7 +1089,19 @@ fn parse_payload_resub_gifted() {
     "##;
 
     let val = dbg!(crate::eventsub::Event::parse(payload).unwrap());
-    crate::tests::roundtrip(&val)
+    crate::tests::roundtrip(&val);
+
+    use crate::eventsub::{Event, Message, Payload};
+    assert!(matches!(
+        val,
+        Event::ChannelChatNotificationV1(Payload {
+            message: Message::Notification(ChannelChatNotificationV1Payload {
+                notification: Notification::Resubscription(_),
+                ..
+            }),
+            ..
+        })
+    ));
 }
 
 #[cfg(test)]
@@ -1096,7 +1178,19 @@ fn parse_payload_pay_it_forward() {
     "##;
 
     let val = dbg!(crate::eventsub::Event::parse(payload).unwrap());
-    crate::tests::roundtrip(&val)
+    crate::tests::roundtrip(&val);
+
+    use crate::eventsub::{Event, Message, Payload};
+    assert!(matches!(
+        val,
+        Event::ChannelChatNotificationV1(Payload {
+            message: Message::Notification(ChannelChatNotificationV1Payload {
+                notification: Notification::PayItForward(_),
+                ..
+            }),
+            ..
+        })
+    ));
 }
 
 #[cfg(test)]
@@ -1116,7 +1210,19 @@ fn parse_payload_examples() {
     ];
     for payload in payloads {
         let val = dbg!(crate::eventsub::Event::parse(payload).unwrap());
-        crate::tests::roundtrip(&val)
+        crate::tests::roundtrip(&val);
+
+        use crate::eventsub::{Event, Message, Payload};
+        assert!(matches!(
+            val,
+            Event::ChannelChatNotificationV1(Payload {
+                message: Message::Notification(ChannelChatNotificationV1Payload {
+                    notification: Notification::PayItForward(_),
+                    ..
+                }),
+                ..
+            })
+        ));
     }
 }
 
@@ -1206,5 +1312,220 @@ fn parse_shared_chat() {
 }
     "#;
     let val = dbg!(crate::eventsub::Event::parse(payload).unwrap());
-    crate::tests::roundtrip(&val)
+    crate::tests::roundtrip(&val);
+
+    use crate::eventsub::{Event, Message, Payload};
+    assert!(matches!(
+        val,
+        Event::ChannelChatNotificationV1(Payload {
+            message: Message::Notification(ChannelChatNotificationV1Payload {
+                notification: Notification::SharedChatResub(_),
+                ..
+            }),
+            ..
+        })
+    ));
+}
+
+#[cfg(test)]
+#[test]
+fn parse_unknown() {
+    let payload = r#"
+{
+    "subscription": {
+        "id": "dc1a3cfc-a930-4972-bf9e-0ffc4e7a8996",
+        "status": "enabled",
+        "type": "channel.chat.notification",
+        "version": "1",
+        "condition": {
+            "broadcaster_user_id": "1971641",
+            "user_id": "2914196"
+        },
+        "transport": {
+            "method": "websocket",
+            "session_id": "AgoQOtgGkFvXRlSkij343CndhIGY2VsbC1h"
+        },
+        "created_at": "2023-10-06T18:04:38.807682738Z",
+        "cost": 0
+    },
+    "event": {
+        "broadcaster_user_id": "1971641",
+        "broadcaster_user_login": "streamer",
+        "broadcaster_user_name": "streamer",
+        "chatter_user_id": "49912639",
+        "chatter_user_login": "viewer23",
+        "chatter_user_name": "viewer23",
+        "chatter_is_anonymous": false,
+        "color": "",
+        "badges": [],
+        "system_message": "some unknown message",
+        "message_id": "d62235c8-47ff-a4f4--84e8-5a29a65a9c03",
+        "message": {
+            "text": "",
+            "fragments": []
+        },
+        "notice_type": "unknown",
+        "sub": null,
+        "resub": null,
+        "sub_gift": null,
+        "community_sub_gift": null,
+        "gift_paid_upgrade": null,
+        "prime_paid_upgrade": null,
+        "pay_it_forward": null,
+        "raid": null,
+        "unraid": null,
+        "announcement": null,
+        "bits_badge_tier": null,
+        "charity_donation": null,
+        "shared_chat_sub": null,
+        "shared_chat_resub": null,
+        "shared_chat_sub_gift": null,
+        "shared_chat_community_sub_gift": null,
+        "shared_chat_gift_paid_upgrade": null,
+        "shared_chat_prime_paid_upgrade": null,
+        "shared_chat_pay_it_forward": null,
+        "shared_chat_raid": null,
+        "shared_chat_unraid": null,
+        "shared_chat_announcement": null,
+        "shared_chat_bits_badge_tier": null,
+        "shared_chat_charity_donation": null,
+        "source_broadcaster_user_id": null,
+        "source_broadcaster_user_login": null,
+        "source_broadcaster_user_name": null,
+        "source_message_id": null,
+        "source_badges": null
+    }
+}
+    "#;
+    let val = dbg!(crate::eventsub::Event::parse(payload).unwrap());
+    crate::tests::roundtrip(&val);
+
+    use crate::eventsub::{Event, Message, Payload};
+    assert!(matches!(
+        val,
+        Event::ChannelChatNotificationV1(Payload {
+            message: Message::Notification(ChannelChatNotificationV1Payload {
+                notification: Notification::Unknown,
+                ..
+            }),
+            ..
+        })
+    ));
+}
+
+#[cfg(test)]
+#[test]
+fn parse_modiversary() {
+    let payload = r##"
+    {
+        "subscription": {
+            "id": "76b7c204-875f-4688-91f3-f6c45768a897",
+            "status": "enabled",
+            "type": "channel.chat.notification",
+            "version": "1",
+            "condition": {
+                "broadcaster_user_id": "162691793",
+                "user_id": "129546453"
+            },
+            "transport": {
+                "method": "websocket",
+                "session_id": "AgoQ2vCwSuHiT-u7eFJ6AmDVcRIGY2VsbC1h"
+            },
+            "created_at": "2026-06-13T09:55:25.590177161Z",
+            "cost": 0
+        },
+        "event": {
+            "broadcaster_user_id": "162691793",
+            "broadcaster_user_login": "waairus",
+            "broadcaster_user_name": "waaIrus",
+            "source_broadcaster_user_id": null,
+            "source_broadcaster_user_login": null,
+            "source_broadcaster_user_name": null,
+            "chatter_user_id": "129546453",
+            "chatter_user_login": "nerixyz",
+            "chatter_user_name": "nerixyz",
+            "chatter_is_anonymous": false,
+            "color": "#FF0000",
+            "badges": [
+                {
+                    "set_id": "moderator",
+                    "id": "1",
+                    "info": ""
+                }
+            ],
+            "source_badges": null,
+            "system_message": "has been a moderator for 48 months!",
+            "message_id": "c2e0af1f-e6a5-4884-b0d3-7f77d8c70719",
+            "source_message_id": null,
+            "is_source_only": null,
+            "message": {
+                "text": "This is a test Kappa",
+                "fragments": [
+                    {
+                        "type": "text",
+                        "text": "This is a test ",
+                        "cheermote": null,
+                        "emote": null,
+                        "mention": null
+                    },
+                    {
+                        "type": "emote",
+                        "text": "Kappa",
+                        "cheermote": null,
+                        "emote": {
+                            "id": "25",
+                            "emote_set_id": "0",
+                            "owner_id": "0",
+                            "format": [
+                                "static"
+                            ]
+                        },
+                        "mention": null
+                    }
+                ]
+            },
+            "notice_type": "modiversary",
+            "sub": null,
+            "resub": null,
+            "sub_gift": null,
+            "community_sub_gift": null,
+            "gift_paid_upgrade": null,
+            "prime_paid_upgrade": null,
+            "pay_it_forward": null,
+            "raid": null,
+            "unraid": null,
+            "announcement": null,
+            "bits_badge_tier": null,
+            "charity_donation": null,
+            "watch_streak": null,
+            "modiversary": {
+                "months": 48
+            },
+            "shared_chat_sub": null,
+            "shared_chat_resub": null,
+            "shared_chat_sub_gift": null,
+            "shared_chat_community_sub_gift": null,
+            "shared_chat_gift_paid_upgrade": null,
+            "shared_chat_prime_paid_upgrade": null,
+            "shared_chat_pay_it_forward": null,
+            "shared_chat_raid": null,
+            "shared_chat_announcement": null,
+            "shared_chat_modiversary": null
+        }
+    }
+    "##;
+    let val = dbg!(crate::eventsub::Event::parse(payload).unwrap());
+    crate::tests::roundtrip(&val);
+
+    use crate::eventsub::{Event, Message, Payload};
+    assert!(matches!(
+        val,
+        Event::ChannelChatNotificationV1(Payload {
+            message: Message::Notification(ChannelChatNotificationV1Payload {
+                notification: Notification::Modiversary(_),
+                ..
+            }),
+            ..
+        })
+    ));
 }
