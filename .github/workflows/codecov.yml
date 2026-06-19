@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           submodules: recursive
       - name: Toolchain setup
@@ -40,7 +40,7 @@ jobs:
         run: cargo llvm-cov report --lcov --ignore-filename-regex "twitch_oauth2" --output-path lcov.info
 
       - name: Upload to codecov.io
-        uses: codecov/codecov-action@v6
+        uses: codecov/codecov-action@v7
         with:
           files: ./lcov.info
         env:
