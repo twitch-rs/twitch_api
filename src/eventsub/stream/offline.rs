@@ -36,6 +36,8 @@ impl EventSubscription for StreamOfflineV1 {
 #[cfg_attr(feature = "deny_unknown_fields", serde(deny_unknown_fields))]
 #[non_exhaustive]
 pub struct StreamOfflineV1Payload {
+    /// The id of the stream.
+    pub id: types::StreamId,
     /// The broadcaster’s user id.
     pub broadcaster_user_id: types::UserId,
     /// The broadcaster’s user login.
@@ -65,6 +67,7 @@ fn parse_payload() {
             }
         },
         "event": {
+            "id": "9001",
             "broadcaster_user_id": "1337",
             "broadcaster_user_login": "cool_user",
             "broadcaster_user_name": "Cool_User"

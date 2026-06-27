@@ -43,6 +43,7 @@ pub struct StreamOnlineV1Payload {
     /// The broadcaster’s user display name.
     pub broadcaster_user_name: types::DisplayName,
     /// The id of the stream.
+    // FIXME: This should be types::StreamId
     pub id: String,
     /// The stream type. Valid values are: live, playlist, watch_party, premiere, rerun.
     #[serde(rename = "type")]
