@@ -72,9 +72,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Check formatting with Prettier
-        uses: actionsx/prettier@v3
-        with:
-          args: -c .
+        run: npx -- prettier@3.9.8 -c .
 
   clippy:
     name: Clippy
