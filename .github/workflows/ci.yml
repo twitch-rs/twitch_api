@@ -108,6 +108,8 @@ jobs:
 
       # Check if overviews are up-to-date
       - name: Generate and check overviews
+        # FIXME: Handle new documentation layout (twitch-rs/twitch_api#548)
+        if: false
         run: cargo xtask overview --check
 
       # We do the following to make sure docs.rs can document properly without anything broken, and that docs are working.
